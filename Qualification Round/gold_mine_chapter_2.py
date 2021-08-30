@@ -60,8 +60,7 @@ def gold_mine_chapter_2():
         adj[A].append(B)
         adj[B].append(A)
 
-    dp = dfs(adj, C, K, -1, 0)
-    return max(max(dp[k][0] for k in xrange(K+1)), C[0])
+    return max(max(dp_0_k[0] for dp_0_k in dfs(adj, C, K, -1, 0)), C[0])
 
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, gold_mine_chapter_2())
