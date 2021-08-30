@@ -7,18 +7,18 @@
 # Space: O(N)
 #
 
+from heapq import heappush, heappop
+
 def dfs(adj, C, parent, curr):
-    tops = [0]*(2 if not curr else 1)
+    min_heap, cnt = [], 2 if not curr else 1
     for child in adj[curr]:
         if child == parent:
             continue
         w = dfs(adj, C, curr, child)
-        for i in xrange(len(tops)):
-            if w > tops[i]:
-                tops[i+1:] = tops[i:-1]
-                tops[i] = w
-                break
-    return C[curr]+sum(tops)
+        heappush(min_heap, w)
+        if len(min_heap) > cnt:
+            heappop(min_heap)
+    return C[curr]+sum(min_heap)
 
 def gold_mine_chapter_1():
     N = input()
