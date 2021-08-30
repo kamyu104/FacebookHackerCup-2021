@@ -28,7 +28,7 @@ def merge_dp(K, merged_dp, dp):  # Time: O(K^2)
 # dp[i][k][o] = max value in i's subtree,
 # with k new paths present,
 # and with a free path connecting to i's parent if o=1
-def combine_dp_i(C, K, i, merged_dp):  # Time: O(K)
+def combine_dp_i(K, i, v, merged_dp):  # Time: O(K)
     dp_i = [[-1]*2 for _ in xrange(K+1)]
     for new_o in xrange(2):
         for k in xrange(K+1):
@@ -39,7 +39,7 @@ def combine_dp_i(C, K, i, merged_dp):  # Time: O(K)
                     if merged_dp[k][o][c] == -1:
                         continue
                     f = int(new_o and o)  # free path ongoing from parent
-                    dp_i[k-f][new_o] = max(dp_i[k-f][new_o], merged_dp[k][o][c]+(C[i] if new_o or c else 0))
+                    dp_i[k-f][new_o] = max(dp_i[k-f][new_o], merged_dp[k][o][c]+(v if new_o or c else 0))
     return dp_i
 
 def dfs(adj, C, K, parent, i, dp):
@@ -50,7 +50,7 @@ def dfs(adj, C, K, parent, i, dp):
             continue
         dfs(adj, C, K, i, child, dp)
         merged_dp = merge_dp(K, merged_dp, dp[child])
-    dp[i] = combine_dp_i(C, K, i, merged_dp)
+    dp[i] = combine_dp_i(K, i, C[i], merged_dp)
 
 def gold_mine_chapter_2():
     N, K = map(int, raw_input().strip().split())
