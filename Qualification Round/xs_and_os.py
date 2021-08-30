@@ -6,7 +6,7 @@
 # Time:  O(N^2)
 # Space: O(1)
 #
-    
+
 def number_of_sets(C, cnt):
     result = sum(int(sum(1 if C[i][j] == '.' else (float("inf") if C[i][j] == 'O' else 0) for j in xrange(len(C[0]))) == cnt) for i in xrange(len(C)))
     result += sum(int(sum(1 if C[i][j] == '.' else (float("inf") if C[i][j] == 'O' else 0) for i in xrange(len(C))) == cnt) for j in xrange(len(C[0])))

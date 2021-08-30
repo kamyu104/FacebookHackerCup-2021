@@ -9,10 +9,10 @@
 
 def floydWarshall(graph):  # Time: O(n^3) = O(26^3) = O(1), Space: O(n^2) = O(26^2) = O(1)
     dist = [row[:] for row in graph]
-    for k in xrange(len(dist[0])): 
-        for i in xrange(len(dist)): 
-            for j in xrange((len(dist[i]))): 
-                dist[i][j] = min(dist[i][j], dist[i][k]+dist[k][j]) 
+    for k in xrange(len(dist[0])):
+        for i in xrange(len(dist)):
+            for j in xrange((len(dist[i]))):
+                dist[i][j] = min(dist[i][j], dist[i][k]+dist[k][j])
     return dist
 
 def time_to_replace(S, dist, target):  # Time: O(|S|)

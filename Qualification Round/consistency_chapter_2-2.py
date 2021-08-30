@@ -19,7 +19,7 @@ def dijkstra(adj, start):  # Time: O(|E| * log|V|), adj is a tree => O(|V| * log
         curr, u = heappop(min_heap)
         if dist[u] < curr:
             continue
-        for v, w in adj[u]:                
+        for v, w in adj[u]:
             if v in dist and dist[v] <= curr+w:
                 continue
             dist[v] = curr+w
