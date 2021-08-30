@@ -11,24 +11,30 @@
 # with k new paths present,
 # and with a free path connecting to i's parent if p=1,
 # and with at least one child connected if c=1
-def merge_dp(K, merged_dp, dp):  # Time: O(K^2)
-    new_merged_dp = [[[-1]*2 for _ in xrange(2)] for _ in xrange(K+1)]
-    for k1 in xrange(K+1):
-        for p in xrange(2):
-            for c in xrange(2):
-                if merged_dp[k1][p][c] == -1:
-                    continue
-                for k2 in xrange(K+1-k1):
-                    if dp[k2][1] >= 0 and k1+k2+(1-p) <= K:  # connect to child
-                        new_merged_dp[k1+k2+(1-p)][1-p][1] = max(new_merged_dp[k1+k2+(1-p)][1-p][1], merged_dp[k1][p][c]+dp[k2][1])
-                    if dp[k2][0] >= 0:  # don't connect to child
-                        new_merged_dp[k1+k2][p][c] = max(new_merged_dp[k1+k2][p][c], merged_dp[k1][p][c]+dp[k2][0])
-    return new_merged_dp
+def merge_dp(adj, K, parent, i, dp):  # Time: O(K^2), Space: O(K)
+    merged_dp = [[[-1]*2 for _ in xrange(2)] for _ in xrange(K+1)]
+    merged_dp[0][0][0] = 0
+    for child in adj[i]:
+        if child == parent:
+            continue
+        new_merged_dp = [[[-1]*2 for _ in xrange(2)] for _ in xrange(K+1)]
+        for k1 in xrange(K+1):
+            for p in xrange(2):
+                for c in xrange(2):
+                    if merged_dp[k1][p][c] == -1:
+                        continue
+                    for k2 in xrange(K+1-k1):
+                        if dp[child][k2][1] >= 0 and k1+k2+(1-p) <= K:  # connect to child
+                            new_merged_dp[k1+k2+(1-p)][1-p][1] = max(new_merged_dp[k1+k2+(1-p)][1-p][1], merged_dp[k1][p][c]+dp[child][k2][1])
+                        if dp[child][k2][0] >= 0:  # don't connect to child
+                            new_merged_dp[k1+k2][p][c] = max(new_merged_dp[k1+k2][p][c], merged_dp[k1][p][c]+dp[child][k2][0])
+        merged_dp = new_merged_dp
+    return merged_dp
 
 # dp[i][k][p] = max value in i's subtree,
 # with k new paths present,
 # and with a free path connecting to i's parent if p=1
-def find_dp_i(K, merged_dp, i, v):  # Time: O(K)
+def find_dp_i(K, merged_dp, i, v):  # Time: O(K), Space: O(K)
     dp_i = [[-1]*2 for _ in xrange(K+1)]
     for new_p in xrange(2):
         for k in xrange(K+1):
@@ -43,14 +49,11 @@ def find_dp_i(K, merged_dp, i, v):  # Time: O(K)
     return dp_i
 
 def dfs(adj, C, K, parent, i, dp):
-    merged_dp = [[[-1]*2 for _ in xrange(2)] for _ in xrange(K+1)]
-    merged_dp[0][0][0] = 0
     for child in adj[i]:
         if child == parent:
             continue
         dfs(adj, C, K, i, child, dp)
-        merged_dp = merge_dp(K, merged_dp, dp[child])
-    dp[i] = find_dp_i(K, merged_dp, i, C[i])
+    dp[i] = find_dp_i(K, merge_dp(adj, K, parent, i, dp), i, C[i])
 
 def gold_mine_chapter_2():
     N, K = map(int, raw_input().strip().split())
