@@ -10,7 +10,7 @@
 from string import ascii_uppercase
 
 def time_to_replace(S, target):  # Time: O(|S|)
-    return sum(2 if (c in VOWELS) == (target in VOWELS) else 1 for c in S if c != target)
+    return sum((2 if (c in VOWELS) == (target in VOWELS) else 1) for c in S if c != target)
 
 def consistency_chapter_1():
     S = raw_input().strip()
