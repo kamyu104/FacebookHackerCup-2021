@@ -25,7 +25,7 @@ def merge_dp(K, merged_dp, dp):  # Time: O(K^2), Space: O(K)
                         new_merged_dp[k1+k2][p][c] = max(new_merged_dp[k1+k2][p][c], merged_dp[k1][p][c]+dp[k2][0])
     return new_merged_dp
 
-# dp[i][k][p] = max value in i's subtree,
+# dp_i[k][p] = max value in i's subtree,
 # with k new paths present,
 # and with a free path connecting to i's parent if p=1
 def find_dp_i(K, merged_dp, i, v):  # Time: O(K), Space: O(K)
