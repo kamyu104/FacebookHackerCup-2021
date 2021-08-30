@@ -7,7 +7,7 @@
 # Space: O(N * K)
 #
 
-# merged_dp[k][o][c] = max. value after merging children of current node,
+# merged_dp[k][o][c] = max value after merging children of current node,
 # with k new paths present,
 # and with a free path connecting to i's parent if o=1,
 # and with at least one child connected if c=1
@@ -25,7 +25,7 @@ def merge_dp(K, merged_dp, dp):  # Time: O(K^2)
                         new_merged_dp[k1+k2][o][c] = max(new_merged_dp[k1+k2][o][c], merged_dp[k1][o][c]+dp[k2][0])
     return new_merged_dp
 
-# dp[i][k][o] = max. value in i's subtree,
+# dp[i][k][o] = max value in i's subtree,
 # with k new paths present,
 # and with a free path connecting to i's parent if o=1
 def combine_dp_i(C, K, i, merged_dp):  # Time: O(K)
