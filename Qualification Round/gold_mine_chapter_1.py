@@ -14,8 +14,7 @@ def dfs(adj, C, parent, curr):
     for child in adj[curr]:
         if child == parent:
             continue
-        w = dfs(adj, C, curr, child)
-        heappush(min_heap, w)
+        heappush(min_heap, dfs(adj, C, curr, child))
         if len(min_heap) > cnt:
             heappop(min_heap)
     return C[curr]+sum(min_heap)
