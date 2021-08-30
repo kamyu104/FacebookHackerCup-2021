@@ -8,7 +8,7 @@
 #
 
 def dfs(adj, C, parent, curr):
-    tops = [0]*2
+    tops = [0]*(2 if not curr else 1)
     for child in adj[curr]:
         if child == parent:
             continue
@@ -18,7 +18,7 @@ def dfs(adj, C, parent, curr):
                 tops[i+1:] = tops[i:-1]
                 tops[i] = w
                 break
-    return C[curr]+tops[0] if curr else C[curr]+tops[0]+tops[1]
+    return C[curr]+sum(tops)
 
 def gold_mine_chapter_1():
     N = input()
