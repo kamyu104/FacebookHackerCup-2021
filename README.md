@@ -8,8 +8,8 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 ## Qualification Round
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
-|A1| [Consistency - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/qualification-round/problems/A1)| [Python](./Qualification%20Round/consistency_chapter_1.py) [Python](./Qualification%20Round/consistency_chapter_1-2.py) | _O(N)_ | _O(1)_ | Easy | | Greedy |
-|A2| [Consistency - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/qualification-round/problems/A2)| [Python](./Qualification%20Round/consistency_chapter_2.py) [Python](./Qualification%20Round/consistency_chapter_2-2.py) | _O(N)_ | _O(1)_ | Easy | | Floyd-Warshall Algorithm, Dijkstra's Algorithm |
+|A1| [Consistency - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/qualification-round/problems/A1)| [Python](./Qualification%20Round/consistency_chapter_1.py) [Python](./Qualification%20Round/consistency_chapter_1-2.py) | _O(|S|)_ | _O(1)_ | Easy | | Greedy |
+|A2| [Consistency - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/qualification-round/problems/A2)| [Python](./Qualification%20Round/consistency_chapter_2.py) [Python](./Qualification%20Round/consistency_chapter_2-2.py) | _O(|S|)_ | _O(1)_ | Easy | | Floyd-Warshall Algorithm, Dijkstra's Algorithm |
 |B| [Xs and Os](https://www.facebook.com/codingcompetitions/hacker-cup/2021/qualification-round/problems/B)| [Python](./Qualification%20Round/xs_and_os.py) | _O(N^2)_ | _O(1)_ | Easy | | Array |
 |C1| [Gold Mine - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/qualification-round/problems/C1)| [Python](./Qualification%20Round/gold_mine_chapter_1.py) | _O(N)_ | _O(N)_ | Easy | | Tree |
 |C2| [Gold Mine - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/qualification-round/problems/C2)| [Python](./Qualification%20Round/gold_mine_chapter_2.py) | _O(N * K^2)_ | _O(N * K)_ | Hard | | Tree, DP |
