@@ -3,8 +3,8 @@
 # Facebook Hacker Cup 2021 Qualification Round - Problem C2. Gold Mine - Chapter 2
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/qualification-round/problems/C2
 #
-# Time:  O(K^2 * N)
-# Space: O(K * N)
+# Time:  O(N * K^2)
+# Space: O(N * K)
 #
 
 # merged_dp[k][o][c] = max. value after merging children of current node,
