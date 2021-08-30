@@ -7,39 +7,39 @@
 # Space: O(N * K)
 #
 
-# merged_dp[k][o][c] = max value after merging children of current node,
+# merged_dp[k][p][c] = max value after merging children of current node,
 # with k new paths present,
-# and with a free path connecting to i's parent if o=1,
+# and with a free path connecting to i's parent if p=1,
 # and with at least one child connected if c=1
 def merge_dp(K, merged_dp, dp):  # Time: O(K^2)
     new_merged_dp = [[[-1]*2 for _ in xrange(2)] for _ in xrange(K+1)]
     for k1 in xrange(K+1):
-        for o in xrange(2):
+        for p in xrange(2):
             for c in xrange(2):
-                if merged_dp[k1][o][c] == -1:
+                if merged_dp[k1][p][c] == -1:
                     continue
                 for k2 in xrange(K+1-k1):
-                    if dp[k2][1] >= 0 and k1+k2+(1-o) <= K:  # connect to child
-                        new_merged_dp[k1+k2+(1-o)][1-o][1] = max(new_merged_dp[k1+k2+(1-o)][1-o][1], merged_dp[k1][o][c]+dp[k2][1])
+                    if dp[k2][1] >= 0 and k1+k2+(1-p) <= K:  # connect to child
+                        new_merged_dp[k1+k2+(1-p)][1-p][1] = max(new_merged_dp[k1+k2+(1-p)][1-p][1], merged_dp[k1][p][c]+dp[k2][1])
                     if dp[k2][0] >= 0:  # don't connect to child
-                        new_merged_dp[k1+k2][o][c] = max(new_merged_dp[k1+k2][o][c], merged_dp[k1][o][c]+dp[k2][0])
+                        new_merged_dp[k1+k2][p][c] = max(new_merged_dp[k1+k2][p][c], merged_dp[k1][p][c]+dp[k2][0])
     return new_merged_dp
 
-# dp[i][k][o] = max value in i's subtree,
+# dp[i][k][p] = max value in i's subtree,
 # with k new paths present,
-# and with a free path connecting to i's parent if o=1
+# and with a free path connecting to i's parent if p=1
 def find_dp_i(K, merged_dp, i, v):  # Time: O(K)
     dp_i = [[-1]*2 for _ in xrange(K+1)]
-    for new_o in xrange(2):
+    for new_p in xrange(2):
         for k in xrange(K+1):
-            for o in xrange(2):
+            for p in xrange(2):
                 for c in xrange(2):
                     if not i and not c:  # root must connect to at least one child
                         continue
-                    if merged_dp[k][o][c] == -1:
+                    if merged_dp[k][p][c] == -1:
                         continue
-                    f = int(new_o and o)  # free path ongoing from parent
-                    dp_i[k-f][new_o] = max(dp_i[k-f][new_o], merged_dp[k][o][c]+(v if new_o or c else 0))
+                    f = int(new_p and p)  # free path ongoing from parent
+                    dp_i[k-f][new_p] = max(dp_i[k-f][new_p], merged_dp[k][p][c]+(v if new_p or c else 0))
     return dp_i
 
 def dfs(adj, C, K, parent, i, dp):
