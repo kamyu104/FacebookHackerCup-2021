@@ -8,22 +8,14 @@
 #
 
 from string import ascii_uppercase
-from collections import defaultdict
 
-def time_to_replace(S, dist, target):  # Time: O(|S|)
-    return sum(dist[c][target] for c in S)
+def time_to_replace(S, target):  # Time: O(|S|)
+    return sum(2 if (c in VOWELS) == (target in VOWELS) else 1 for c in S if c != target)
 
 def consistency_chapter_1():
     S = raw_input().strip()
 
-    dist = defaultdict(lambda:defaultdict(lambda: float("inf")))
-    for a in ascii_uppercase:
-        for b in ascii_uppercase:
-            if a == b:
-                dist[a][b] = 0
-            else:
-                dist[a][b] = 2 if (a in VOWELS) == (b in VOWELS) else 1
-    result = min(time_to_replace(S, dist, target) for target in ascii_uppercase)
+    result = min(time_to_replace(S, target) for target in ascii_uppercase)
     return result if result != float("inf") else -1
 
 VOWELS = {'A', 'E', 'I', 'O', 'U'}
