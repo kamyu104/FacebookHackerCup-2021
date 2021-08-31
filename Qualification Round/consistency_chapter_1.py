@@ -10,12 +10,7 @@
 from collections import Counter
 
 def time_to_replace(S, cnts, target, check):  # Time: O(|S|)
-    max_cnt = 0
-    for k, v in cnts.iteritems():
-        if not check(k):
-            continue
-        if v > max_cnt:
-            max_cnt, target = v, k
+    target = max([kvp for kvp in cnts.iteritems() if check(kvp[0])] or [(target, 0)], key=lambda x: x[1])[0]
     return sum((2 if check(c) else 1) for c in S if c != target)
 
 def consistency_chapter_1():
