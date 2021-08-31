@@ -7,7 +7,7 @@
 # Space: O(1)
 #
 
-def floydWarshall(graph):  # Time: O(n^3) = O(26^3) = O(1), Space: O(n^2) = O(26^2) = O(1)
+def floyd_warshall(graph):  # Time: O(n^3) = O(26^3) = O(1), Space: O(n^2) = O(26^2) = O(1)
     dist = [row[:] for row in graph]
     for k in xrange(len(dist[0])):
         for i in xrange(len(dist)):
@@ -26,7 +26,7 @@ def consistency_chapter_2():
         A, B = list(raw_input().strip())
         graph[ord(A)-ord('A')][ord(B)-ord('A')] = 1
 
-    dist = floydWarshall(graph)
+    dist = floyd_warshall(graph)
     result = min(time_to_replace(S, dist, target) for target in xrange(26))
     return result if result != float("inf") else -1
 
