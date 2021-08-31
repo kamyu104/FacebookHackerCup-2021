@@ -9,7 +9,7 @@
 
 # merged_dp[k][p][c] = max value after merging children of current node,
 # with k new paths present,
-# and with a free path connecting to node i if p=1,
+# and with a path connecting some node of i's subtree to node i available for use if p=1,
 # and with at least one child connected if c=1
 def merge_dp(K, merged_dp, dp):  # Time: O(K^2), Space: O(K)
     new_merged_dp = [[[-1]*2 for _ in xrange(2)] for _ in xrange(K+1)]
@@ -27,7 +27,7 @@ def merge_dp(K, merged_dp, dp):  # Time: O(K^2), Space: O(K)
 
 # dp_i[k][p] = max value in i's subtree,
 # with k new paths present,
-# and with a free path connecting to node i if p=1
+# and with a free path ongoing from i's parent to node i if p=1
 def find_dp_i(K, merged_dp, i, v):  # Time: O(K), Space: O(K)
     dp_i = [[-1]*2 for _ in xrange(K+1)]
     for new_p in xrange(2):
