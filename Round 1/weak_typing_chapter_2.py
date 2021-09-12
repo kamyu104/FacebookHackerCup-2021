@@ -17,7 +17,7 @@ def weak_typing_chapter_2():
     result = accu = os = xs = unknowns = 0
     for c in W:
         if c == 'F':
-            unknowns += 1
+            unknowns = addmod(unknowns, 1)
         elif c == 'O':
             accu = addmod(accu, xs)
             os = addmod(os, xs+unknowns+1)
