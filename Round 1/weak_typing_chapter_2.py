@@ -14,15 +14,19 @@ def weak_typing_chapter_2():
     N = input()
     W = raw_input().strip()
 
-    result, accu, prev = 0, 0, -1
-    for i, c in enumerate(W):
+    result = accu = os = xs = unknowns = 0
+    for c in W:
         if c == 'F':
-            result = addmod(result, accu)
-            continue
-        if prev != -1 and W[prev] != c:
-            accu = addmod(accu, prev+1)
+            unknowns += 1
+        elif c == 'O':
+            accu += xs
+            os = addmod(os, xs+unknowns+1)
+            xs = unknowns = 0
+        elif c == 'X':
+            accu = addmod(accu, os)
+            xs = addmod(xs, os+unknowns+1)
+            os = unknowns = 0
         result = addmod(result, accu)
-        prev = i
     return result
 
 MOD = 10**9+7

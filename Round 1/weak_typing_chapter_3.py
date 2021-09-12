@@ -25,42 +25,42 @@ def weak_typing_chapter_3():
         result = matrix_mult(result, T[c] if c != '.' else result)
     return matrix_mult([[0, 0, 0, 0, 0, 1]], result)[0][0]
 
-# state: [result, accu, os, unknowns, xs, 1]
-# case 'O':
-#   - new_accu = accu + xs
-#   - new_os = os + unknowns + xs + 1
-#   - new_unknowns = 0
-#   - new_xs = 0
+# state: [result, accu, os, xs, unknowns, 1]
 # case 'F':
 #   - new_accu = accu
 #   - new_os = os
-#   - new_unknowns = unknowns + 1
 #   - new_xs = xs
+#   - new_unknowns = unknowns + 1
+# case 'O':
+#   - new_accu = accu + xs
+#   - new_os = os + xs + unknowns + 1
+#   - new_xs = 0
+#   - new_unknowns = 0
 # case 'X':
 #   - new_accu = accu + os
 #   - new_os = 0
+#   - new_xs = os + xs + unknowns + 1
 #   - new_unknowns = 0
-#   - new_xs = os + unknowns + xs + 1
 # new_result = result + new_accu
 T = {
-     'O': [[1, 0, 0, 0, 0, 0],
-           [1, 1, 0, 0, 0, 0],
-           [0, 0, 1, 0, 0, 0],
-           [0, 0, 1, 0, 0, 0],
-           [1, 1, 1, 0, 0, 0],
-           [0, 0, 1, 0, 0, 1]],
      'F': [[1, 0, 0, 0, 0, 0],
            [1, 1, 0, 0, 0, 0],
            [0, 0, 1, 0, 0, 0],
            [0, 0, 0, 1, 0, 0],
            [0, 0, 0, 0, 1, 0],
-           [0, 0, 0, 1, 0, 1]],
+           [0, 0, 0, 0, 1, 1]],
+     'O': [[1, 0, 0, 0, 0, 0],
+           [1, 1, 0, 0, 0, 0],
+           [0, 0, 1, 0, 0, 0],
+           [1, 1, 1, 0, 0, 0],
+           [0, 0, 1, 0, 0, 0],
+           [0, 0, 1, 0, 0, 1]],
      'X': [[1, 0, 0, 0, 0, 0],
            [1, 1, 0, 0, 0, 0],
-           [1, 1, 0, 0, 1, 0],
-           [0, 0, 0, 0, 1, 0],
-           [0, 0, 0, 0, 1, 0],
-           [0, 0, 0, 0, 1, 1]]
+           [1, 1, 0, 1, 0, 0],
+           [0, 0, 0, 1, 0, 0],
+           [0, 0, 0, 1, 0, 0],
+           [0, 0, 0, 1, 0, 1]]
     }
 MOD = 10**9+7
 for case in xrange(input()):
