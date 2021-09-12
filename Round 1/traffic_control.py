@@ -12,7 +12,7 @@ def traffic_control():
 
     if min(A, B) < (N+M-1):
         return "Impossible"
-    result = [[1 if 0 < i < N-1 and 0 < j < M-1 else 1 for j in xrange(M)] for i in xrange(N)]
+    result = [[1 for j in xrange(M)] for i in xrange(N)]
     result[0][0] += A-(N+M-1)
     result[0][-1] += B-(N+M-1)
     return "%s\n%s" % ("Possible", "\n".join(" ".join(map(str, row)) for row in result))
