@@ -24,7 +24,7 @@ def merge(A, B):
          addmod(A[ACCU], B[ACCU]),
          addmod(addmod(A[LEFT], B[LEFT]), mulmod(A[LEN], B[ACCU])),
          addmod(addmod(A[RIGHT], B[RIGHT]), mulmod(A[ACCU], B[LEN])),
-         A[FIRST][:] if A[FIRST][0] >= 0 else ([addmod(A[LEN], B[FIRST][0]), B[FIRST][1]] if B[FIRST][0] >= 0 else [-1, 'F']),
+         A[FIRST][:] if A[FIRST][0] >= 0 or B[FIRST][0] < 0 else [addmod(A[LEN], B[FIRST][0]), B[FIRST][1]],
          [addmod(A[LEN], B[LAST][0]), B[LAST][1]] if B[LAST][0] >= 0 else A[LAST][:]]
     if A[LAST][0] >= 0 and B[FIRST][0] >= 0 and A[LAST][1] != B[FIRST][1]:
         C[ACCU] = addmod(C[ACCU], 1)
