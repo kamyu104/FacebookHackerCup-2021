@@ -20,11 +20,11 @@ def weak_typing_chapter_2():
             unknowns = addmod(unknowns, 1)
         elif c == 'O':
             accu = addmod(accu, xs)
-            os = addmod(os, xs+unknowns+1)
+            os = addmod(addmod(addmod(os, xs),  unknowns), 1)
             xs = unknowns = 0
         elif c == 'X':
             accu = addmod(accu, os)
-            xs = addmod(xs, os+unknowns+1)
+            xs = addmod(addmod(addmod(os, xs),  unknowns), 1)
             os = unknowns = 0
         result = addmod(result, accu)
     return result
