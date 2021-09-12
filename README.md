@@ -19,7 +19,7 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A1| [Weack Typing - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/A1)| [Python](./Round%201/weak_typing_chapter_1.py) | _O(N)_ | _O(1)_ | Easy | | Array |
-|A2| [Weack Typing - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/A2)| [Python](./Round%201/weak_typing_chapter_2.py) [Python](./Round%201/weak_typing_chapter_2-2.py) | _O(N)_ | _O(1)_ | Easy | | DP |
-|A3| [Weack Typing - Chapter 3](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/A3)| [Python](./Round%201/weak_typing_chapter_3.py) [Python](./Round%201/weak_typing_chapter_3-2.py)  | _O(N)_ | _O(1)_ | Medium | | DP, Matrix Exponentiation |
+|A2| [Weack Typing - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/A2)| [Python](./Round%201/weak_typing_chapter_2.py) [Python](./Round%201/weak_typing_chapter_2-2.py) | _O(N)_ | _O(1)_ | Easy | | DP, Math |
+|A3| [Weack Typing - Chapter 3](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/A3)| [Python](./Round%201/weak_typing_chapter_3.py) [Python](./Round%201/weak_typing_chapter_3-2.py)  | _O(N)_ | _O(1)_ | Medium | | DP, Matrix Exponentiation, Math |
 |B| [Traffic Control](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/B)| [Python](./Round%201/traffic_control.py) | _O(N * M)_ | _O(1)_ | Easy | | Constructing |
 |C| [Block Chain](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/c)|   |  | | Hard | | |
