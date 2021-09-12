@@ -26,6 +26,24 @@ def solution():
     return matrix_mult([[0, 0, 0, 0, 0, 1]], result)[0][0]
 
 # state: [total, per_step, os, unknowns, xs, 1]
+# case 'O':
+#   - new_total = total + per_step + xs
+#   - new_per_step = per_step + xs
+#   - new_os = os + unknowns + xs + 1
+#   - new_unknowns = 0
+#   - new_xs = 0
+# case 'F':
+#   - new_total = total + per_step
+#   - new_per_step = per_step
+#   - new_os = os
+#   - new_unknowns = unknowns + 1
+#   - new_xs = xs
+# case 'X':
+#   - new_total = total + per_step + os
+#   - new_per_step = per_step + os
+#   - new_os = 0
+#   - new_unknowns = 0
+#   - new_xs = os + unknowns + xs + 1
 T = {
      'O': [[1, 0, 0, 0, 0, 0],
            [1, 1, 0, 0, 0, 0],
