@@ -10,6 +10,9 @@
 def addmod(a, b):
     return (a+b)%MOD
 
+def submod(a, b):
+    return (a-b)%MOD
+
 def mulmod(a, b):
     return (a*b)%MOD
 
@@ -22,7 +25,7 @@ def weak_typing_chapter_2():
         if c == 'F':
             continue
         if prev != -1 and W[prev] != c:
-            result = addmod(result, mulmod(prev+1, len(W)-i))
+            result = addmod(result, mulmod(addmod(prev, 1), submod(len(W), i)))
         prev = i
     return result
 
