@@ -16,7 +16,7 @@ def matrix_mult(A, B):
 def identity_matrix(N):
     return [[int(i == j) for j in xrange(N)] for i in xrange(N)]
 
-def solution():
+def weak_typing_chapter_3():
     N = input()
     W = raw_input().strip()
 
@@ -66,4 +66,4 @@ T = {
     }
 MOD = 10**9+7
 for case in xrange(input()):
-    print 'Case #%d: %s' % (case+1, solution())
+    print 'Case #%d: %s' % (case+1, weak_typing_chapter_3())
