@@ -6,7 +6,7 @@
 # Time:  O(N)
 # Space: O(1)
 #
-# faster but harder to write
+# faster but harder to figure out
 #
 
 def addmod(a, b):

@@ -6,7 +6,7 @@
 # Time:  O(N)
 # Space: O(1)
 #
-# slower but easier to write
+# slower but easier to figure out
 #
 
 from itertools import izip
