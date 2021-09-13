@@ -65,10 +65,10 @@ def iter_postorder_traversal(adj, max_c):  # Time: O(N)
         for child, c in adj[i]:
             if child == parent:
                 continue
-            for j in xrange(1, c+1):
+            for j in xrange(c):
                 dp1[i][j] = addmod(dp1[i][j], dp1[child][j])
 
-    stk, dp1 = [], [[int(j != 0) for j in xrange(max_c+1)] for _ in xrange(len(adj))]  # dp1[i][j] = number of nodes reachable down from i via capacity >= j edges
+    stk, dp1 = [], [[1]*max_c for _ in xrange(len(adj))]  # dp1[i][j] = number of nodes reachable down from i (incldue i) via capacity >= j edges
     stk.append(partial(divide, -1, 0))
     while stk:
         stk.pop()()
@@ -86,18 +86,18 @@ def iter_preorder_traversal(adj, total, dp1):  # Time: O(N)
         for child, c in adj[i]:
             if child == parent:
                 continue
-            for j in xrange(1, len(dp2[i])):
-                if j <= c:
+            for j in xrange(len(dp2[i])):
+                if j+1 <= c:
                     dp2[child][j] = addmod(dp2[i][j], submod(dp1[i][j], dp1[child][j]))
             total_i_child, prev = total, 0
-            for j in reversed(xrange(1, c+1)):
+            for j in reversed(xrange(c)):
                 curr = mulmod(dp1[child][j], dp2[child][j])
-                total_i_child = submod(total_i_child, mulmod(j, submod(curr, prev)))
+                total_i_child = submod(total_i_child, mulmod(j+1, submod(curr, prev)))
                 prev = curr
             result[0] = mulmod(result[0], total_i_child)
 
     result = [1]
-    stk, dp2 = [], [[0]*len(dp1[0]) for _ in xrange(len(adj))]  # dp2[i][j] = number of nodes reachable up from i via capacity >= j edges
+    stk, dp2 = [], [[0]*len(dp1[0]) for _ in xrange(len(adj))]  # dp2[i][j] = number of nodes reachable up from i (exclude i) via capacity >= j edges
     stk.append(partial(divide, -1, 0))
     while stk:
         stk.pop()()
