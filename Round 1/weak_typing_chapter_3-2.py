@@ -24,9 +24,9 @@ def merge(A, B):
          addmod(A[SWITCH], B[SWITCH]),
          addmod(addmod(A[LEFT_SUM], B[LEFT_SUM]), mulmod(A[LEN], B[SWITCH])),
          addmod(addmod(A[RIGHT_SUM], B[RIGHT_SUM]), mulmod(A[SWITCH], B[LEN])),
-         [addmod(A[LEN], B[FIRST][0]), B[FIRST][1]] if A[FIRST][0] < 0 and B[FIRST][0] >= 0 else A[FIRST][:],
-         [addmod(A[LEN], B[LAST][0]), B[LAST][1]] if B[LAST][0] >= 0 else A[LAST][:]]
-    if A[LAST][0] >= 0 and B[FIRST][0] >= 0 and A[LAST][1] != B[FIRST][1]:
+         [addmod(A[LEN], B[FIRST][0]), B[FIRST][1]] if A[FIRST][0] == -1 and B[FIRST][0] != -1 else A[FIRST][:],
+         [addmod(A[LEN], B[LAST][0]), B[LAST][1]] if B[LAST][0] != -1 else A[LAST][:]]
+    if A[LAST][0] != -1 and B[FIRST][0] != -1 and A[LAST][1] != B[FIRST][1]:
         C[SWITCH] = addmod(C[SWITCH], 1)
         left, right = addmod(A[LAST][0], 1), submod(B[LEN], B[FIRST][0])
         C[LEFT_SUM] = addmod(C[LEFT_SUM], left)
