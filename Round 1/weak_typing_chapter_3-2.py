@@ -19,19 +19,19 @@ def mulmod(a, b):
     return (a*b)%MOD
 
 def merge(A, B):
-    C = [addmod(addmod(addmod(A[RES], B[RES]), mulmod(A[LEFT_SUM], B[LEN])), mulmod(A[LEN], B[RIGHT_SUM])),
+    C = [addmod(addmod(addmod(A[TOTAL], B[TOTAL]), mulmod(A[LEFT_TOTAL], B[LEN])), mulmod(A[LEN], B[RIGHT_TOTAL])),
          addmod(A[LEN], B[LEN]),
          addmod(A[ACCU], B[ACCU]),
-         addmod(addmod(A[LEFT_SUM], B[LEFT_SUM]), mulmod(A[LEN], B[ACCU])),
-         addmod(addmod(A[RIGHT_SUM], B[RIGHT_SUM]), mulmod(A[ACCU], B[LEN])),
+         addmod(addmod(A[LEFT_TOTAL], B[LEFT_TOTAL]), mulmod(A[LEN], B[ACCU])),
+         addmod(addmod(A[RIGHT_TOTAL], B[RIGHT_TOTAL]), mulmod(A[ACCU], B[LEN])),
          [addmod(A[LEN], B[FIRST][0]), B[FIRST][1]] if A[FIRST][0] == -1 and B[FIRST][0] != -1 else A[FIRST][:],
          [addmod(A[LEN], B[LAST][0]), B[LAST][1]] if B[LAST][0] != -1 else A[LAST][:]]
     if A[LAST][0] != -1 and B[FIRST][0] != -1 and A[LAST][1] != B[FIRST][1]:
         C[ACCU] = addmod(C[ACCU], 1)
         left, right = addmod(A[LAST][0], 1), submod(B[LEN], B[FIRST][0])
-        C[LEFT_SUM] = addmod(C[LEFT_SUM], left)
-        C[RIGHT_SUM] = addmod(C[RIGHT_SUM], right)
-        C[RES] = addmod(C[RES], mulmod(left, right))
+        C[LEFT_TOTAL] = addmod(C[LEFT_TOTAL], left)
+        C[RIGHT_TOTAL] = addmod(C[RIGHT_TOTAL], right)
+        C[TOTAL] = addmod(C[TOTAL], mulmod(left, right))
     return C
 
 def weak_typing_chapter_3():
@@ -46,9 +46,9 @@ def weak_typing_chapter_3():
             result = merge(result, [0, 1, 0, 0, 0, [-1, '-'], [-1, '-']])
         else:
             result = merge(result, [0, 1, 0, 0, 0, [0, c], [0, c]])
-    return result[RES]
+    return result[TOTAL]
 
 MOD = 10**9+7
-RES, LEN, ACCU, LEFT_SUM, RIGHT_SUM, FIRST, LAST = range(7)
+TOTAL, LEN, ACCU, LEFT_TOTAL, RIGHT_TOTAL, FIRST, LAST = range(7)
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, weak_typing_chapter_3())
