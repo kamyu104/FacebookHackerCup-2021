@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Round 1 - Problem C. Blockchain
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/C
 #
-# Time:  O(N * (logN + MAX_C))
+# Time:  O(N * MAX_C)
 # Space: O(N * MAX_C)
 #
 
@@ -107,19 +107,22 @@ def blockchain():
     N = input()
 
     adj = defaultdict(list)
-    edges = []
+    edges = defaultdict(list)
     for _ in xrange(N-1):
         A, B, C = map(int, raw_input().strip().split())
         adj[A-1].append((B-1, C))
         adj[B-1].append((A-1, C))
-        edges.append((C, (A-1, B-1)))
-    edges.sort(reverse=True)
+        edges[C].append((A-1, B-1))
+    max_c = max(c for c in edges.iterkeys())
     total = 0
     uf = UnionFind(N)
-    for c, (a, b) in edges:
-        total = addmod(total, mulmod(c, mulmod(uf.size_set(a), uf.size_set(b))))
-        uf.union_set(a, b)
-    dp1 = iter_postorder_traversal(adj, edges[0][0])
+    for j in reversed(xrange(max_c)):
+        if j+1 not in edges:
+            continue
+        for a, b in edges[j+1]:
+            total = addmod(total, mulmod(j+1, mulmod(uf.size_set(a), uf.size_set(b))))
+            uf.union_set(a, b)
+    dp1 = iter_postorder_traversal(adj, max_c)
     return iter_preorder_traversal(adj, total, dp1)
 
 MOD = 10**9+7
