@@ -24,8 +24,8 @@ def merge(A, B):
          addmod(A[ACCU], B[ACCU]),
          addmod(addmod(A[TOTAL_LEFT], B[TOTAL_LEFT]), mulmod(A[LEN], B[ACCU])),
          addmod(addmod(A[TOTAL_RIGHT], B[TOTAL_RIGHT]), mulmod(A[ACCU], B[LEN])),
-         [addmod(A[LEN], B[FIRST][0]), B[FIRST][1]] if A[FIRST][0] == -1 and B[FIRST][0] != -1 else A[FIRST][:],
-         [addmod(A[LEN], B[LAST][0]), B[LAST][1]] if B[LAST][0] != -1 else A[LAST][:]]
+         (addmod(A[LEN], B[FIRST][0]), B[FIRST][1]) if A[FIRST][0] == -1 and B[FIRST][0] != -1 else A[FIRST],
+         (addmod(A[LEN], B[LAST][0]), B[LAST][1]) if B[LAST][0] != -1 else A[LAST]]
     if A[LAST][0] != -1 and B[FIRST][0] != -1 and A[LAST][1] != B[FIRST][1]:
         C[ACCU] = addmod(C[ACCU], 1)
         left, right = addmod(A[LAST][0], 1), submod(B[LEN], B[FIRST][0])
@@ -38,17 +38,18 @@ def weak_typing_chapter_3():
     N = input()
     W = raw_input().strip()
 
-    result = [0, 0, 0, 0, 0, [-1, '-'], [-1, '-']]
+    result = [0, 0, 0, 0, 0, INVALID, INVALID]
     for c in W:
         if c == '.':
             result = merge(result, result)
         elif c == 'F':
-            result = merge(result, [0, 1, 0, 0, 0, [-1, '-'], [-1, '-']])
+            result = merge(result, [0, 1, 0, 0, 0, INVALID, INVALID])
         else:
-            result = merge(result, [0, 1, 0, 0, 0, [0, c], [0, c]])
+            result = merge(result, [0, 1, 0, 0, 0, (0, c), (0, c)])
     return result[TOTAL]
 
 MOD = 10**9+7
 TOTAL, LEN, ACCU, TOTAL_LEFT, TOTAL_RIGHT, FIRST, LAST = range(7)
+INVALID = (-1, '-')
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, weak_typing_chapter_3())
