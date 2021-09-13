@@ -78,7 +78,7 @@ def iter_postorder_traversal(adj, max_c):  # Time: O(N)
 def iter_preorder_traversal(adj, total, dp1):  # Time: O(N)
     def divide(parent, i):
         for j in reversed(xrange(len(adj[i]))):
-            child, c = adj[i][j]
+            child, _ = adj[i][j]
             if child == parent:
                 continue
             stk.append(partial(divide, i, child))
