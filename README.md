@@ -22,4 +22,4 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 |A2| [Weak Typing - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/A2)| [Python](./Round%201/weak_typing_chapter_2.py) [Python](./Round%201/weak_typing_chapter_2-2.py) | _O(N)_ | _O(1)_ | Easy | | DP, Math, Counting |
 |A3| [Weak Typing - Chapter 3](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/A3)| [Python](./Round%201/weak_typing_chapter_3.py) [Python](./Round%201/weak_typing_chapter_3-2.py)  | _O(N)_ | _O(1)_ | Medium | | DP, Matrix Exponentiation, Math, Counting |
 |B| [Traffic Control](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/B)| [Python](./Round%201/traffic_control.py) | _O(N * M)_ | _O(1)_ | Easy | | Array, Constructing |
-|C| [Blockchain](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/c)|  |   |   | Hard | | Sort, Union Find, Tree, DFS, DP |
+|C| [Blockchain](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/C)|  |   |   | Hard | | Sort, Union Find, Tree, DFS, DP |
