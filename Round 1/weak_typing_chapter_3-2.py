@@ -40,7 +40,7 @@ def weak_typing_chapter_3():
 
     result = [0, 0, 0, 0, 0, [-1, '-'], [-1, '-']]
     for c in W:
-        result = merge(result, result if c == '.' else [0, 1, 0, 0, 0, [0 if c != 'F' else -1, c], [0 if c != 'F' else -1, c]])
+        result = merge(result, result if c == '.' else [0, 1, 0, 0, 0, [0, c] if c != 'F' else [-1, '-'], [0, c] if c != 'F' else [-1, '-']])
     return result[RES]
 
 MOD = 10**9+7
