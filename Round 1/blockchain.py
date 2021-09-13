@@ -68,7 +68,6 @@ def iter_postorder_traversal(adj, max_c):  # Time: O(N)
                 continue
             for j in xrange(1, c+1):
                 dp1[i][j] = addmod(dp1[i][j], dp1[child][j])
-                # print i, j, dp1[i][j]
 
     stk, dp1 = [], [[int(j != 0) for j in xrange(max_c+1)] for _ in xrange(len(adj))]
     stk.append(partial(divide, -1, 0))
@@ -92,13 +91,13 @@ def iter_preorder_traversal(adj, total, dp1):  # Time: O(N)
             for j in xrange(1, len(dp2[i])):
                 if j <= c:
                     dp2[child][j] = addmod(dp2[i][j], submod(dp1[i][j], dp1[child][j]))
-            total_i, prev = total, 0
+            total_i_child, prev = total, 0
             for j in reversed(xrange(1, c+1)):
                 curr = mulmod(dp1[child][j], dp2[child][j])
                 cnt = submod(curr, prev)
-                total_i = submod(total_i, mulmod(j, cnt))
+                total_i_child = submod(total_i_child, mulmod(j, cnt))
                 prev = curr
-            result[0] = mulmod(result[0], total_i)
+            result[0] = mulmod(result[0], total_i_child)
 
     result = [1]
     stk, dp2 = [], [[0]*len(dp1[0]) for _ in xrange(len(adj))]
