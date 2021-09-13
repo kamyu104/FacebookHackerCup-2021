@@ -68,7 +68,7 @@ def iter_postorder_traversal(adj, max_c):  # Time: O(N)
             for j in xrange(c):
                 dp1[i][j] = addmod(dp1[i][j], dp1[child][j])
 
-    stk, dp1 = [], [[1]*max_c for _ in xrange(len(adj))]  # dp1[i][j] = number of nodes reachable down from i (incldue i) via capacity >= j edges
+    stk, dp1 = [], [[1]*max_c for _ in xrange(len(adj))]  # dp1[i][j] = number of nodes reachable down from i (incldue i) via capacity >= j+1 edges
     stk.append(partial(divide, -1, 0))
     while stk:
         stk.pop()()
@@ -97,7 +97,7 @@ def iter_preorder_traversal(adj, total, dp1):  # Time: O(N)
             result[0] = mulmod(result[0], total_i_child)
 
     result = [1]
-    stk, dp2 = [], [[0]*len(dp1[0]) for _ in xrange(len(adj))]  # dp2[i][j] = number of nodes reachable up from i (exclude i) via capacity >= j edges
+    stk, dp2 = [], [[0]*len(dp1[0]) for _ in xrange(len(adj))]  # dp2[i][j] = number of nodes reachable up from i (exclude i) via capacity >= j+1 edges
     stk.append(partial(divide, -1, 0))
     while stk:
         stk.pop()()
