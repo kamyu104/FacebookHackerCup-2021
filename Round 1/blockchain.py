@@ -56,8 +56,7 @@ def mulmod(a, b):
 def iter_postorder_traversal(adj, max_c):  # Time: O(N)
     def divide(parent, i):
         stk.append(partial(conquer, parent, i))
-        for j in reversed(xrange(len(adj[i]))):
-            child, _ = adj[i][j]
+        for child, _ in reversed(adj[i]):
             if child == parent:
                 continue
             stk.append(partial(divide, i, child))
@@ -77,8 +76,7 @@ def iter_postorder_traversal(adj, max_c):  # Time: O(N)
 
 def iter_preorder_traversal(adj, total, dp1):  # Time: O(N)
     def divide(parent, i):
-        for j in reversed(xrange(len(adj[i]))):
-            child, _ = adj[i][j]
+        for child, _ in reversed(adj[i]):
             if child == parent:
                 continue
             stk.append(partial(divide, i, child))
@@ -94,8 +92,7 @@ def iter_preorder_traversal(adj, total, dp1):  # Time: O(N)
             total_i_child, prev = total, 0
             for j in reversed(xrange(1, c+1)):
                 curr = mulmod(dp1[child][j], dp2[child][j])
-                cnt = submod(curr, prev)
-                total_i_child = submod(total_i_child, mulmod(j, cnt))
+                total_i_child = submod(total_i_child, mulmod(j, submod(curr, prev)))
                 prev = curr
             result[0] = mulmod(result[0], total_i_child)
 
