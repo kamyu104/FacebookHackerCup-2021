@@ -18,9 +18,9 @@ def valet_parking_chapter_1():
         total = sum(G[i][j] == 'X' for i in xrange(R))
         curr = sum(1 <= i <= R and G[i-1][j] == 'X' for i in xrange(K-(min(R, C)-1)))
         for i in xrange(K-(min(R, C)-1), (K+(min(R, C)-1))+1):
-            hasX = (1 <= i <= R and G[i-1][j] == 'X')
-            curr += hasX
-            if hasX or curr >= K or total-curr >= R-K+1:
+            has_x = (1 <= i <= R and G[i-1][j] == 'X')
+            curr += has_x
+            if has_x or curr >= K or total-curr >= R-K+1:
                 cnts[i] += 1
     return min(abs(i-K)+cnts[i] for i in xrange(K-(min(R, C)-1), (K+(min(R, C)-1))+1))
 
