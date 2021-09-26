@@ -105,7 +105,6 @@ def chainblock():
     F = map(lambda x: int(x)-1, raw_input().strip().split())
 
     tree_infos = TreeInfos(adj)
-
     groups = [[] for _ in xrange(N)]
     for i, f in enumerate(F):
         groups[f].append(i)
@@ -124,7 +123,6 @@ def chainblock():
             min_depth[F[i]] = min(min_depth[F[i]], tree_infos.D[uf.find_ancestor_of_set(j)])
 
     iter_tarjan_offline_lca(adj, cb)
-
     A = [float("inf")]*N
     for f, idxs in enumerate(groups):
         for i in idxs:
