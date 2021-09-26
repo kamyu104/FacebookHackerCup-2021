@@ -50,7 +50,8 @@ class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of 
     def __init__(self, children, cb=lambda *x:None):
         def preprocess(curr, parent):
             # visited order of the nodes
-            O.append(curr)  # modified
+            if curr:
+                O.append(curr)  # modified
             # depth of the node i
             D[curr] = 1 if parent == -1 else D[parent]+1
             # parent of the node i
@@ -132,8 +133,6 @@ def chainblock():
             A[i] = min_depth[f]
     result = 0
     for i in reversed(tree_infos.O):
-        if not i:
-            break
         if A[i] == tree_infos.D[i]:
             result += 1
         else:
