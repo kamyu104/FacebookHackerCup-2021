@@ -14,7 +14,7 @@ def valet_parking_chapter_1():
     G = [raw_input().strip() for _ in xrange(R)]
 
     cnts = Counter()
-    left, right = max(K-(min(R, C)-1), 0), min((K+(min(R, C)-1)), R+1)
+    left, right = max(K-(C-1), 0), min(K+(C-1), R+1)
     for j in xrange(C):
         total = sum(G[i][j] == 'X' for i in xrange(R))
         curr = sum(1 <= i <= R and G[i-1][j] == 'X' for i in xrange(left))
