@@ -110,24 +110,24 @@ def iter_tarjan_offline_lca(adj, cb):  # Time: O(N)
 
 def chainblock():
     N = input()
-    adj = defaultdict(list)
+    adj = [[] for _ in xrange(N)]
     for _ in xrange(N-1):
         A, B = map(int, raw_input().strip().split())
         adj[A-1].append(B-1)
         adj[B-1].append(A-1)
-    F = map(int, raw_input().strip().split())
+    F = map(lambda x: int(x)-1, raw_input().strip().split())
 
     tree_infos = TreeInfos(adj)
 
-    groups = defaultdict(list)
+    groups = [[] for _ in xrange(N)]
     for i, f in enumerate(F):
         groups[f].append(i)
-    pairs = defaultdict(lambda:defaultdict(list))
-    for f, idxs in groups.iteritems():
+    pairs = [defaultdict(list) for _ in xrange(N)]
+    for f, idxs in enumerate(groups):
         for i in xrange(len(idxs)-1):
             pairs[f][idxs[i]].append(idxs[i+1])
             pairs[f][idxs[i+1]].append(idxs[i])
-    min_depth = defaultdict(lambda: float("inf"))
+    min_depth = [float("inf")]*N
     def cb(i, uf, lookup):
         lookup[i] = True
         min_depth[F[i]] = min(min_depth[F[i]], tree_infos.D[i])
@@ -139,7 +139,7 @@ def chainblock():
     iter_tarjan_offline_lca(adj, cb)
 
     A = [float("inf")]*N
-    for f, idxs in groups.iteritems():
+    for f, idxs in enumerate(groups):
         for i in idxs:
             A[i] = min_depth[f]
     result = 0

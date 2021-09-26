@@ -7,7 +7,6 @@
 # Space: O(N)
 #
 
-from collections import defaultdict
 from functools import partial
 
 # Template:
@@ -68,19 +67,21 @@ class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of 
 
 def chainblock():
     N = input()
-    adj = defaultdict(list)
+    adj = [[] for _ in xrange(N)]
     for _ in xrange(N-1):
         A, B = map(int, raw_input().strip().split())
         adj[A-1].append(B-1)
         adj[B-1].append(A-1)
-    F = map(int, raw_input().strip().split())
+    F = map(lambda x: int(x)-1, raw_input().strip().split())
 
     tree_infos = TreeInfos(adj)
-    groups = defaultdict(list)
+    groups = [[] for _ in xrange(N)]
     for i, f in enumerate(F):
         groups[f].append(i)
     A = [float("inf")]*N
-    for f, idxs in groups.iteritems():
+    for f, idxs in enumerate(groups):
+        if not idxs:
+            continue
         lca = reduce(lambda lca, x: tree_infos.lca(lca, x), idxs)
         for i in idxs:
             A[i] = tree_infos.D[lca]
