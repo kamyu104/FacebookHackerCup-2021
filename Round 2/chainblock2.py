@@ -7,7 +7,6 @@
 # Space: O(N)
 #
 
-from collections import defaultdict
 from functools import partial
 
 class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
