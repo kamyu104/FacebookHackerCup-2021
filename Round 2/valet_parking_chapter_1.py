@@ -1,0 +1,28 @@
+# Copyright (c) 2021 kamyu. All rights reserved.
+#
+# Facebook Hacker Cup 2021 Round 2 - Problem C. Valet Parking - Chapter 1
+# https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C
+#
+# Time:  O(R * C)
+# Space: O(min(R, C))
+#
+
+from collections import Counter
+
+def valet_parking_chapter_1():
+    R, C, K = map(int, raw_input().strip().split())
+    G = [raw_input().strip() for _ in xrange(R)]
+
+    cnts = Counter()
+    for j in xrange(C):
+        total = sum(G[i][j] == 'X' for i in xrange(R))
+        curr = sum(1 <= i <= R and G[i-1][j] == 'X' for i in xrange(K-(min(R, C)-1)))
+        for i in xrange(K-(min(R, C)-1), (K+(min(R, C)-1))+1):
+            hasX = (1 <= i <= R and G[i-1][j] == 'X')
+            curr += hasX
+            if hasX or curr > K-1 or total-curr > R-K:
+                cnts[i] += 1
+    return min(abs(i-K)+cnts[i] for i in xrange(K-(min(R, C)-1), (K+(min(R, C)-1))+1))
+
+for case in xrange(input()):
+    print 'Case #%d: %s' % (case+1, valet_parking_chapter_1())
