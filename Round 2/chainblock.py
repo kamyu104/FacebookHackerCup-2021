@@ -10,7 +10,7 @@
 from functools import partial
 
 # Template:
-# https://github.com/kamyu104/GoogleCodeJam-2020/blob/2631d31657f3c32acc7ff1af43ce9a41f6b9530d/Round%202/emacs%2B%2B2_concise.py
+# https://github.com/kamyu104/GoogleCodeJam-2020/blob/master/Round%202/emacs++2_concise.py
 class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of nodes
     def __init__(self, children, cb=lambda *x:None):
         def preprocess(curr, parent):

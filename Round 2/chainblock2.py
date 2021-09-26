@@ -45,7 +45,7 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
         self.ancestor[self.find_set(x)] = x
 
 # Template:
-# https://github.com/kamyu104/GoogleCodeJam-2020/blob/2631d31657f3c32acc7ff1af43ce9a41f6b9530d/Round%202/emacs%2B%2B2_concise.py
+# https://github.com/kamyu104/GoogleCodeJam-2020/blob/master/Round%202/emacs++2_concise.py
 class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of nodes
     def __init__(self, children, cb=lambda *x:None):
         def preprocess(curr, parent):
@@ -55,12 +55,8 @@ class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of 
             D[curr] = 1 if parent == -1 else D[parent]+1
             # parent of the node i
             P[curr] = parent  # modified
-            # the subtree of the node i is represented by traversal index L[i]..R[i]
-            C[0] += 1
-            L[curr] = C[0]
 
         def divide(curr, parent):
-            stk.append(partial(postprocess, curr))
             for i in reversed(xrange(len(children[curr]))):
                 child = children[curr][i]
                 if child == parent:
@@ -68,22 +64,13 @@ class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of 
                 stk.append(partial(divide, child, curr))
             stk.append(partial(preprocess, curr, parent))
 
-        def postprocess(curr):
-            R[curr] = C[0]
-
         N = len(children)
-        L, R, D, P, C, O = [0]*N, [0]*N, [0]*N, [-1]*N, [-1], []
+        D, P, O = [0]*N, [-1]*N, []
         stk = []
         stk.append(partial(divide, 0, -1))
         while stk:
             stk.pop()()
-        assert(C[0] == N-1)
-        self.L, self.R, self.D, self.P, self.O = L, R, D, P, O
-
-    # Template:
-    # https://github.com/kamyu104/FacebookHackerCup-2019/blob/master/Final%20Round/little_boat_on_the_sea.py
-    def is_ancestor(self, a, b):  # includes itself
-        return self.L[a] <= self.L[b] <= self.R[b] <= self.R[a]
+        self.D, self.P, self.O = D, P, O
 
 def iter_tarjan_offline_lca(adj, cb):  # Time: O(N)
     def divide(parent, i):
