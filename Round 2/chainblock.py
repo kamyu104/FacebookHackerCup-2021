@@ -92,7 +92,7 @@ def chainblock():
         if A[i] == tree_infos.D[i]:
             result += 1
         else:
-            A[tree_infos.P[i][0]] = min(A[tree_infos.P[i][0]] , A[i])
+            A[tree_infos.P[i][0]] = min(A[tree_infos.P[i][0]], A[i])
     return result
 
 for case in xrange(input()):
