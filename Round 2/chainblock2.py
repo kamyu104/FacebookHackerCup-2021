@@ -72,7 +72,7 @@ class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of 
             stk.pop()()
         self.D, self.P, self.O = D, P, O
 
-def iter_tarjan_offline_lca(adj, cb):  # Time: O(N)
+def iter_tarjan_offline_lca(adj, pairs, cb):  # Time: O(N)
     def divide(parent, i):
         stk.append(partial(conquer, i))
         for child in reversed(adj[i]):
@@ -86,7 +86,11 @@ def iter_tarjan_offline_lca(adj, cb):  # Time: O(N)
         uf.update_ancestor_of_set(parent)
 
     def conquer(i):
-        cb(i, uf, lookup)
+        lookup[i] = True
+        for j in pairs[i]:
+            if not lookup[j]:
+                continue
+            cb(i, uf.find_ancestor_of_set(j))
 
     N = len(adj)
     uf = UnionFind(N)
@@ -108,21 +112,20 @@ def chainblock():
     groups = [[] for _ in xrange(N)]
     for i, f in enumerate(F):
         groups[f].append(i)
-    pairs = [defaultdict(list) for _ in xrange(N)]
-    for f, idxs in enumerate(groups):
-        for i in xrange(len(idxs)-1):
-            pairs[f][idxs[i]].append(idxs[i+1])
-            pairs[f][idxs[i+1]].append(idxs[i])
     min_depth = [float("inf")]*N
-    def cb(i, uf, lookup):
-        lookup[i] = True
-        min_depth[F[i]] = min(min_depth[F[i]], tree_infos.D[i])
-        for j in pairs[F[i]][i]:
-            if not lookup[j]:
-                continue
-            min_depth[F[i]] = min(min_depth[F[i]], tree_infos.D[uf.find_ancestor_of_set(j)])
+    pairs = [[] for _ in xrange(N)]
+    for f, idxs in enumerate(groups):
+        if not idxs:
+            continue
+        min_depth[f] = tree_infos.D[idxs[0]]
+        for i in xrange(len(idxs)-1):
+            pairs[idxs[i]].append(idxs[i+1])
+            pairs[idxs[i+1]].append(idxs[i])
 
-    iter_tarjan_offline_lca(adj, cb)
+    def cb(i, lca):
+        min_depth[F[i]] = min(min_depth[F[i]], tree_infos.D[lca])
+
+    iter_tarjan_offline_lca(adj, pairs, cb)
     A = [float("inf")]*N
     for f, idxs in enumerate(groups):
         for i in idxs:
