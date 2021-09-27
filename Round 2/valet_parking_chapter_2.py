@@ -144,7 +144,7 @@ def valet_parking_chapter_2():
     G = [list(raw_input().strip()) for _ in xrange(R)]
 
     bits = [BIT(R) for _ in xrange(C)]
-    st = SegmentTree(R+2, build_fn=lambda x, y: [abs((i-x)-K) if i >= x else y for i in xrange(2*x)], default_val=float("inf"))
+    st = SegmentTree(R+2, build_fn=lambda x, y: [abs((i-x)-K) if i >= x else y for i in xrange(2*x)])
     for j in xrange(C):
         for i in xrange(R):
             if G[i][j] == 'X':
