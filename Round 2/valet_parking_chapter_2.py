@@ -114,7 +114,7 @@ class SegmentTree(object):  # 0-based index
             L //= 2
             R //= 2
         return result
-    
+
     def __str__(self):
         showList = []
         for i in xrange(self.N):
@@ -129,7 +129,7 @@ def update(R, K, r, bit, st, diff):
     total += diff
     if r >= A:
         new_A = bit.kth_element(total-(R-K+1)+1)+1 if R-K+1 <= total else -1
-        st.update(A+1, new_A-1, diff) if diff == 1 else st.update(new_A+1, A-1, diff) 
+        st.update(A+1, new_A-1, diff) if diff == 1 else st.update(new_A+1, A-1, diff)
         A = new_A
     if r <= B:
         new_B = bit.kth_element(K)+1 if K <= total else R+2
