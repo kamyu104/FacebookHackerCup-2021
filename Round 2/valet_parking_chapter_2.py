@@ -121,12 +121,11 @@ class SegmentTree(object):  # 0-based index
             showList.append(self.query(i, i))
         return ",".join(map(str, showList))
 
-def update(R, K, i, bit, st, diff):
-    r = i+1
+def update(R, K, r, bit, st, diff):
     total = bit.query(R-1)
     A = bit.kth_element(total-(R-K+1)+1)+1 if R-K+1 <= total else -1
     B = bit.kth_element(K)+1 if K <= total else R+2
-    bit.add(i, diff)
+    bit.add(r-1, diff)
     total += diff
     if r >= A:
         new_A = bit.kth_element(total-(R-K+1)+1)+1 if R-K+1 <= total else -1
@@ -148,12 +147,12 @@ def valet_parking_chapter_2():
     for j in xrange(C):
         for i in xrange(R):
             if G[i][j] == 'X':
-                update(R, K, i, bits[j], st, 1)
+                update(R, K, i+1, bits[j], st, 1)
     result = 0
     for _ in xrange(S):
         i, j = map(lambda x: int(x)-1, raw_input().strip().split())
         G[i][j] = 'X' if G[i][j] == '.' else '.'
-        update(R, K, i, bits[j], st, 1 if G[i][j] == 'X' else -1)
+        update(R, K, i+1, bits[j], st, 1 if G[i][j] == 'X' else -1)
         result += st.query(0, R+1)
     return result
 
