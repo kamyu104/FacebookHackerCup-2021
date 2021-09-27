@@ -1,7 +1,7 @@
 # Copyright (c) 2021 kamyu. All rights reserved.
 #
 # Facebook Hacker Cup 2021 Round 2 - Problem C. Valet Parking - Chapter 1
-# https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C
+# https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C1
 #
 # Time:  O(R * C)
 # Space: O(min(R, C))

@@ -1,7 +1,7 @@
 # Copyright (c) 2021 kamyu. All rights reserved.
 #
 # Facebook Hacker Cup 2021 Round 2 - Problem C. Valet Parking - Chapter 2
-# https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/D
+# https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C2
 #
 # Time:  O((C * R + S) * logR), pass in PyPy2 but Python2
 # Space: O(C * R)
