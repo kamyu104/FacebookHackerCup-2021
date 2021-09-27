@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Round 2 - Problem D. String Concatenation
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/D
 #
-# Time:  O(N + N1*(logN1)^2 + N2^3 + 2^X*(N3-X)/C) ~= O(1e8) at worst
+# Time:  O(N + N1*(logN1)^2 + N2^3/6 + 2^X*(N3-X)/C) ~= O(1e8) at worst
 # Space: O(N)
 #
 
@@ -131,7 +131,7 @@ def add_equal_sum_triples(L, A, B, R):  # Time: O(N2^3/3!) = O(894^3/6) ~= O(1e8
     assert(len(R) <= 154)  # max v s.t. v(v-1)(v-3)/3! <= 3*MAX_L
     return R
 
-def find_equal_sum_masks(L, idxs):  # Time: O(2^X * (N3-X)/C) = O(2^23 * (154-23)/6) ~= O(2e8), C = 6 on average
+def find_equal_sum_masks(L, idxs):  # Time: O(2^X * (N3-X)/C) = O(2^23 * (154-23)/6) ~= O(2e8) at worst, C = 6 on average
     lookup = {}
     for mask in xrange(1, 1<<len(idxs)):
         total, bit = 0, 1
