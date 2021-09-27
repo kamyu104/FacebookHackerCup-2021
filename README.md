@@ -29,7 +29,7 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Runway](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/A)| [Python](./Round%202/runway.py) | _O(N * M)_ | _O(M)_ | Easy | | Simulation, Greedy |
-|B| [Chainblock](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/B)| [Python](./Round%22/chainblock.py) [Python](./Round%22/chainblock.py) | _O(N)_ | _O(N)_ | Medium | | Tree Traversal, LCA, Tarjan's Offline LCA Algorithm, Union Find |
+|B| [Chainblock](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/B)| [Python](./Round%202/chainblock.py) [Python](./Round%22/chainblock.py) | _O(N)_ | _O(N)_ | Medium | | Tree Traversal, LCA, Tarjan's Offline LCA Algorithm, Union Find |
 |C1| [Valet Parking - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C1)| [Python](./Round%201/valet_parking_chapter_1.py) | _O(R * C)_ | _O(min(R, C))_ | Medium | | Array |
 |C2| [Valet Parking - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C2)| [PyPy](./Round%202/valet_parking_chapter_2.py) | _O((R * C + S) * logR)_ | _O(R * C)_ | Hard | | Array, BIT, Fenwick Tree, Segment Tree |
 |D| [String Concatenation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-1/problems/D)| [PyPy](./Round%202/string_concatenation.py) [Python](./Round%202/string_concatenation2.py) | _O(N + N1*(logN1)^2 + N2^3 + 2^X*(N3-X)/C)_ | _O(N)_ | Hard | | Array, Pigeonhole Principle, BIT, Fenwick Tree, Bitmask |
