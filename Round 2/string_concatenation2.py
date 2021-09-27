@@ -8,8 +8,7 @@
 #
 
 # Template:
-# - https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/range-sum-query-mutable.py
-# - https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival.py
+# https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/range-sum-query-mutable.py
 class BIT(object):  # 0-indexed.
     def __init__(self, nums):
         self.__bit = [0]*(len(nums)+1)  # Extra one for dummy node.
@@ -33,6 +32,8 @@ class BIT(object):  # 0-indexed.
             i -= (i & -i)
         return ret
 
+    # Template:
+    # https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival.py
     def kth_element(self, k):
         floor_log2_n = (len(self.__bit)-1).bit_length()-1
         pow_i = 2**floor_log2_n
