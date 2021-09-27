@@ -27,7 +27,7 @@ class BIT(object):  # 0-indexed.
             i -= (i & -i)
         return ret
 
-    def binary_lift(self, k):
+    def kth_element(self, k):
         floor_log2_n = (len(self.__bit)-1).bit_length()-1
         pow_i = 2**floor_log2_n
         total = pos = 0  # 1-indexed
@@ -124,16 +124,16 @@ class SegmentTree(object):  # 0-based index
 def update(R, K, i, bit, st, diff):
     r = i+1
     total = bit.query(R-1)
-    A = bit.binary_lift(total-(R-K+1)+1)+1 if R-K+1 <= total else -1
-    B = bit.binary_lift(K)+1 if K <= total else R+2
+    A = bit.kth_element(total-(R-K+1)+1)+1 if R-K+1 <= total else -1
+    B = bit.kth_element(K)+1 if K <= total else R+2
     bit.add(i, diff)
     total += diff
     if r >= A:
-        new_A = bit.binary_lift(total-(R-K+1)+1)+1 if R-K+1 <= total else -1
+        new_A = bit.kth_element(total-(R-K+1)+1)+1 if R-K+1 <= total else -1
         st.update(A+1, new_A-1, diff) if diff == 1 else st.update(new_A+1, A-1, diff) 
         A = new_A
     if r <= B:
-        new_B = bit.binary_lift(K)+1 if K <= total else R+2
+        new_B = bit.kth_element(K)+1 if K <= total else R+2
         st.update(new_B+1, B-1, diff) if diff == 1 else st.update(B+1, new_B-1, diff)
         B = new_B
     if not (r < A or r > B):
