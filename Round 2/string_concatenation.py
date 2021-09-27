@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Round 2 - Problem D. String Concatenation
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/D
 #
-# Time:  O(2^X * (N - X) / C) ~= O(1e8) on average, pass in PyPy2 but Python2
+# Time:  O(N + 2^X * (N - X) / C) ~= O(1e8) on average, pass in PyPy2 but Python2
 # Space: O(N)
 #
 

@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Round 2 - Problem D. String Concatenation
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/D
 #
-# Time:  O(N * (logN)^2 + 894^3/6 + 2^23 * (154-23)/6) ~= O(1e8) at worst
+# Time:  O(N + N1*(logN1)^2 + N2^3 + 2^X*(N3-X)/C) ~= O(1e8) at worst
 # Space: O(N)
 #
 
