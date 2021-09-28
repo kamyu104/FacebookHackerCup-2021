@@ -7,7 +7,7 @@
 # Space: O(N)
 #
 
-from random import randint
+from random import seed, randint
 
 # Template:
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/range-sum-query-mutable.py
@@ -179,6 +179,7 @@ def string_concatenation():
     add_equal_random_subsets(L, A, B, R)
     return add_remains(N, K, L, A, B, R)
 
+seed(0)
 TARGET = 100
 MAX_L = 200000
 X = 1
