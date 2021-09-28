@@ -48,7 +48,7 @@ class BIT(object):  # 0-indexed.
 def remains(A, B, R):
     return [i for i in R if i not in A and i not in B]
 
-def add_repeated_1sums(L, A, B, R):  # Time: O(N), N1 = O(N)
+def add_equal_1sums(L, A, B, R):  # Time: O(N), N1 = O(N)
     lookup = {}
     for i in R:
         if L[i] not in lookup:
@@ -60,7 +60,7 @@ def add_repeated_1sums(L, A, B, R):  # Time: O(N), N1 = O(N)
     R = remains(A, B, R)
     return R
 
-def add_repeated_2sums(L, A, B, R):  # Time: O((2 * L) * (1/N1 + 1/(N1-1) + ... + 1/1)) * O(logN1) = O(L * (logN1)^2) ~= O(6e7), N2 = O(894)
+def add_equal_2sums(L, A, B, R):  # Time: O((2 * L) * (1/N1 + 1/(N1-1) + ... + 1/1)) * O(logN1) = O(L * (logN1)^2) ~= O(6e7), N2 = O(894)
     lookup = {}
     R_inv = {x:i for i, x in enumerate(R)}
     bit = BIT([1]*len(R))
@@ -97,7 +97,7 @@ def add_repeated_2sums(L, A, B, R):  # Time: O((2 * L) * (1/N1 + 1/(N1-1) + ... 
     assert(len(R) <= 894)  # max v s.t. v(v-1)/2! <= 2*MAX_L
     return R
 
-def add_repeated_3sums(L, A, B, R):  # Time: O(N2^3/3!) = O(894^3/6) ~= O(1e8), N3 = O(154)
+def add_equal_3sums(L, A, B, R):  # Time: O(N2^3/3!) = O(894^3/6) ~= O(1e8), N3 = O(154)
     lookup = {}
     for i in xrange(len(R)):
         a = R[i]
@@ -170,9 +170,9 @@ def string_concatenation():
     L = map(int, raw_input().strip().split())
 
     A, B, R = set(), set(), range(N)
-    R = add_repeated_1sums(L, A, B, R)
-    R = add_repeated_2sums(L, A, B, R)
-    R = add_repeated_3sums(L, A, B, R)
+    R = add_equal_1sums(L, A, B, R)
+    R = add_equal_2sums(L, A, B, R)
+    R = add_equal_3sums(L, A, B, R)
     return add_remains(N, K, L, A, B, R)
 
 MAX_L = 200000
