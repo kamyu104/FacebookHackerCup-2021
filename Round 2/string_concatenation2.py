@@ -155,9 +155,9 @@ def add_remains(N, K, L, A, B, R):
             nxt = []
             bit = 1
             for i in curr:
-                if (mask_A&bit) and not ((mask_B&bit)):
+                if (mask_A&bit) and not (mask_B&bit):
                     A.add(i)
-                elif (mask_B&bit) and not ((mask_A&bit)):
+                elif (mask_B&bit) and not (mask_A&bit):
                     B.add(i)
                 else:
                     nxt.append(i)
