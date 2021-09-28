@@ -72,9 +72,6 @@ def add_equal_2sums(L, A, B, R):  # Time: O((2 * L) * (1/N1 + 1/(N1-1) + ... + 1
                 break
             j = (i+l)%bit.query(len(R)-1)
             a, b = R[bit.kth_element(i+1)], R[bit.kth_element(j+1)]
-            if a == b:
-                i += 1
-                continue
             total = L[a]+L[b]
             if total in lookup:
                 for x in lookup[total]:
