@@ -62,36 +62,39 @@ def add_equal_1sums(L, A, B, R):  # Time: O(N), N1 = O(N)
     return R
 
 def add_equal_2sums(L, A, B, R):  # Time: O((2 * L) * (1/N1 + 1/(N1-1) + ... + 1/1)) * O(logN1) = O(L * (logN1)^2) ~= O(6e7), N2 = O(894)
-    lookup = {}
-    R_inv = {x:i for i, x in enumerate(R)}
-    bit = BIT([1]*len(R))
-    l = 1
-    while l < bit.query(len(R)-1):
-        i = 0
-        while i < bit.query(len(R)-1):
-            if l == bit.query(len(R)-1):
-                break
-            j = (i+l)%bit.query(len(R)-1)
-            a, b = R[bit.kth_element(i+1)], R[bit.kth_element(j+1)]
-            total = L[a]+L[b]
-            if total in lookup:
-                for x in lookup[total]:
-                    if x in (a, b) or x in A or x in B:
-                        del lookup[total]
-                        break
-            if total not in lookup:
-                lookup[total] = (a, b)
+    cnt = float("inf")
+    while len(R) < cnt:
+        cnt = len(R)
+        lookup = {}
+        R_inv = {x:i for i, x in enumerate(R)}
+        bit = BIT([1]*len(R))
+        l = 1
+        while l < bit.query(len(R)-1):
+            i = 0
+            while i < bit.query(len(R)-1):
+                if l == bit.query(len(R)-1):
+                    break
+                j = (i+l)%bit.query(len(R)-1)
+                a, b = R[bit.kth_element(i+1)], R[bit.kth_element(j+1)]
+                total = L[a]+L[b]
+                if total in lookup:
+                    for x in lookup[total]:
+                        if x in (a, b) or x in A or x in B:
+                            del lookup[total]
+                            break
+                if total not in lookup:
+                    lookup[total] = (a, b)
+                    i += 1
+                    continue
+                A.add(a), A.add(b)
+                c, d = lookup[total]
+                B.add(c), B.add(d)
+                del lookup[total]
+                for x in (a, b, c, d):
+                    bit.add(R_inv[x], -1)
                 i += 1
-                continue
-            A.add(a), A.add(b)
-            c, d = lookup[total]
-            B.add(c), B.add(d)
-            del lookup[total]
-            for x in (a, b, c, d):
-                bit.add(R_inv[x], -1)
-            i += 1
-        l += 1
-    update_remains(A, B, R)
+            l += 1
+        update_remains(A, B, R)
     assert(len(R) <= 894)  # max v s.t. v(v-1)/2! <= 2*MAX_L
     return R
 
