@@ -62,8 +62,8 @@ def add_equal_1sums(L, A, B, R):  # Time: O(N), N1 = O(N)
     return R
 
 def add_equal_2sums(L, A, B, R):  # Time: O((2 * L) * (1/N1 + 1/(N1-1) + ... + 1/1)) * O(logN1) = O(L * (logN1)^2) ~= O(6e7), N2 = O(894)
-    cnt = float("inf")
-    while len(R) < cnt:
+    cnt = None
+    while len(R) != cnt:
         cnt = len(R)
         lookup = {}
         R_inv = {x:i for i, x in enumerate(R)}
