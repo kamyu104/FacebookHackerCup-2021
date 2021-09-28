@@ -179,6 +179,6 @@ MAX_L = 200000
 X = 1
 while 2**X < X*MAX_L+1:  # pigeonhole principle
     X += 1
-assert(X == 23)  # we can always find equal sum subsets by 23 or more R
+assert(X == 23)  # we can always find equal sum subsets by 23 or more strings
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, string_concatenation())
