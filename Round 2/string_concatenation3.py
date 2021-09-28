@@ -102,7 +102,7 @@ def add_equal_2sums(L, A, B, R):  # Time: O(N1) + O((2 * L) * (1/N1 + 1/(N1-1) +
 
 def add_equal_random_subsets(L, A, B, R):  # Time: O(N2 * sqrt(N2 * L)) ~= O(1e7), N3 = O(TARGET)
     curr = R
-    while len(curr) > TARGET:
+    while len(curr) > TARGET: # O(N2 + N2/2 + N2/4 + ... + TARGET)) = O(N2) times on average
         lookup = {}
         while True:  # O(sqrt(N2 * L)) times on average by birthday paradox
             total = 0
