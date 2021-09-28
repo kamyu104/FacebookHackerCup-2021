@@ -72,6 +72,8 @@ class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of 
             stk.pop()()
         self.D, self.P, self.O = D, P, O
 
+# Reference:
+# https://en.wikipedia.org/wiki/Tarjan%27s_off-line_lowest_common_ancestors_algorithm?fbclid=IwAR3q23rQzL3vwx3MwTLdMocfxSI3G28u5hQA2HJdes8LULYONCkSKB-kbtY
 def iter_tarjan_offline_lca(adj, pairs, cb):  # Time: O(N)
     def divide(parent, i):
         stk.append(partial(conquer, i))
