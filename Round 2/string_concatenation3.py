@@ -106,26 +106,23 @@ def add_equal_random_subsets(L, A, B, R):  # Time: O(N2 * sqrt(N2 * L)) ~= O(1e7
         lookup = {}
         while True:  # O(sqrt(N2 * L)) times on average by birthday paradox
             total = 0
-            mask_A, bit = 0, 1
-            for i in xrange(len(curr)):
-                if randint(0, 1):
-                    mask_A |= bit
-                    total += L[i]
-                bit <<= 1
-            if total not in lookup:
-                lookup[total] = mask_A
-                continue
-            mask_B = lookup[total]
-            nxt = []
-            bit = 1
+            subset_A = set()
             for i in curr:
-                if (mask_A&bit) and not (mask_B&bit):
+                if randint(0, 1):
+                    subset_A.add(i)
+                    total += L[i]
+            if total not in lookup:
+                lookup[total] = subset_A
+                continue
+            subset_B = lookup[total]
+            nxt = []
+            for i in curr:
+                if i in subset_A and i not in subset_B:
                     A.add(i)
-                elif (mask_B&bit) and not (mask_A&bit):
+                elif i in subset_B and i not in subset_A:
                     B.add(i)
                 else:
                     nxt.append(i)
-                bit <<= 1
             curr = nxt
             break
     update_remains(A, B, R)
