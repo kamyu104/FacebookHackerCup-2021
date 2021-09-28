@@ -3,9 +3,11 @@
 # Facebook Hacker Cup 2021 Round 2 - Problem D. String Concatenation
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/D
 #
-# Time:  O(N + L*(logN1)^2 + N2^3/6 + 2^X*(N3-X)/C) ~= O(1e8) at worst
+# Time:  O(N + L*(logN1)^2 + N2*sqrt(N2*L) + X*2^X*(N3-X)/C) ~= O(1e8) on average, O(2e9) at worst
 # Space: O(N)
 #
+
+from random import randint
 
 # Template:
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/range-sum-query-mutable.py
@@ -98,38 +100,39 @@ def add_equal_2sums(L, A, B, R):  # Time: O(N1) + O((2 * L) * (1/N1 + 1/(N1-1) +
     assert(len(R) <= 894)  # max v s.t. v(v-1)/2! <= 2*MAX_L
     return R
 
-def add_equal_3sums(L, A, B, R):  # Time: O(N2^3/3!) = O(894^3/6) ~= O(1e8), N3 = O(154)
-    lookup = {}
-    for i in xrange(len(R)):
-        a = R[i]
-        for j in xrange(i):
-            if a in A or a in B:
-                break
-            b = R[j]
-            for k in xrange(j):
-                if b in A or b in B:
-                    break
-                c = R[k]
-                if c in A or c in B:
-                    continue
-                total = L[a]+L[b]+L[c]
-                if total in lookup:
-                    for x in lookup[total]:
-                        if x in (a, b, c) or x in A or x in B:
-                            del lookup[total]
-                            break
-                if total not in lookup:
-                    lookup[total] = (a, b, c)
-                    continue
-                A.add(a), A.add(b), A.add(c)
-                d, e, f = lookup[total]
-                B.add(d), B.add(e), B.add(f)
-                del lookup[total]
+def add_equal_random_subsets(L, A, B, R):  # Time: O(N2 * sqrt(N2 * L)) ~= O(1e7), N3 = O(TARGET)
+    curr = R
+    while len(curr) > TARGET:
+        lookup = {}
+        while True:  # O(sqrt(N2 * L)) times on average by birthday paradox
+            total = 0
+            mask_A, bit = 0, 1
+            for i in xrange(len(curr)):
+                if randint(0, 1):
+                    mask_A |= bit
+                    total += L[i]
+                bit <<= 1
+            if total not in lookup:
+                lookup[total] = mask_A
+                continue
+            mask_B = lookup[total]
+            nxt = []
+            bit = 1
+            for i in curr:
+                if (mask_A&bit) and not (mask_B&bit):
+                    A.add(i)
+                elif (mask_B&bit) and not (mask_A&bit):
+                    B.add(i)
+                else:
+                    nxt.append(i)
+                bit <<= 1
+            curr = nxt
+            break
     update_remains(A, B, R)
-    assert(len(R) <= 154)  # max v s.t. v(v-1)(v-3)/3! <= 3*MAX_L
+    assert(len(R) <= TARGET)
     return R
 
-def find_equal_sum_masks(L, idxs):  # Time: O(2^X * (N3-X)/C) = O(2^23 * (154-23)/6) ~= O(2e8) at worst, C = 6 on average
+def find_equal_sum_masks(L, idxs):  # Time: O(X*2^X)
     lookup = {}
     for mask in xrange(1, 1<<len(idxs)):
         total, bit = 0, 1
@@ -142,7 +145,7 @@ def find_equal_sum_masks(L, idxs):  # Time: O(2^X * (N3-X)/C) = O(2^23 * (154-23
         lookup[total] = mask
     return None
 
-def add_remains(N, K, L, A, B, R):
+def add_remains(N, K, L, A, B, R):  # Time: O(X*2^X) * O((N3-X)/C) = O(23*2^23 * (100-23)/6) ~= O(1e8) on average, O(2e9) at worst, C = 6 on average
     curr = []
     for i in xrange(len(R)):
         curr.append(R[i])
@@ -173,9 +176,10 @@ def string_concatenation():
     A, B, R = set(), set(), range(N)
     add_equal_1sums(L, A, B, R)
     add_equal_2sums(L, A, B, R)
-    add_equal_3sums(L, A, B, R)
+    add_equal_random_subsets(L, A, B, R)
     return add_remains(N, K, L, A, B, R)
 
+TARGET = 100
 MAX_L = 200000
 X = 1
 while 2**X < X*MAX_L+1:  # pigeonhole principle
