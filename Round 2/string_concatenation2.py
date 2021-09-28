@@ -63,7 +63,7 @@ def add_equal_1sums(L, A, B, R):  # Time: O(N), N1 = O(N)
 
 def add_equal_2sums(L, A, B, R):  # Time: O(N1) + O((2 * L) * (1/N1 + 1/(N1-1) + ... + 1/1)) * O(logN1) = O(N1 + L * (logN1)^2) ~= O(6e7), N2 = O(894)
     cnt = None
-    while len(R) != cnt:  # repeated O(c) times, c ~= 4 at most, first run removes most equal sum pairs, run once is actually enough
+    while len(R) != cnt:  # repeate O(c) times, c ~= 4 at most, first run removes most equal sum pairs, run once is actually enough
         cnt = len(R)
         lookup = {}
         R_inv = {x:i for i, x in enumerate(R)}
