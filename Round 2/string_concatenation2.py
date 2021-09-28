@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Round 2 - Problem D. String Concatenation
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/D
 #
-# Time:  O(N + N1*(logN1)^2 + N2^3/6 + 2^X*(N3-X)/C) ~= O(1e8) at worst
+# Time:  O(N + N*(logN1)^2 + N2^3/6 + 2^X*(N3-X)/C) ~= O(1e8) at worst
 # Space: O(N)
 #
 
@@ -60,7 +60,7 @@ def add_equal_nums(L, A, B, R):  # Time: O(N), N1 = O(N)
     R = remains(A, B, R)
     return R
 
-def add_equal_sum_pairs(L, A, B, R):  # Time: O(N1 * (logN1)^2) ~= O(6e7), N2 = O(894)
+def add_equal_sum_pairs(L, A, B, R):  # Time: O(N * (logN1)^2) ~= O(6e7), N2 = O(894)
     lookup = {}
     R_inv = {x:i for i, x in enumerate(R)}
     bit = BIT([1]*len(R))
