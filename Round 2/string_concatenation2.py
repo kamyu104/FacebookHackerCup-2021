@@ -101,15 +101,13 @@ def add_equal_sum_triples(L, A, B, R):  # Time: O(N2^3/3!) = O(894^3/6) ~= O(1e8
     lookup = {}
     for i in xrange(len(R)):
         a = R[i]
-        if a in A or a in B:
-            continue
         for j in xrange(i):
-            if a in A or a in B:  # a is used
+            if a in A or a in B:
                 break
             b = R[j]
-            if b in A or b in B:
-                continue
             for k in xrange(j):
+                if b in A or b in B:
+                    break
                 c = R[k]
                 if c in A or c in B:
                     continue
@@ -126,7 +124,6 @@ def add_equal_sum_triples(L, A, B, R):  # Time: O(N2^3/3!) = O(894^3/6) ~= O(1e8
                 d, e, f = lookup[total]
                 B.add(d), B.add(e), B.add(f)
                 del lookup[total]
-                break  # a, b are used
     R = remains(A, B, R)
     assert(len(R) <= 154)  # max v s.t. v(v-1)(v-3)/3! <= 3*MAX_L
     return R
