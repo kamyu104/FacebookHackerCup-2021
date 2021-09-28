@@ -61,7 +61,7 @@ def add_equal_1sums(L, A, B, R):  # Time: O(N), N1 = O(N)
     update_remains(A, B, R)
     return R
 
-def add_equal_2sums(L, A, B, R):  # Time: O((2 * L) * (1/N1 + 1/(N1-1) + ... + 1/1)) * O(logN1) = O(L * (logN1)^2) ~= O(6e7), N2 = O(894)
+def add_equal_2sums(L, A, B, R):  # Time: O(N1) + O((2 * L) * (1/N1 + 1/(N1-1) + ... + 1/1)) * O(logN1) = O(N1 + L * (logN1)^2) ~= O(6e7), N2 = O(894)
     cnt = None
     while len(R) != cnt:
         cnt = len(R)
