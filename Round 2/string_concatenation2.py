@@ -50,13 +50,14 @@ def update_remains(A, B, R):
 
 def add_equal_1sums(L, A, B, R):  # Time: O(N), N1 = O(N)
     lookup = {}
-    for i in R:
-        if L[i] not in lookup:
-            lookup[L[i]] = i
+    for a in R:
+        total = L[a]
+        if total not in lookup:
+            lookup[total] = a
             continue
-        A.add(i)
-        B.add(lookup[L[i]])
-        del lookup[L[i]]
+        A.add(a)
+        B.add(lookup[total])
+        del lookup[total]
     update_remains(A, B, R)
     return R
 
