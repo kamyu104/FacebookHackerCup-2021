@@ -8,11 +8,12 @@
 #
 
 from heapq import heappush, heappop
+from collections import defaultdict
 
 # Template:
 # https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival4.py
 def update_heaps(K, c, r, heaps):
-    topk, topk_to_remove, others, others_to_remove = heaps
+    topk, others, to_remove = heaps
     if c == 1:
         heappush(topk[0], r)
         topk[1] += 1
@@ -20,18 +21,22 @@ def update_heaps(K, c, r, heaps):
             heappush(others, -heappop(topk[0]))
             topk[1] -= 1
     else:
-        if others and r <= -others[0]:
-            heappush(others_to_remove, -r)
-        else:
-            heappush(topk_to_remove, r)
+        to_remove[r] += 1
+        if not others or -others[0] < r:
             topk[1] -= 1
             if others:
                 heappush(topk[0], -heappop(others))  # keep topk with k elements
                 topk[1] += 1
-    while topk[0] and topk_to_remove and topk[0][0] == topk_to_remove[0]:
-        heappop(topk[0]), heappop(topk_to_remove)
-    while others and others_to_remove and others[0] == others_to_remove[0]:
-        heappop(others), heappop(others_to_remove)
+    while others and -others[0] in to_remove:
+        to_remove[-others[0]] -= 1
+        if not to_remove[-others[0]]:
+            del to_remove[-others[0]]
+        heappop(others)
+    while topk[0] and topk[0][0] in to_remove:
+        to_remove[topk[0][0]] -= 1
+        if not to_remove[topk[0][0]]:
+            del to_remove[topk[0][0]]
+        heappop(topk[0])
 
 def update(R, K, r, heaps, cnts, left, right, diff):
     h1, h2 = heaps[0][0], heaps[1][0]
@@ -59,7 +64,7 @@ def valet_parking_chapter_2():
     R, C, K, S = map(int, raw_input().strip().split())
     G = [list(raw_input().strip()) for _ in xrange(R)]
 
-    heaps = [[[[[], 0], [], [], []] for _ in xrange(2)] for _ in xrange(C)]
+    heaps = [[[[[], 0], [], defaultdict(int)] for _ in xrange(2)] for _ in xrange(C)]
     left, right = max(K-(C-1), 0), min(K+(C-1), R+1)
     cnts = [abs(i-K) for i in xrange(left, right+1)]
     for j in xrange(C):
