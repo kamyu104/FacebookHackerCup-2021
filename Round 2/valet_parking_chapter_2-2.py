@@ -7,241 +7,117 @@
 # Space: O(R * C)
 #
 
+from random import randint, seed
+
 # Template:
-# https://github.com/cheran-senthil/PyRival/blob/master/pyrival/data_structures/SortedList.py
-class SortedList(object):
-    def __init__(self, iterable=[], _load=200):
-        """Initialize sorted list instance."""
-        values = sorted(iterable)
-        self._len = _len = len(values)
-        self._load = _load
-        self._lists = _lists = [values[i:i + _load] for i in xrange(0, _len, _load)]
-        self._list_lens = [len(_list) for _list in _lists]
-        self._mins = [_list[0] for _list in _lists]
-        self._fen_tree = []
-        self._rebuild = True
+# https://github.com/kamyu104/GoogleKickStart-2021/blob/master/Round%20D/final_exam.py
+class SkipNode(object):
+    def __init__(self, level=0, val=None):
+        self.val = val
+        self.nexts = [None]*level
+        self.prevs = [None]*level
 
-    def _fen_build(self):
-        """Build a fenwick tree instance."""
-        self._fen_tree[:] = self._list_lens
-        _fen_tree = self._fen_tree
-        for i in xrange(len(_fen_tree)):
-            if i | i + 1 < len(_fen_tree):
-                _fen_tree[i | i + 1] += _fen_tree[i]
-        self._rebuild = False
+class SkipList(object):
+    P_NUMERATOR, P_DENOMINATOR = 1, 2  # P = 1/4 in redis implementation
+    MAX_LEVEL = 32  # enough for 2^32 elements
 
-    def _fen_update(self, index, value):
-        """Update `fen_tree[index] += value`."""
-        if not self._rebuild:
-            _fen_tree = self._fen_tree
-            while index < len(_fen_tree):
-                _fen_tree[index] += value
-                index |= index + 1
+    def __init__(self, end=float("inf"), can_duplicated=True):
+        seed(0)
+        self.__head = SkipNode()
+        self.__len = 0
+        self.__can_duplicated = can_duplicated
+        self.add(end)
+        self.__end = self.find(end)
 
-    def _fen_query(self, end):
-        """Return `sum(_fen_tree[:end])`."""
-        if self._rebuild:
-            self._fen_build()
+    def begin(self):
+        return self.__head.nexts[0]
 
-        _fen_tree = self._fen_tree
-        x = 0
-        while end:
-            x += _fen_tree[end - 1]
-            end &= end - 1
-        return x
+    def end(self):
+        return self.__end
 
-    def _fen_findkth(self, k):
-        """Return a pair of (the largest `idx` such that `sum(_fen_tree[:idx]) <= k`, `k - sum(_fen_tree[:idx])`)."""
-        _list_lens = self._list_lens
-        if k < _list_lens[0]:
-            return 0, k
-        if k >= self._len - _list_lens[-1]:
-            return len(_list_lens) - 1, k + _list_lens[-1] - self._len
-        if self._rebuild:
-            self._fen_build()
+    def lower_bound(self, target, cmp=lambda x, y: x < y):
+        return self.__lower_bound(self.__find_prev_nodes(target, cmp))
 
-        _fen_tree = self._fen_tree
-        idx = -1
-        for d in reversed(xrange(len(_fen_tree).bit_length())):
-            right_idx = idx + (1 << d)
-            if right_idx < len(_fen_tree) and k >= _fen_tree[right_idx]:
-                idx = right_idx
-                k -= _fen_tree[idx]
-        return idx + 1, k
+    def find(self, target):
+        return self.__find(target, self.__find_prev_nodes(target))
 
-    def _delete(self, pos, idx):
-        """Delete value at the given `(pos, idx)`."""
-        _lists = self._lists
-        _mins = self._mins
-        _list_lens = self._list_lens
+    def add(self, val):
+        if not self.__can_duplicated and self.find(val):
+            return self.find(val), False
+        node = SkipNode(self.__random_level(), val)
+        if len(self.__head.nexts) < len(node.nexts):
+            self.__head.nexts.extend([None]*(len(node.nexts)-len(self.__head.nexts)))
+        prevs = self.__find_prev_nodes(val)
+        for i in xrange(len(node.nexts)):
+            node.nexts[i] = prevs[i].nexts[i]
+            if prevs[i].nexts[i]:
+                prevs[i].nexts[i].prevs[i] = node
+            prevs[i].nexts[i] = node
+            node.prevs[i] = prevs[i]
+        self.__len += 1
+        return node if self.__can_duplicated else (node, True)
 
-        self._len -= 1
-        self._fen_update(pos, -1)
-        del _lists[pos][idx]
-        _list_lens[pos] -= 1
+    def remove(self, it):
+        prevs = it.prevs
+        curr = self.__find(it.val, prevs)
+        if not curr:
+            return self.__end
+        self.__len -= 1
+        for i in reversed(xrange(len(curr.nexts))):
+            prevs[i].nexts[i] = curr.nexts[i]
+            if curr.nexts[i]:
+                curr.nexts[i].prevs[i] = prevs[i]
+            if not self.__head.nexts[i]:
+                self.__head.nexts.pop()
+        return curr.nexts[0]
 
-        if _list_lens[pos]:
-            _mins[pos] = _lists[pos][0]
-        else:
-            del _lists[pos]
-            del _list_lens[pos]
-            del _mins[pos]
-            self._rebuild = True
+    def __lower_bound(self, prevs):
+        if prevs:
+            candidate = prevs[0].nexts[0]
+            if candidate:
+                return candidate
+        return None
 
-    def _loc_left(self, value):
-        """Return an index pair that corresponds to the first position of `value` in the sorted list."""
-        if not self._len:
-            return 0, 0
+    def __find(self, val, prevs):
+        candidate = self.__lower_bound(prevs)
+        if candidate and candidate.val == val:
+            return candidate
+        return None
 
-        _lists = self._lists
-        _mins = self._mins
+    def __find_prev_nodes(self, val, cmp=lambda x, y: x < y):
+        prevs = [None]*len(self.__head.nexts)
+        curr = self.__head
+        for i in reversed(xrange(len(self.__head.nexts))):
+            while curr.nexts[i] and cmp(curr.nexts[i].val, val):
+                curr = curr.nexts[i]
+            prevs[i] = curr
+        return prevs
 
-        lo, pos = -1, len(_lists) - 1
-        while lo + 1 < pos:
-            mi = (lo + pos) >> 1
-            if value <= _mins[mi]:
-                pos = mi
-            else:
-                lo = mi
-
-        if pos and value <= _lists[pos - 1][-1]:
-            pos -= 1
-
-        _list = _lists[pos]
-        lo, idx = -1, len(_list)
-        while lo + 1 < idx:
-            mi = (lo + idx) >> 1
-            if value <= _list[mi]:
-                idx = mi
-            else:
-                lo = mi
-
-        return pos, idx
-
-    def _loc_right(self, value):
-        """Return an index pair that corresponds to the last position of `value` in the sorted list."""
-        if not self._len:
-            return 0, 0
-
-        _lists = self._lists
-        _mins = self._mins
-
-        pos, hi = 0, len(_lists)
-        while pos + 1 < hi:
-            mi = (pos + hi) >> 1
-            if value < _mins[mi]:
-                hi = mi
-            else:
-                pos = mi
-
-        _list = _lists[pos]
-        lo, idx = -1, len(_list)
-        while lo + 1 < idx:
-            mi = (lo + idx) >> 1
-            if value < _list[mi]:
-                idx = mi
-            else:
-                lo = mi
-
-        return pos, idx
-
-    def add(self, value):
-        """Add `value` to sorted list."""
-        _load = self._load
-        _lists = self._lists
-        _mins = self._mins
-        _list_lens = self._list_lens
-
-        self._len += 1
-        if _lists:
-            pos, idx = self._loc_right(value)
-            self._fen_update(pos, 1)
-            _list = _lists[pos]
-            _list.insert(idx, value)
-            _list_lens[pos] += 1
-            _mins[pos] = _list[0]
-            if _load + _load < len(_list):
-                _lists.insert(pos + 1, _list[_load:])
-                _list_lens.insert(pos + 1, len(_list) - _load)
-                _mins.insert(pos + 1, _list[_load])
-                _list_lens[pos] = _load
-                del _list[_load:]
-                self._rebuild = True
-        else:
-            _lists.append([value])
-            _mins.append(value)
-            _list_lens.append(1)
-            self._rebuild = True
-
-    def discard(self, value):
-        """Remove `value` from sorted list if it is a member."""
-        _lists = self._lists
-        if _lists:
-            pos, idx = self._loc_right(value)
-            if idx and _lists[pos][idx - 1] == value:
-                self._delete(pos, idx - 1)
-
-    def remove(self, value):
-        """Remove `value` from sorted list; `value` must be a member."""
-        _len = self._len
-        self.discard(value)
-        if _len == self._len:
-            raise ValueError('{0!r} not in list'.format(value))
-
-    def pop(self, index=-1):
-        """Remove and return value at `index` in sorted list."""
-        pos, idx = self._fen_findkth(self._len + index if index < 0 else index)
-        value = self._lists[pos][idx]
-        self._delete(pos, idx)
-        return value
-
-    def bisect_left(self, value):
-        """Return the first index to insert `value` in the sorted list."""
-        pos, idx = self._loc_left(value)
-        return self._fen_query(pos) + idx
-
-    def bisect_right(self, value):
-        """Return the last index to insert `value` in the sorted list."""
-        pos, idx = self._loc_right(value)
-        return self._fen_query(pos) + idx
-
-    def count(self, value):
-        """Return number of occurrences of `value` in the sorted list."""
-        return self.bisect_right(value) - self.bisect_left(value)
-
-    def __len__(self):
-        """Return the size of the sorted list."""
-        return self._len
-
-    def __getitem__(self, index):
-        """Lookup value at `index` in sorted list."""
-        pos, idx = self._fen_findkth(self._len + index if index < 0 else index)
-        return self._lists[pos][idx]
-
-    def __delitem__(self, index):
-        """Remove value at `index` from sorted list."""
-        pos, idx = self._fen_findkth(self._len + index if index < 0 else index)
-        self._delete(pos, idx)
-
-    def __contains__(self, value):
-        """Return true if `value` is an element of the sorted list."""
-        _lists = self._lists
-        if _lists:
-            pos, idx = self._loc_left(value)
-            return idx < len(_lists[pos]) and _lists[pos][idx] == value
-        return False
+    def __random_level(self):
+        level = 1
+        while randint(1, SkipList.P_DENOMINATOR) <= SkipList.P_NUMERATOR and \
+              level < SkipList.MAX_LEVEL:
+            level += 1
+        return level
 
     def __iter__(self):
-        """Return an iterator over the sorted list."""
-        return (value for _list in self._lists for value in _list)
+        it = self.begin()
+        while it != self.end():
+            yield it.val
+            it = it.nexts[0]
 
-    def __reversed__(self):
-        """Return a reverse iterator over the sorted list."""
-        return (value for _list in reversed(self._lists) for value in reversed(_list))
+    def __len__(self):
+        return self.__len-1  # excluding end node
 
-    def __repr__(self):
-        """Return string representation of sorted list."""
-        return 'SortedList({0})'.format(list(self))
+    def __str__(self):
+        result = []
+        for i in reversed(xrange(len(self.__head.nexts))):
+            result.append([])
+            curr = self.__head.nexts[i]
+            while curr:
+                result[-1].append(str(curr.val))
+                curr = curr.nexts[i]
+        return "\n".join(map(lambda x: "->".join(x), result))
 
 # Template:
 # https://github.com/kamyu104/GoogleCodeJam-2020/blob/master/Virtual%20World%20Finals/pack_the_slopes.py
@@ -326,16 +202,40 @@ class SegmentTree(object):  # 0-based index
             showList.append(self.query(i, i))
         return ",".join(map(str, showList))
 
-def update(R, K, r, sl, st, diff):
-    A = sl[(len(sl)-(R-K+1)+1)-1] if R-K+1 <= len(sl) else -1
-    B = sl[K-1] if K <= len(sl) else R+2
-    sl.add(r) if diff > 0 else sl.remove(r)
+# Template:
+# https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival4.py
+def update_skip_lists(K, c, r, sls):
+    topk_sl, others_sl = sls
+    if c == 1:
+        topk_sl.add(r)
+        if len(topk_sl) == K+1:  # keep topk_sl with k elements
+            v = topk_sl.begin().val
+            topk_sl.remove(topk_sl.begin())
+            others_sl.add(v)
+    else:
+        it = others_sl.find(r)
+        if it:
+            others_sl.remove(it)
+            return
+        topk_sl.remove(topk_sl.find(r))
+        if not others_sl:
+            return
+        v = others_sl.end().prevs[0].val
+        others_sl.remove(others_sl.end().prevs[0])
+        topk_sl.add(v)  # keep topk_sl with k elements
+
+def update(R, K, r, sls, st, diff):
+    s1, s2 = sls[0][0], sls[1][0]
+    A = s1.begin().val if R-K+1 == len(s1) else -1
+    B = -s2.begin().val if K == len(s2) else R+2
+    update_skip_lists(R-K+1, diff, r, sls[0])
+    update_skip_lists(K, diff, -r, sls[1])
     if r >= A:
-        new_A = sl[(len(sl)-(R-K+1)+1)-1] if R-K+1 <= len(sl) else -1
+        new_A = s1.begin().val if R-K+1 == len(s1) else -1
         st.update(A+1, new_A-1, diff) if diff == 1 else st.update(new_A+1, A-1, diff)
         A = new_A
     if r <= B:
-        new_B = sl[K-1] if K <= len(sl) else R+2
+        new_B = -s2.begin().val if K == len(s2) else R+2
         st.update(new_B+1, B-1, diff) if diff == 1 else st.update(B+1, new_B-1, diff)
         B = new_B
     if not (r < A or r > B):
@@ -345,17 +245,17 @@ def valet_parking_chapter_2():
     R, C, K, S = map(int, raw_input().strip().split())
     G = [list(raw_input().strip()) for _ in xrange(R)]
 
-    sls = [SortedList() for _ in xrange(C)]
+    heaps = [[[SkipList(), SkipList()] for _ in xrange(2)] for _ in xrange(C)]
     st = SegmentTree(R+2, build_fn=lambda x, y: [abs((i-x)-K) if i >= x else y for i in xrange(2*x)])
     for j in xrange(C):
         for i in xrange(R):
             if G[i][j] == 'X':
-                update(R, K, i+1, sls[j], st, 1)
+                update(R, K, i+1, heaps[j], st, 1)
     result = 0
     for _ in xrange(S):
         i, j = map(lambda x: int(x)-1, raw_input().strip().split())
         G[i][j] = 'X' if G[i][j] == '.' else '.'
-        update(R, K, i+1, sls[j], st, 1 if G[i][j] == 'X' else -1)
+        update(R, K, i+1, heaps[j], st, 1 if G[i][j] == 'X' else -1)
         result += st.query(0, R+1)
     return result
 
