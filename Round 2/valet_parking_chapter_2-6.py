@@ -120,7 +120,7 @@ class SkipList(object):
         return "\n".join(map(lambda x: "->".join(x), result))
 
 # Template:
-# https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival4.py
+# https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival2.py
 def update_skip_lists(K, c, r, sls):
     topk_sl, others_sl = sls
     if c == 1:
