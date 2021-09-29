@@ -100,9 +100,8 @@ def update_heaps(K, c, r, heaps):
         heappush(topk[0], r)
         topk[1] += 1
         if topk[1] == K+1:  # keep topk with k elements
-            v = heappop(topk[0])
+            heappush(others, -heappop(topk[0]))
             topk[1] -= 1
-            heappush(others, -v)
     else:
         if others and r <= -others[0]:
             heappush(others_to_remove, -r)
@@ -110,8 +109,7 @@ def update_heaps(K, c, r, heaps):
             heappush(topk_to_remove, r)
             topk[1] -= 1
             if others:
-                v = -heappop(others)
-                heappush(topk[0], v)  # keep topk with k elements
+                heappush(topk[0], -heappop(others))  # keep topk with k elements
                 topk[1] += 1
     while topk[0] and topk_to_remove and topk[0][0] == topk_to_remove[0]:
         heappop(topk[0]), heappop(topk_to_remove)
