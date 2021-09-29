@@ -333,12 +333,15 @@ def update(R, K, r, sl, st, diff):
     if r >= A:
         new_A = sl[(len(sl)-(R-K+1)+1)-1] if R-K+1 <= len(sl) else -1
         st.update(A+1, new_A-1, diff) if diff == 1 else st.update(new_A+1, A-1, diff)
+        print "update", ((A+1, new_A-1, diff) if diff == 1 else (new_A+1, A-1, diff))
         A = new_A
     if r <= B:
         new_B = sl[K-1] if K <= len(sl) else R+2
         st.update(new_B+1, B-1, diff) if diff == 1 else st.update(B+1, new_B-1, diff)
+        print "update", ((new_B+1, B-1, diff) if diff == 1 else (B+1, new_B-1, diff))
         B = new_B
     if not (r < A or r > B):
+        print "update", r, diff
         st.update(r, r, diff)
 
 def valet_parking_chapter_2():
