@@ -204,38 +204,32 @@ class SegmentTree(object):  # 0-based index
 
 # Template:
 # https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival2.py
-def update_skip_lists(K, c, r, sls):
-    topk_sl, others_sl = sls
+def update_skip_lists(K, c, r, sl):
     if c == 1:
-        topk_sl.add(r)
-        if len(topk_sl) == K+1:  # keep topk_sl with k elements
-            v = topk_sl.begin().val
-            topk_sl.remove(topk_sl.begin())
-            others_sl.add(v)
+        sl[0].add(-r)
+        if len(sl[0]) <= K:
+            sl[1] = sl[0].end().prevs[0]
+        elif r >= -sl[1].val:
+            sl[1] = sl[1].prevs[0]
     else:
-        it = others_sl.find(r)
-        if it:
-            others_sl.remove(it)
-            return
-        topk_sl.remove(topk_sl.find(r))
-        if not others_sl:
-            return
-        v = others_sl.end().prevs[0].val
-        others_sl.remove(others_sl.end().prevs[0])
-        topk_sl.add(v)  # keep topk_sl with k elements
+        sl[0].remove(sl[0].find(-r))
+        if len(sl[0]) < K:
+            sl[1] = sl[0].end().prevs[0]
+        elif r >= -sl[1].val:
+            sl[1] = sl[1].nexts[0]
 
 def update(R, K, r, sls, st, diff):
-    s1, s2 = sls[0][0], sls[1][0]
-    A = s1.begin().val if R-K+1 == len(s1) else -1
-    B = -s2.begin().val if K == len(s2) else R+2
-    update_skip_lists(R-K+1, diff, r, sls[0])
-    update_skip_lists(K, diff, -r, sls[1])
+    s1, s2 = sls
+    A = -s1[1].val if R-K+1 <= len(s1[0]) else -1
+    B = s2[1].val if K <= len(s2[0]) else R+2
+    update_skip_lists(R-K+1, diff, r, s1)
+    update_skip_lists(K, diff, -r, s2)
     if r >= A:
-        new_A = s1.begin().val if R-K+1 == len(s1) else -1
+        new_A = -s1[1].val if R-K+1 <= len(s1[0]) else -1
         st.update(A+1, new_A-1, diff) if diff == 1 else st.update(new_A+1, A-1, diff)
         A = new_A
     if r <= B:
-        new_B = -s2.begin().val if K == len(s2) else R+2
+        new_B = s2[1].val if K <= len(s2[0]) else R+2
         st.update(new_B+1, B-1, diff) if diff == 1 else st.update(B+1, new_B-1, diff)
         B = new_B
     if not (r < A or r > B):
@@ -245,7 +239,7 @@ def valet_parking_chapter_2():
     R, C, K, S = map(int, raw_input().strip().split())
     G = [list(raw_input().strip()) for _ in xrange(R)]
 
-    sls = [[[SkipList(), SkipList()] for _ in xrange(2)] for _ in xrange(C)]
+    sls = [[[SkipList(), None] for _ in xrange(2)] for _ in xrange(C)]
     st = SegmentTree(R+2, build_fn=lambda x, y: [abs((i-x)-K) if i >= x else y for i in xrange(2*x)])
     for j in xrange(C):
         for i in xrange(R):
