@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Round 2 - Problem C. Valet Parking - Chapter 2
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C2
 #
-# Time:  O((R * C + S) * logR), pass in PyPy2 but Python2
+# Time:  O(S * min(R, C) + (R * C + S) * logR), pass in PyPy2 but Python2
 # Space: O(R * C)
 #
 
@@ -120,89 +120,6 @@ class SkipList(object):
         return "\n".join(map(lambda x: "->".join(x), result))
 
 # Template:
-# https://github.com/kamyu104/GoogleCodeJam-2020/blob/master/Virtual%20World%20Finals/pack_the_slopes.py
-class SegmentTree(object):  # 0-based index
-    def __init__(self, N,
-                 build_fn=lambda x, y: [y]*(2*x),
-                 query_fn=lambda x, y: y if x is None else min(x, y),
-                 update_fn=lambda x, y: y if x is None else x+y,
-                 default_val=float("inf")):
-        self.N = N
-        self.H = (N-1).bit_length()
-        self.query_fn = query_fn
-        self.update_fn = update_fn
-        self.tree = build_fn(N, default_val)
-        self.lazy = [None]*N
-        for i in reversed(xrange(1, N)):
-            self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
-
-    def __apply(self, x, val):
-        self.tree[x] = self.update_fn(self.tree[x], val)
-        if x < self.N:
-            self.lazy[x] = self.update_fn(self.lazy[x], val)
-
-    def update(self, L, R, h):  # Time: O(logN), Space: O(N)
-        def pull(x):
-            while x > 1:
-                x //= 2
-                self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
-                if self.lazy[x] is not None:
-                    self.tree[x] = self.update_fn(self.tree[x], self.lazy[x])
-
-        if L > R:
-            return
-        L += self.N
-        R += self.N
-        L0, R0 = L, R
-        while L <= R:
-            if L & 1:  # is right child
-                self.__apply(L, h)
-                L += 1
-            if R & 1 == 0:  # is left child
-                self.__apply(R, h)
-                R -= 1
-            L //= 2
-            R //= 2
-        pull(L0)
-        pull(R0)
-
-    def query(self, L, R):  # Time: O(logN), Space: O(N)
-        def push(x):
-            n = 2**self.H
-            while n != 1:
-                y = x // n
-                if self.lazy[y] is not None:
-                    self.__apply(y*2, self.lazy[y])
-                    self.__apply(y*2 + 1, self.lazy[y])
-                    self.lazy[y] = None
-                n //= 2
-
-        result = None
-        if L > R:
-            return result
-
-        L += self.N
-        R += self.N
-        push(L)
-        push(R)
-        while L <= R:
-            if L & 1:  # is right child
-                result = self.query_fn(result, self.tree[L])
-                L += 1
-            if R & 1 == 0:  # is left child
-                result = self.query_fn(result, self.tree[R])
-                R -= 1
-            L //= 2
-            R //= 2
-        return result
-
-    def __str__(self):
-        showList = []
-        for i in xrange(self.N):
-            showList.append(self.query(i, i))
-        return ",".join(map(str, showList))
-
-# Template:
 # https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival4.py
 def update_skip_lists(K, c, r, sls):
     topk_sl, others_sl = sls
@@ -224,7 +141,7 @@ def update_skip_lists(K, c, r, sls):
         others_sl.remove(others_sl.end().prevs[0])
         topk_sl.add(v)  # keep topk_sl with k elements
 
-def update(R, K, r, sls, st, diff):
+def update(R, K, r, sls, cnts, left, right, diff):
     s1, s2 = sls[0][0], sls[1][0]
     A = s1.begin().val if R-K+1 == len(s1) else -1
     B = -s2.begin().val if K == len(s2) else R+2
@@ -232,31 +149,37 @@ def update(R, K, r, sls, st, diff):
     update_skip_lists(K, diff, -r, sls[1])
     if r >= A:
         new_A = s1.begin().val if R-K+1 == len(s1) else -1
-        st.update(A+1, new_A-1, diff) if diff == 1 else st.update(new_A+1, A-1, diff)
+        nl, nr = (max(left, A+1), min(right, new_A-1)) if diff == 1 else (max(left, new_A+1), min(right, A-1))
+        for i in xrange(nl, nr+1):
+            cnts[i-left] += diff
         A = new_A
     if r <= B:
         new_B = -s2.begin().val if K == len(s2) else R+2
-        st.update(new_B+1, B-1, diff) if diff == 1 else st.update(B+1, new_B-1, diff)
+        nl, nr = (max(left, new_B+1), min(right, B-1)) if diff == 1 else (max(left, B+1), min(right, new_B-1))
+        for i in xrange(nl, nr+1):
+            cnts[i-left] += diff
         B = new_B
     if not (r < A or r > B):
-        st.update(r, r, diff)
+        if left <= r <= right:
+            cnts[r-left] += diff
 
 def valet_parking_chapter_2():
     R, C, K, S = map(int, raw_input().strip().split())
     G = [list(raw_input().strip()) for _ in xrange(R)]
 
     sls = [[[SkipList(), SkipList()] for _ in xrange(2)] for _ in xrange(C)]
-    st = SegmentTree(R+2, build_fn=lambda x, y: [abs((i-x)-K) if i >= x else y for i in xrange(2*x)])
+    left, right = max(K-(C-1), 0), min(K+(C-1), R+1)
+    cnts = [abs(i-K) for i in xrange(left, right+1)]
     for j in xrange(C):
         for i in xrange(R):
             if G[i][j] == 'X':
-                update(R, K, i+1, sls[j], st, 1)
+                update(R, K, i+1, sls[j], cnts, left, right, 1)
     result = 0
     for _ in xrange(S):
         i, j = map(lambda x: int(x)-1, raw_input().strip().split())
         G[i][j] = 'X' if G[i][j] == '.' else '.'
-        update(R, K, i+1, sls[j], st, 1 if G[i][j] == 'X' else -1)
-        result += st.query(0, R+1)
+        update(R, K, i+1, sls[j], cnts, left, right, 1 if G[i][j] == 'X' else -1)
+        result += min(cnts)
     return result
 
 for case in xrange(input()):
