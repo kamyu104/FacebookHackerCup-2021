@@ -3,8 +3,8 @@
 # Facebook Hacker Cup 2021 Round 2 - Problem C. Valet Parking - Chapter 2
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C2
 #
-# Time:  O(S * min(R, C) + (R * C + S) * logR)
-# Space: O(R * C)
+# Time:  O(S * min(R, C) + (R * C + S) * logR + SlogS)
+# Space: O(R * C + S)
 #
 
 from heapq import heappush, heappop
@@ -12,7 +12,7 @@ from collections import defaultdict
 
 # Template:
 # https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival4.py
-def update_heaps(K, c, r, heaps):
+def update_heaps(K, c, r, heaps):  # Time: O(SlogS), Space: O(S) due to lazy delete
     topk, others, to_remove = heaps
     if c == 1:
         heappush(topk[0], r)
