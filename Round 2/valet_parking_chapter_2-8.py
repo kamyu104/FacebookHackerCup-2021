@@ -10,21 +10,28 @@
 from heapq import heappush, heappop, heapify
 from collections import defaultdict
 
-def rebuild_heap(heap, to_remove, sign):  # Time: O(R), Space: O(R)
-    result = []
-    for x in heap:
-        if sign*x not in to_remove:
-            result.append(x)
-            continue
-        to_remove[sign*x] -= 1
-        if not to_remove[sign*x]:
-            del to_remove[sign*x]
-    heap[:] = result
-    heapify(heap)
-
 # Template:
 # https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20F/festival4.py
 def update_heaps(K, c, r, heaps):
+    def lazy_delete(heap, to_remove, sign):
+        while heap and sign*heap[0] in to_remove:
+            to_remove[sign*heap[0]] -= 1
+            if not to_remove[sign*heap[0]]:
+                del to_remove[sign*heap[0]]
+            heappop(heap)
+
+    def full_delete(heap, to_remove, sign):  # Time: O(R), Space: O(R)
+        result = []
+        for x in heap:
+            if sign*x not in to_remove:
+                result.append(x)
+                continue
+            to_remove[sign*x] -= 1
+            if not to_remove[sign*x]:
+                del to_remove[sign*x]
+        heap[:] = result
+        heapify(heap)
+
     topk, others, to_remove = heaps
     if c == 1:
         heappush(topk[0], r)
@@ -43,19 +50,11 @@ def update_heaps(K, c, r, heaps):
                 heappush(topk[0], -heappop(others[0]))  # keep topk with k elements
                 others[1] -= 1
                 topk[1] += 1
-    while others[0] and -others[0][0] in to_remove:
-        to_remove[-others[0][0]] -= 1
-        if not to_remove[-others[0][0]]:
-            del to_remove[-others[0][0]]
-        heappop(others[0])
-    while topk[0] and topk[0][0] in to_remove:
-        to_remove[topk[0][0]] -= 1
-        if not to_remove[topk[0][0]]:
-            del to_remove[topk[0][0]]
-        heappop(topk[0])
+    lazy_delete(others[0], to_remove, -1)
+    lazy_delete(topk[0], to_remove, 1)
     if len(topk[0])+len(others[0]) > 2*(topk[1]+others[1]):
-        rebuild_heap(others[0], to_remove, -1)
-        rebuild_heap(topk[0], to_remove, 1)
+        full_delete(others[0], to_remove, -1)
+        full_delete(topk[0], to_remove, 1)
 
 def update(R, K, r, heaps, cnts, left, right, diff):
     h1, h2 = heaps[0][0], heaps[1][0]
