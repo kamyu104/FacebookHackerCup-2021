@@ -21,7 +21,7 @@ def valet_parking_chapter_1():
         for i in xrange(left, right+1):
             has_x = (1 <= i <= R and G[i-1][j] == 'X')
             curr += has_x
-            if has_x or curr >= K or total-curr >= R-K+1:
+            if curr >= K or total-curr >= R-K+1 or has_x:
                 cnts[i] += 1
     return min(abs(i-K)+cnts[i] for i in xrange(left, right+1))
 
