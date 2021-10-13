@@ -205,15 +205,11 @@ class SegmentTree(object):  # 0-based index
                  query_fn=lambda x, y: y if x is None else min(x, y),
                  update_fn=lambda x, y: y if x is None else x+y,
                  default_val=float("inf")):
-        def ceil_log2(x):
-            return (x-1).bit_length()
-
-        self.H = (N-1).bit_length()  # modified
-        size = 2*(2**ceil_log2(N))-1  # modified, make it a perfect (full and complete) binary tree to make query possible
-        self.base = size-N  # modified
+        self.N = N
         self.query_fn = query_fn
         self.update_fn = update_fn
-        self.tree = build_fn(size, default_val)  # modified
+        self.tree = build_fn(2**((N-1).bit_length()), default_val)  # modified, make it a perfect binary tree rather than complete and full one to make query possible
+        self.base = len(self.tree)-N
 
     def __apply(self, x):
         if x >= self.base:
@@ -221,9 +217,9 @@ class SegmentTree(object):  # 0-based index
 
     def update(self, i):  # Time: O(logN), Space: O(N)
         def pull(x):
-            while x:
-                x = (x-1)//2  # modified
-                self.tree[x] = self.query_fn(self.tree[x*2+1], self.tree[x*2+2])  # modified
+            while x > 1:
+                x //= 2
+                self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
 
         self.__apply(i+self.base)  # modified
         pull(i+self.base)  # modified
@@ -235,14 +231,14 @@ class SegmentTree(object):  # 0-based index
         R += self.base  # modified
         left = right = None  # modified
         while L <= R:
-            if L & 1 == 0:  # is right child, modified
-                left = self.query_fn(left, self.tree[L])
+            if L & 1:  # is right child
+                left = self.query_fn(left, self.tree[L])  # modified
                 L += 1
-            if R & 1:  # is left child, modified
-                right = self.query_fn(self.tree[R], right)
+            if R & 1 == 0:  # is left child
+                right = self.query_fn(self.tree[R], right)  # modified
                 R -= 1
-            L = (L-1)//2  # modified
-            R = (R-1)//2  # modified
+            L //= 2
+            R //= 2
         return self.query_fn(left, right)  # modified
 
     def __str__(self):
@@ -284,7 +280,7 @@ def query_path(G, G0, G1, st, r1, c1, r2, c2):
 
 def auth_ore_ization():
     def build(x, y):
-        return [[[y]*3 for _ in xrange(3)] for _ in xrange(x)]
+        return [[[y]*3 for _ in xrange(3)] for _ in xrange(2*x)]
 
     def update(r, x):
         for a in xrange(3):
