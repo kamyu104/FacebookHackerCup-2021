@@ -209,7 +209,7 @@ class SegmentTree(object):  # 0-based index
         self.query_fn = query_fn
         self.update_fn = update_fn
         self.tree = build_fn(2**((N-1).bit_length()), default_val)  # modified, make it a perfect binary tree rather than complete and full one to make query possible
-        self.base = len(self.tree)-N  # modified
+        self.base = len(self.tree)-N  # modified, leaf nodes are all at the same depths
 
     def __apply(self, x):
         if x >= self.base:
