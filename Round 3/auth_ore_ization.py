@@ -8,7 +8,7 @@
 #
 
 # Template:
-# https://github.com/cheran-senthil/PyRival/blob/master/pyrival/data_structures/SortedList.py
+# https://github.com/kamyu104/GoogleKickStart-2021/blob/main/Round%20D/final_exam2.py
 class SortedList(object):
     def __init__(self, iterable=[], _load=200):
         """Initialize sorted list instance."""
@@ -18,56 +18,6 @@ class SortedList(object):
         self._lists = _lists = [values[i:i + _load] for i in xrange(0, _len, _load)]
         self._list_lens = [len(_list) for _list in _lists]
         self._mins = [_list[0] for _list in _lists]
-        self._fen_tree = []
-        self._rebuild = True
-
-    def _fen_build(self):
-        """Build a fenwick tree instance."""
-        self._fen_tree[:] = self._list_lens
-        _fen_tree = self._fen_tree
-        for i in xrange(len(_fen_tree)):
-            if i | i + 1 < len(_fen_tree):
-                _fen_tree[i | i + 1] += _fen_tree[i]
-        self._rebuild = False
-
-    def _fen_update(self, index, value):
-        """Update `fen_tree[index] += value`."""
-        if not self._rebuild:
-            _fen_tree = self._fen_tree
-            while index < len(_fen_tree):
-                _fen_tree[index] += value
-                index |= index + 1
-
-    def _fen_query(self, end):
-        """Return `sum(_fen_tree[:end])`."""
-        if self._rebuild:
-            self._fen_build()
-
-        _fen_tree = self._fen_tree
-        x = 0
-        while end:
-            x += _fen_tree[end - 1]
-            end &= end - 1
-        return x
-
-    def _fen_findkth(self, k):
-        """Return a pair of (the largest `idx` such that `sum(_fen_tree[:idx]) <= k`, `k - sum(_fen_tree[:idx])`)."""
-        _list_lens = self._list_lens
-        if k < _list_lens[0]:
-            return 0, k
-        if k >= self._len - _list_lens[-1]:
-            return len(_list_lens) - 1, k + _list_lens[-1] - self._len
-        if self._rebuild:
-            self._fen_build()
-
-        _fen_tree = self._fen_tree
-        idx = -1
-        for d in reversed(xrange(len(_fen_tree).bit_length())):
-            right_idx = idx + (1 << d)
-            if right_idx < len(_fen_tree) and k >= _fen_tree[right_idx]:
-                idx = right_idx
-                k -= _fen_tree[idx]
-        return idx + 1, k
 
     def _delete(self, pos, idx):
         """Delete value at the given `(pos, idx)`."""
@@ -76,7 +26,6 @@ class SortedList(object):
         _list_lens = self._list_lens
 
         self._len -= 1
-        self._fen_update(pos, -1)
         del _lists[pos][idx]
         _list_lens[pos] -= 1
 
@@ -86,7 +35,6 @@ class SortedList(object):
             del _lists[pos]
             del _list_lens[pos]
             del _mins[pos]
-            self._rebuild = True
 
     def _loc_left(self, value):
         """Return an index pair that corresponds to the first position of `value` in the sorted list."""
@@ -155,7 +103,6 @@ class SortedList(object):
         self._len += 1
         if _lists:
             pos, idx = self._loc_right(value)
-            self._fen_update(pos, 1)
             _list = _lists[pos]
             _list.insert(idx, value)
             _list_lens[pos] += 1
@@ -166,12 +113,10 @@ class SortedList(object):
                 _mins.insert(pos + 1, _list[_load])
                 _list_lens[pos] = _load
                 del _list[_load:]
-                self._rebuild = True
         else:
             _lists.append([value])
             _mins.append(value)
             _list_lens.append(1)
-            self._rebuild = True
 
     def discard(self, value):
         """Remove `value` from sorted list if it is a member."""
@@ -188,40 +133,49 @@ class SortedList(object):
         if _len == self._len:
             raise ValueError('{0!r} not in list'.format(value))
 
-    def pop(self, index=-1):
-        """Remove and return value at `index` in sorted list."""
-        pos, idx = self._fen_findkth(self._len + index if index < 0 else index)
-        value = self._lists[pos][idx]
-        self._delete(pos, idx)
-        return value
-
-    def bisect_left(self, value):
-        """Return the first index to insert `value` in the sorted list."""
-        pos, idx = self._loc_left(value)
-        return self._fen_query(pos) + idx
-
-    def bisect_right(self, value):
-        """Return the last index to insert `value` in the sorted list."""
-        pos, idx = self._loc_right(value)
-        return self._fen_query(pos) + idx
-
     def count(self, value):
         """Return number of occurrences of `value` in the sorted list."""
         return self.bisect_right(value) - self.bisect_left(value)
 
+    def lower_bound(self, value):  # added
+        """Return the first iter to insert `value` in the sorted list."""
+        return self._loc_left(value)
+
+    def upper_bound(self, value):  # added
+        """Return the last iter to insert `value` in the sorted list."""
+        return self._loc_right(value)
+
+    def val(self, it):  # added
+        """Return the value of the `it` in the sorted list."""
+        pos, idx = it
+        return self._lists[pos][idx]
+
+    def erase(self, it):  # added
+        """Remove `it` from sorted list; `it` must be a member."""
+        pos, idx = it
+        self._delete(pos, idx)
+
+    def begin(self):  # added
+        """Return the begin of the it in the sorted list."""
+        return (0, 0)
+
+    def end(self):  # added
+        """Return the end of the it in the sorted list."""
+        return (len(self._lists)-1, len(self._lists[-1])) if self._lists else (0, 0)
+
+    def prev(self, it):  # added
+        """Return the previous `it` in the sorted list."""
+        pos, idx = it
+        return (pos, idx-1) if idx else (pos-1, len(self._lists[pos-1])-1)
+
+    def next(self, it):  # added
+        """Return the next `it` in the sorted list."""
+        pos, idx = it
+        return (pos, idx+1) if pos+1 == len(self._lists) or idx+1 != len(self._lists[pos]) else (pos+1, 0)
+
     def __len__(self):
         """Return the size of the sorted list."""
         return self._len
-
-    def __getitem__(self, index):
-        """Lookup value at `index` in sorted list."""
-        pos, idx = self._fen_findkth(self._len + index if index < 0 else index)
-        return self._lists[pos][idx]
-
-    def __delitem__(self, index):
-        """Remove value at `index` from sorted list."""
-        pos, idx = self._fen_findkth(self._len + index if index < 0 else index)
-        self._delete(pos, idx)
 
     def __contains__(self, value):
         """Return true if `value` is an element of the sorted list."""
@@ -261,17 +215,17 @@ class SegmentTree(object):  # 0-based index
         self.update_fn = update_fn
         self.tree = build_fn(size, default_val)  # modified
 
-    def __apply(self, x, val):
+    def __apply(self, x):
         if x >= self.base:
-            self.tree[x] = self.update_fn(x-self.base, self.tree[x], val)  # modified
+            self.update_fn(x-self.base, self.tree[x])  # modified
 
-    def update(self, i, h):  # Time: O(logN), Space: O(N)
+    def update(self, i):  # Time: O(logN), Space: O(N)
         def pull(x):
             while x:
                 x = (x-1)//2  # modified
                 self.tree[x] = self.query_fn(self.tree[x*2+1], self.tree[x*2+2])  # modified
 
-        self.__apply(i+self.base, h)  # modified
+        self.__apply(i+self.base)  # modified
         pull(i+self.base)  # modified
 
     def query(self, L, R):  # Time: O(logN), Space: O(N)
@@ -307,7 +261,7 @@ def add_cell(G, G0, G1, st, r, c):
     G[r][c] = 1
     G0[c].remove(r)
     G1[c].add(r)
-    st.update(r, 1)
+    st.update(r)
 
 def query_path(G, G0, G1, st, r1, c1, r2, c2):
     result = INF
@@ -316,27 +270,28 @@ def query_path(G, G0, G1, st, r1, c1, r2, c2):
         for b in xrange(3):
             d1, d2 = st.get(r1)[c1][a], st.get(r2)[c2][b]
             if d1 == INF and abs(a-c1) == 2 and G[r1][c1] and G[r1][a]:
-                i = G1[1][G1[1].bisect_left(r1)-1]
-                if i >= 0 and i > G0[0][G0[0].bisect_left(r1)-1] and i > G0[2][G0[2].bisect_left(r1)-1]:
+                i = G1[1].val(G1[1].prev(G1[1].lower_bound(r1)))
+                if i >= 0 and i > G0[0].val(G0[0].prev(G0[0].lower_bound(r1))) and i > G0[2].val(G0[2].prev(G0[2].lower_bound(r1))):
                     d1 = 2*(r1-i)+2
             if d2 == INF and abs(b-c2) == 2 and G[r2][c2] and G[r2][b]:
-                i = G1[1][G1[1].bisect_left(r2)]
-                if i < len(G) and i < G0[0][G0[0].bisect_left(r2)] and i < G0[2][G0[2].bisect_left(r2)]:
+                i = G1[1].val(G1[1].lower_bound(r2))
+                if i < len(G) and i < G0[0].val(G0[0].lower_bound(r2)) and i < G0[2].val(G0[2].lower_bound(r2)):
                     d2 = 2*(i-r2)+2
-            result = min(result, d1+dist[a][b]+d2)
+            d = d1+dist[a][b]+d2
+            if d < result:
+                result = d
     return result if result != INF else 1
 
 def auth_ore_ization():
     def build(x, y):
         return [[[y]*3 for _ in xrange(3)] for _ in xrange(x)]
 
-    def update(r, x, _):
+    def update(r, x):
         for a in xrange(3):
             for b in xrange(a, 3):
                 if not G[r][b]:
                     break
                 x[a][b] = x[b][a] = b-a
-        return x
 
     def query(x, y):
         return y if x is None else x if y is None else [[min(x[a][c]+1+y[c][b] for c in xrange(3)) for b in xrange(3)] for a in xrange(3)]
@@ -362,7 +317,8 @@ def auth_ore_ization():
             result = mulmod(result, query_path(G, G0, G1, st, *event[2:]))
     return result
 
-INF = float("inf")
 MOD = 10**9+7
+MAX_N = 10**6
+INF = MAX_N*3
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, auth_ore_ization())
