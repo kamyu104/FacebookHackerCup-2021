@@ -249,7 +249,13 @@ def add_cell(G, G0, G1, st, r, c):
     G[r][c] = 1
     G0[c].remove(r)
     G1[c].add(r)
-    st.update(r, G[r])
+    matrix = [[INF]*3 for _ in xrange(3)]
+    for a in xrange(3):
+        for b in xrange(a, 3):
+            if not G[r][b]:
+                break
+            matrix[a][b] = matrix[b][a] = b-a
+    st.update(r, matrix)
 
 def query_path(G, G0, G1, st, r1, c1, r2, c2):
     result = INF
@@ -274,14 +280,6 @@ def auth_ore_ization():
     def build(x):
         return [[[INF]*3 for _ in xrange(3)] for _ in xrange(2*x)]
 
-    def update(x, h):
-        for a in xrange(3):
-            for b in xrange(a, 3):
-                if not h[b]:
-                    break
-                x[a][b] = x[b][a] = b-a
-        return x
-
     def query(x, y):
         return y if x is None else x if y is None else [[min(x[a][c]+1+y[c][b] for c in xrange(3)) for b in xrange(3)] for a in xrange(3)]
 
@@ -297,7 +295,7 @@ def auth_ore_ization():
     G = [[0]*3 for _ in xrange(N)]
     G0 = [SortedList(xrange(-1, N+1)) for _ in xrange(3)]
     G1 = [SortedList([-1, N]) for _ in xrange(3)]
-    st = SegmentTree(N, build_fn=build, update_fn=update, query_fn=query)
+    st = SegmentTree(N, build_fn=build, query_fn=query)
     result = 1
     for event in events:  # Time: O((M + N) * logN)
         if not event[1]:
