@@ -209,17 +209,17 @@ class SegmentTree(object):  # 0-based index
         self.tree = build_fn(2**((N-1).bit_length()))  # modified, make it a perfect binary tree rather than complete and full one to make query possible
         self.base = len(self.tree)-N  # modified, leaf nodes are all at the same depths
 
-    def __apply(self, x):
+    def __apply(self, x, h):
         if x >= self.base:
-            self.update_fn(x-self.base, self.tree[x])  # modified
+            self.update_fn(x-self.base, self.tree[x], h)  # modified
 
-    def update(self, i):  # Time: O(logN), Space: O(N)
+    def update(self, i, h):  # Time: O(logN), Space: O(N)
         def pull(x):
             while x > 1:
                 x //= 2
                 self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
 
-        self.__apply(i+self.base)  # modified
+        self.__apply(i+self.base, h)  # modified
         pull(i+self.base)  # modified
 
     def query(self, L, R):  # Time: O(logN), Space: O(N)
@@ -255,7 +255,7 @@ def add_cell(G, G0, G1, st, r, c):
     G[r][c] = 1
     G0[c].remove(r)
     G1[c].add(r)
-    st.update(r)
+    st.update(r, 1)
 
 def query_path(G, G0, G1, st, r1, c1, r2, c2):
     result = INF
@@ -280,7 +280,7 @@ def auth_ore_ization():
     def build(x):
         return [[[INF]*3 for _ in xrange(3)] for _ in xrange(2*x)]
 
-    def update(r, x):
+    def update(r, x, _):
         for a in xrange(3):
             for b in xrange(a, 3):
                 if not G[r][b]:
