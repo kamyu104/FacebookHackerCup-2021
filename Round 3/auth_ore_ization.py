@@ -214,7 +214,7 @@ class SegmentTree(object):  # 0-based index
 
     def update(self, i, h):  # Time: O(logN), Space: O(N)
         def apply(x, h):
-            self.tree[x] = self.update_fn(self.tree[x], h)  # modified
+            self.tree[x] = self.update_fn(self.tree[x], h)
 
         def pull(x):
             while x > 1:
