@@ -46,7 +46,7 @@ def iter_dfs(N, K, adj):
     stk = [partial(divide, 0)]
     while stk:
         stk.pop()()
-    return max(dp[0])
+    return dp[0][K+1]
 
 def perf_ore_mance():
     N, K = map(int, raw_input().strip().split())
