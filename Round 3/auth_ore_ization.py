@@ -201,14 +201,12 @@ class SortedList(object):
 # https://github.com/kamyu104/FacebookHackerCup-2021/blob/c53116f2be2ddbafb6d04362a09a03c3659a17dd/Round%202/valet_parking_chapter_2.py
 class SegmentTree(object):  # 0-based index
     def __init__(self, N,
-                 build_fn=lambda x, y: [y]*(2*x),
+                 build_fn=lambda x: [float("inf")]*(2*x),
                  query_fn=lambda x, y: y if x is None else min(x, y),
-                 update_fn=lambda x, y: y if x is None else x+y,
-                 default_val=float("inf")):
-        self.N = N
+                 update_fn=lambda x, y: y if x is None else x+y):
         self.query_fn = query_fn
         self.update_fn = update_fn
-        self.tree = build_fn(2**((N-1).bit_length()), default_val)  # modified, make it a perfect binary tree rather than complete and full one to make query possible
+        self.tree = build_fn(2**((N-1).bit_length()))  # modified, make it a perfect binary tree rather than complete and full one to make query possible
         self.base = len(self.tree)-N  # modified, leaf nodes are all at the same depths
 
     def __apply(self, x):
@@ -279,8 +277,8 @@ def query_path(G, G0, G1, st, r1, c1, r2, c2):
     return result if result != INF else 1
 
 def auth_ore_ization():
-    def build(x, y):
-        return [[[y]*3 for _ in xrange(3)] for _ in xrange(2*x)]
+    def build(x):
+        return [[[INF]*3 for _ in xrange(3)] for _ in xrange(2*x)]
 
     def update(r, x):
         for a in xrange(3):
@@ -304,7 +302,7 @@ def auth_ore_ization():
     G = [[0]*3 for _ in xrange(N)]
     G0 = [SortedList(xrange(-1, N+1)) for _ in xrange(3)]
     G1 = [SortedList([-1, N]) for _ in xrange(3)]
-    st = SegmentTree(N, build_fn=build, update_fn=update, query_fn=query, default_val=INF)
+    st = SegmentTree(N, build_fn=build, update_fn=update, query_fn=query)
     result = 1
     for event in events:  # Time: O((M + N) * logN)
         if not event[1]:
