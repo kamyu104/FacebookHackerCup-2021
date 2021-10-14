@@ -16,7 +16,7 @@ def iter_dfs(N, K, adj):
             stk.append(partial(divide, child))
 
     def postprocess(i):
-        dp2 = [[-INF]*2 for _ in xrange(K+1)]  # dp[c][b]: max number of determined nodes by using current node's subtree with c children, b = 1 iff one of which has subtree size 2 and the others of which have subtree sizes either 1 or > K
+        dp2 = [[-INF]*2 for _ in xrange(K+1)]  # dp[c][b]: max number of determined nodes by using current node's subtree with c children, b = 1 iff one of which has subtree size 2 and the others of which have subtree sizes either 1 or >= K+1
         dp2[0][0] = 0
         for child in adj[i]:
             for c in reversed(xrange(len(dp2))):
@@ -37,8 +37,8 @@ def iter_dfs(N, K, adj):
 
         # dp[i] merges all above dp[child], dp2, dp3
         for child in adj[i]:
-            dp[i][K+1] = max(dp[i][K+1], dp[child][K+1]+1)  # case child: node i has 1 child which has subtree size > K
-        dp[i][K+1] = max(dp[i][K+1], dp2[K][1]+1)  # case grandchild: node i has at least K children, one of which has subtree size 2 and the others of which have subtree sizes either 1 or > K
+            dp[i][K+1] = max(dp[i][K+1], dp[child][K+1]+1)  # case child: node i has 1 child which has subtree size >= K+1
+        dp[i][K+1] = max(dp[i][K+1], dp2[K][1]+1)  # case grandchild: node i has at least K children, one of which has subtree size 2 and the others of which have subtree sizes either 1 or >= K+1
         for s1 in xrange(len(dp3)):
             dp[i][s1] = max(dp[i][s1], dp3[s1])  # case neither: no new determined nodes
 
