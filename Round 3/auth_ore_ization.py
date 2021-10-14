@@ -203,7 +203,7 @@ class SegmentTree(object):  # 0-based index
     def __init__(self, N,
                  build_fn=lambda x: [float("inf")]*(2*x),
                  query_fn=lambda x, y: y if x is None else x if y is None else min(x, y),
-                 update_fn=lambda _, x, y: y if x is None else y):
+                 update_fn=lambda x, y: y if x is None else y):
         self.tree = build_fn(2**((N-1).bit_length()))  # modified, make it a perfect binary tree rather than complete and full one to make query possible
         self.base = len(self.tree)-N  # modified, leaf nodes are all at the same depths
         self.query_fn = query_fn
@@ -212,7 +212,7 @@ class SegmentTree(object):  # 0-based index
     def update(self, i, h):  # Time: O(logN), Space: O(N)
         def apply(x, h):
             if x >= self.base:
-                self.tree[x] = self.update_fn(x-self.base, self.tree[x], h)  # modified
+                self.tree[x] = self.update_fn(self.tree[x], h)  # modified
 
         def pull(x):
             while x > 1:
@@ -249,7 +249,7 @@ def add_cell(G, G0, G1, st, r, c):
     G[r][c] = 1
     G0[c].remove(r)
     G1[c].add(r)
-    st.update(r, 1)
+    st.update(r, G[r])
 
 def query_path(G, G0, G1, st, r1, c1, r2, c2):
     result = INF
@@ -274,10 +274,10 @@ def auth_ore_ization():
     def build(x):
         return [[[INF]*3 for _ in xrange(3)] for _ in xrange(2*x)]
 
-    def update(r, x, _):
+    def update(x, h):
         for a in xrange(3):
             for b in xrange(a, 3):
-                if not G[r][b]:
+                if not h[b]:
                     break
                 x[a][b] = x[b][a] = b-a
         return x
