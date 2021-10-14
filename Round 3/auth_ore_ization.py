@@ -212,7 +212,7 @@ class SegmentTree(object):  # 0-based index
     def update(self, i, h):  # Time: O(logN), Space: O(N)
         def apply(x, h):
             if x >= self.base:
-                self.update_fn(x-self.base, self.tree[x], h)  # modified
+                self.tree[x] = self.update_fn(x-self.base, self.tree[x], h)  # modified
 
         def pull(x):
             while x > 1:
@@ -280,6 +280,7 @@ def auth_ore_ization():
                 if not G[r][b]:
                     break
                 x[a][b] = x[b][a] = b-a
+        return x
 
     def query(x, y):
         return y if x is None else x if y is None else [[min(x[a][c]+1+y[c][b] for c in xrange(3)) for b in xrange(3)] for a in xrange(3)]
