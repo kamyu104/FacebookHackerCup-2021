@@ -21,9 +21,10 @@ def iter_dfs(N, K, adj):
         for child in adj[i]:
             for c in reversed(xrange(len(dp2))):
                 for b in reversed(xrange(2)):
+                    s = min(c+1, K)  # capped by K
                     if not b:
-                        dp2[min(c+1, K)][1] = max(dp2[min(c+1, K)][1], dp2[c][b]+dp[child][2])
-                    dp2[min(c+1, K)][b] = max(dp2[min(c+1, K)][b], dp2[c][b]+max(dp[child][1], dp[child][K+1]))
+                        dp2[s][1] = max(dp2[s][1], dp2[c][b]+dp[child][2])
+                    dp2[s][b] = max(dp2[s][b], dp2[c][b]+max(dp[child][1], dp[child][K+1]))
 
         dp3 = [-INF]*((K+1)+1)  # dp[s]: max number of determined nodes by using current node's subtree with size s
         dp3[1] = 0
@@ -31,7 +32,8 @@ def iter_dfs(N, K, adj):
             for s1 in reversed(xrange(len(dp3))):
                 cnt = dp3[s1]
                 for s2 in xrange(len(dp[child])):
-                    dp3[min(s1+s2, K+1)] = max(dp3[min(s1+s2, K+1)], cnt+dp[child][s2])
+                    s = min(s1+s2, K+1)  # capped by K+1
+                    dp3[s] = max(dp3[s], cnt+dp[child][s2])
 
         # dp[i] merges all above dp[child], dp2, dp3
         for child in adj[i]:
