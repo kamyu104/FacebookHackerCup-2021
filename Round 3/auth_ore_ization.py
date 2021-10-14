@@ -239,12 +239,6 @@ class SegmentTree(object):  # 0-based index
             R //= 2
         return self.query_fn(left, right)  # modified
 
-    def __str__(self):
-        showList = []
-        for i in xrange(self.base):
-            showList.append(self.query(i, i))
-        return ",".join(map(str, showList))
-
     def get(self, i):  # added
         return self.tree[self.base+i]
 
