@@ -16,7 +16,7 @@ def iter_dfs(N, K, adj):
             stk.append(partial(divide, child))
 
     def postprocess(i):
-        dp2 = [[-INF]*2 for _ in xrange(K+1)]  # dp[c][b]: max number of determined nodes by using current node's subtree with c children, b = 1 if only if one of which has subtree size 2 and the others of which have subtree sizes either 1 or > K
+        dp2 = [[-INF]*2 for _ in xrange(K+1)]  # dp[c][b]: max number of determined nodes by using current node's subtree with c children, b = 1 iff one of which has subtree size 2 and the others of which have subtree sizes either 1 or > K
         dp2[0][0] = 0
         for child in adj[i]:
             for c in reversed(xrange(len(dp2))):
