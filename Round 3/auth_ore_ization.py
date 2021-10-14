@@ -201,13 +201,16 @@ class SortedList(object):
 # https://github.com/kamyu104/FacebookHackerCup-2021/blob/c53116f2be2ddbafb6d04362a09a03c3659a17dd/Round%202/valet_parking_chapter_2.py
 class SegmentTree(object):  # 0-based index
     def __init__(self, N,
-                 build_fn=lambda x: [float("inf")]*(2*x),
+                 build_fn=lambda n: [float("inf") for _ in xrange(n)],
                  query_fn=lambda x, y: y if x is None else x if y is None else min(x, y),
                  update_fn=lambda x, y: y if x is None else y):
-        self.tree = build_fn(2**((N-1).bit_length()))  # modified, make it a perfect binary tree rather than complete and full one to make query possible
+        self.tree = [None]*(2*2**((N-1).bit_length()))  # modified, make it a perfect binary tree rather than complete and full one to make query possible
+        self.tree[N:] = build_fn(N)
         self.base = len(self.tree)-N  # modified, leaf nodes are all at the same depths
         self.query_fn = query_fn
         self.update_fn = update_fn
+        for i in reversed(xrange(1, len(self.tree)-2**((N-1).bit_length()))):
+            self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
 
     def update(self, i, h):  # Time: O(logN), Space: O(N)
         def apply(x, h):
@@ -277,8 +280,8 @@ def query_path(G, G0, G1, st, r1, c1, r2, c2):
     return result if result != INF else 1
 
 def auth_ore_ization():
-    def build(x):
-        return [[[INF]*3 for _ in xrange(3)] for _ in xrange(2*x)]
+    def build(n):
+        return [[[INF]*3 for _ in xrange(3)] for _ in xrange(n)]
 
     def query(x, y):
         return y if x is None else x if y is None else [[min(x[a][c]+1+y[c][b] for c in xrange(3)) for b in xrange(3)] for a in xrange(3)]
