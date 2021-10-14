@@ -204,10 +204,10 @@ class SegmentTree(object):  # 0-based index
                  build_fn=lambda x: [float("inf")]*(2*x),
                  query_fn=lambda x, y: y if x is None else min(x, y),
                  update_fn=lambda x, y: y if x is None else x+y):
-        self.query_fn = query_fn
-        self.update_fn = update_fn
         self.tree = build_fn(2**((N-1).bit_length()))  # modified, make it a perfect binary tree rather than complete and full one to make query possible
         self.base = len(self.tree)-N  # modified, leaf nodes are all at the same depths
+        self.query_fn = query_fn
+        self.update_fn = update_fn
 
     def update(self, i, h):  # Time: O(logN), Space: O(N)
         def apply(x, h):
