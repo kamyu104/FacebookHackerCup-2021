@@ -209,7 +209,7 @@ class SegmentTree(object):  # 0-based index
         self.base = len(self.tree)-N  # modified, leaf nodes are all at the same depths
         self.query_fn = query_fn
         self.update_fn = update_fn
-        for i in reversed(xrange(1, len(self.tree)-2**((N-1).bit_length()))):
+        for i in reversed(xrange(1, len(self.tree)-2**((N-1).bit_length()))):  # modified, non-leaf nodes
             self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
 
     def update(self, i, h):  # Time: O(logN), Space: O(N)
