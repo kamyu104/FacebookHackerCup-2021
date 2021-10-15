@@ -1,7 +1,7 @@
 # Copyright (c) 2021 kamyu. All rights reserved.
 #
 # Facebook Hacker Cup 2021 Round 3 - Problem D. Expl-ore-ration Chapter 1
-# https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/C
+# https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D1
 #
 # Time:  O(R * C * log(R * C) + R * C * alpha(R * C)) = O(R * C * log(R * C))
 # Space: O(R * C)
