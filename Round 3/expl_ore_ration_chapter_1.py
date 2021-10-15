@@ -41,9 +41,6 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
         self.has_robot[x] = 1
         return 1
 
-    def set_has_robot(self, x, v):  # added
-        self.has_robot[self.find_set(x)] = v
-
 def expl_ore_ration_chapter_1():
     R, C = map(int, raw_input().strip().split())
     H = []
