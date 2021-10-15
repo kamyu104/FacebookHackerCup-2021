@@ -1,6 +1,6 @@
 # Copyright (c) 2021 kamyu. All rights reserved.
 #
-# Facebook Hacker Cup 2021 Round 3 - Problem D. Expl-ore-ration Chapter 1
+# Facebook Hacker Cup 2021 Round 3 - Problem D. Expl-ore-ation Chapter 1
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D1
 #
 # Time:  O(R * C * log(R * C) + R * C * alpha(R * C)) = O(R * C * log(R * C))
@@ -41,7 +41,7 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
         self.has_robot[x] = 1
         return 1
 
-def expl_ore_ration_chapter_1():
+def expl_ore_ation_chapter_1():
     R, C = map(int, raw_input().strip().split())
     H = []
     for _ in xrange(R):
@@ -73,4 +73,4 @@ def expl_ore_ration_chapter_1():
     return "%s %s" % (result, total)
 
 for case in xrange(input()):
-    print 'Case #%d: %s' % (case+1, expl_ore_ration_chapter_1())
+    print 'Case #%d: %s' % (case+1, expl_ore_ation_chapter_1())
