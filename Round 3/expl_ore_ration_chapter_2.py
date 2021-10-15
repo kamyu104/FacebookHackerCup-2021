@@ -247,7 +247,7 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
     def __init__(self, n):
         self.set = range(n)
         self.rank = [0]*n
-        self.intervals = [SortedList([(-INF, -INF), (INF, INF)]) for _ in xrange(n)]
+        self.intervals = [SortedList([(-INF, -INF), (INF, INF)]) for _ in xrange(n)]  # modified
 
     def find_set(self, x):
         stk = []
@@ -293,7 +293,7 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
         interval.add((a, b))  # O((R * C + K) * log(R * C)) times, each costs Time: O(logK)
         return (b-a+1)-overlapped
 
-    def add_robot(self, x, a, b):
+    def add_robot(self, x, a, b):  # added
         return self.__add_interval(a, b, self.intervals[self.find_set(x)])
 
 def expl_ore_ration_chapter_2():
