@@ -49,6 +49,7 @@ def expl_ore_ration_chapter_1():
     S = []
     for _ in xrange(R):
         S.extend(map(int, raw_input().strip().split()))
+
     events = []
     for i in xrange(R*C):
         if i-C >= 0:  # up
@@ -58,6 +59,7 @@ def expl_ore_ration_chapter_1():
     for i, s in enumerate(S):
         events.append((s, len(H), i))
     events.sort(reverse=True)
+
     uf = UnionFind(R*C)
     result = total = 0
     for h, a, b in events:
