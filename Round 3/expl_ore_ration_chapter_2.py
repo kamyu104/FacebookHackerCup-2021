@@ -290,7 +290,7 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
             del interval[i]
             overlapped += d-c+1
             c, d = interval[i]
-        interval.add((a, b))  # O((R * C + K) * log(R * C)) times, each cost Time: O(logK)
+        interval.add((a, b))  # O((R * C + K) * log(R * C)) times, each costs Time: O(logK)
         return (b-a+1)-overlapped
 
     def add_robot(self, x, a, b):
