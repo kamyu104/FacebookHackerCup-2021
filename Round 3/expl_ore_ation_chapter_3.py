@@ -347,7 +347,7 @@ class HLD(object):  # Heavy-Light Decomposition
         def postprocess(curr):
             R[curr] = C[0]
 
-        stk, children, chain, L, R, P, C = [], self.__children, self.__chain, self.L, self.R, self.P, self.inv
+        stk, children, chain, L, R, P, C = [], self.__children, self.__chain, self.L, self.R, self.P, [-1]
         stk.append(partial(divide, i, -1))
         while stk:
             stk.pop()()
