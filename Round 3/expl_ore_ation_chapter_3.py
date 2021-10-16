@@ -384,7 +384,7 @@ class HLD(object):  # Heavy-Light Decomposition
         i, r = self.S2.bisect_left(self.L[i]+exclude_root), self.R[i]
         return i != len(self.S2) and self.S2[i] <= r
 
-    def find_closest_ancestor_set(self, i):  # added, Time: O(log(R * C)^2)
+    def find_closest_ancestor_has_robot(self, i):  # added, Time: O(log(R * C)^2)
         while i >= 0:
             j = self.__chain[i]
             k = self.S[self.S.bisect_left(self.pos[i]+1)-1]  # Time: O(log(R * C))
@@ -402,7 +402,7 @@ def update_cell(H, S, uf, hld, i, d):
     if d == -1:
         hld.update(i, d)
     if not hld.subtree_has_robot(i, 0):
-        a = hld.find_closest_ancestor_set(i)
+        a = hld.find_closest_ancestor_has_robot(i)
         if a < 0 or hld.subtree_has_robot(a, 1):
             dy += d
     if d == 1:
