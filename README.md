@@ -1,4 +1,4 @@
-# [FacebookHackerCup-2021](https://www.facebook.com/hackercup/past_rounds/) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-CC%203.0-blue.svg)](https://creativecommons.org/licenses/by-nc/3.0/) ![Progress](https://img.shields.io/badge/progress-15%20%2F%2015-ff69b4.svg) ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=kamyu104.facebookhackercup.2021)
+# [FacebookHackerCup-2021](https://www.facebook.com/hackercup/past_rounds/) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-CC%203.0-blue.svg)](https://creativecommons.org/licenses/by-nc/3.0/) ![Progress](https://img.shields.io/badge/progress-21%20%2F%2021-ff69b4.svg) ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=kamyu104.facebookhackercup.2021)
 
 Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds). A `6-minute` timer is set for uploading the result this year.
 
@@ -6,6 +6,7 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 * [Qualification Round](https://github.com/kamyu104/FacebookHackerCup-2021#qualification-round)
 * [Round 1](https://github.com/kamyu104/FacebookHackerCup-2021#round-1)
 * [Round 2](https://github.com/kamyu104/FacebookHackerCup-2021#round-2)
+* [Round 3](https://github.com/kamyu104/FacebookHackerCup-2021#round-3)
 
 ## Qualification Round
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
@@ -33,3 +34,13 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 |C1| [Valet Parking - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C1)| [Python](./Round%202/valet_parking_chapter_1.py) | _O(R * C)_ | _O(min(R, C))_ | Medium | | Array |
 |C2| [Valet Parking - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/C2)| ([PyPy](./Round%202/valet_parking_chapter_2.py), [Python](./Round%202/valet_parking_chapter_2-5.py)) ([PyPy](./Round%202/valet_parking_chapter_2-2.py), [PyPy](./Round%202/valet_parking_chapter_2-6.py)) ([PyPy](./Round%202/valet_parking_chapter_2-3.py), [Python](./Round%202/valet_parking_chapter_2-7.py)) ([PyPy](./Round%202/valet_parking_chapter_2-4.py), [Python](./Round%202/valet_parking_chapter_2-8.py)) | _O((R * C + S) * logR)_ | _O(R * C)_ | Hard | | Array, BIT, Fenwick Tree, Skip List, Sorted List, Heap, Segment Tree |
 |D| [String Concatenation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-2/problems/D)| [PyPy](./Round%202/string_concatenation.py) [Python](./Round%202/string_concatenation2.py) [Python](./Round%202/string_concatenation3.py) | _O(N + L*(logN1)^2 + N2^3/6 + X*2^X*(N3-X)/C)_ | _O(N)_ | Hard | | Array, Pigeonhole Principle, Birthday Paradox, Sorted List, BIT, Fenwick Tree, Bitmask |
+
+## Round 3
+| # | Title | Solution | Time | Space | Difficulty | Tag | Note |
+|---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
+|A| [Rep-ore-ting](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/A)| [Python](./Round%203/rep_ore_ting.py) | _O(O(M + N)_ | _O(N)_ | Easy | | Union Find, Counting |
+|B| [Auth-ore-ization](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/B)| [PyPy](./Round%203/auth_ore_ization.py) | _O((M + N) * log(M + N))_ | _O(M + N)_ | Medium | | Sorted List, Segment Tree |
+|C| [Perf-ore-mance](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/C)| [Python](./Round%203/perf_ore_mance.py) | _O(N * K^2)_ | _O(N * K)_ | Hard | | Tree, DP |
+|D1| [Expl-ore-ation - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D1)| [Python](./Round%203/expl_ore_ation_chapter_1.py) | _O(R * C * log(R * C))_ | _O(R * C)_ | Easy | | Union Find |
+|D2| [Expl-ore-ation - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D2)| [Python](./Round%203/expl_ore_ation_chapter_2.py) | _O((R * C + K) * log(R * C) * logK)_ | _O(R * C + K)_ | Medium | | Union Find, Sorted List |
+|D3| [Expl-ore-ation - Chapter 3](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D3)| [Python](./Round%203/expl_ore_ation_chapter_3.py) | _O((R * C + K) * log(R * C)^2)_ | _O(R * C)_ | Hard | | Union Find, Sorted List, Heavy-Light Decomposition |

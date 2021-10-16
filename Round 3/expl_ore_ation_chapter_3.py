@@ -433,17 +433,20 @@ def expl_ore_ation_chapter_3():
     X, Y = 0, 0
     for i in xrange(R*C):
         dx, dy = update_cell(H, S, uf, hld, i, 1)
-        X, Y = X+dx, Y+dy
+        X += dx
+        Y += dy
     result = total = 0
     for idx in xrange(input()):
         A, B, U = map(int, raw_input().strip().split())
         A, B, U = ((A^Y)-1, (B^Y)-1, U^Y) if idx else (A-1, B-1, U)
         i = A*C+B
         dx, dy = update_cell(H, S, uf, hld, i, -1)  # remove
-        X, Y = X+dx, Y+dy
+        X += dx
+        Y += dy
         S[i] = U  # update
         dx, dy = update_cell(H, S, uf, hld, i, 1)  # add
-        X, Y = X+dx, Y+dy
+        X += dx
+        Y += dy
         result += X
         total += Y
     return "%s %s" % (result, total)
