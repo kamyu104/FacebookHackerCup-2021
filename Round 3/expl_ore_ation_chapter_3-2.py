@@ -101,7 +101,7 @@ class HLD(object):  # Heavy-Light Decomposition
             for i, child in enumerate(children[curr]):
                 size[curr] += size[child]
                 if size[child] > size[children[curr][0]]:
-                    children[curr][0], children[curr][i] = children[curr][i], children[curr][0]  # make the first child heaviest
+                    children[curr][0], children[curr][i] = children[curr][i], children[curr][0]  # make the first child heavy
 
         stk, children, size = [], self.__children, self.__size
         stk.append(partial(divide, i))
