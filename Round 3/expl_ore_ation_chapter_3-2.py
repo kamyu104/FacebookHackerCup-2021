@@ -79,7 +79,6 @@ class HLD(object):  # Heavy-Light Decomposition
         self.__children = adj
         self.__size = [-1]*len(adj)  # Space: O(N)
         self.__chain = [-1]*len(adj)
-        self.__chain[root] = root
 
         # belows are added
         self.L = [-1]*len(adj)
@@ -92,20 +91,17 @@ class HLD(object):  # Heavy-Light Decomposition
         self.__decompose(root)
 
     def __find_heavy_light(self, i):  # Time: O(N)
-        def divide(i):
-            for j in reversed(xrange(len(children[i]))):
-                c = children[i][j]
-                stk.append(partial(postprocess, i, j, c))
-                stk.append(partial(divide, c))
-            stk.append(partial(init, i))
+        def divide(curr):
+            size[curr] = 1
+            stk.append(partial(postprocess, curr))
+            for child in reversed(children[curr]):
+                stk.append(partial(divide, child))
 
-        def init(i):
-            size[i] = 1
-
-        def postprocess(i, j, c):
-            size[i] += size[c]
-            if size[c] > size[children[i][0]]:
-                children[i][0], children[i][j] = children[i][j], children[i][0]  # put heavy idx in children[i][0]
+        def postprocess(curr):
+            for i, child in enumerate(children[curr]):
+                size[curr] += size[child]
+                if size[child] > size[children[curr][0]]:
+                    children[curr][0], children[curr][i] = children[curr][i], children[curr][0]  # put heavy idx in children[curr][0]
 
         stk, children, size = [], self.__children, self.__size
         stk.append(partial(divide, i))
@@ -113,15 +109,7 @@ class HLD(object):  # Heavy-Light Decomposition
             stk.pop()()
 
     def __decompose(self, i):  # Time: O(N)
-        def divide(i, p):
-            stk.append(partial(postprocess, i))
-            for j in reversed(xrange(len(children[i]))):
-                c = children[i][j]
-                stk.append(partial(divide, c, i))
-                stk.append(partial(preprocess, i, j, c))
-            stk.append(partial(init, i, p))
-
-        def init(curr, parent):
+        def divide(curr, parent):
             # ancestors of the node i
             if parent != -1:
                 P[curr].append(parent)
@@ -133,9 +121,10 @@ class HLD(object):  # Heavy-Light Decomposition
             C[0] += 1
             L[curr] = C[0]
             inv[C[0]] = curr
-
-        def preprocess(i, j, c):
-            chain[c] = c if j > 0 else chain[i]  # create a new chain if not heavy
+            chain[curr] = curr if parent == -1 or children[parent][0] != curr else chain[parent]  # create a new chain if not heavy
+            stk.append(partial(postprocess, curr))
+            for child in reversed(children[curr]):
+                stk.append(partial(divide, child, curr))
 
         def postprocess(curr):
             R[curr] = C[0]
