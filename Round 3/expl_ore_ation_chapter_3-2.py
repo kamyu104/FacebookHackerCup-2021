@@ -156,13 +156,13 @@ class HLD(object):  # Heavy-Light Decomposition
         self.bit.add(self.L[i], d)
 
     def subtree_has_robot(self, i, exclude_root):  # added, Time: O(log(R * C))
-        return self.bit.query(self.R[i])-self.bit.query((self.L[i]+exclude_root)-1)
+        return self.bit.query(self.R[i])-self.bit.query((self.L[i]+exclude_root)-1) > 0
 
     def find_closest_ancestor_has_robot(self, i):  # added, Time: O(log(R * C)^2)
         while i >= 0:
             j = self.__chain[i]
             cnt = self.bit.query(self.L[i])
-            if cnt-self.bit.query(self.L[j]-1):  # Time: O(log(R * C))
+            if cnt-self.bit.query(self.L[j]-1) > 0:  # Time: O(log(R * C))
                 return self.inv[self.bit.kth_element(cnt)]
             i = self.P[j][0] if self.P[j] else -1  # O(log(R * C)) times
         return -1
