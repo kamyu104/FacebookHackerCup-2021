@@ -284,7 +284,6 @@ class HLD(object):  # Heavy-Light Decomposition
         self.__children = adj
         self.__size = [-1]*len(adj)  # Space: O(N)
         self.__chain = [-1]*len(adj)
-
         self.L = [-1]*len(adj)
         self.R = [-1]*len(adj)
         self.P = [[] for _ in xrange(len(adj))]
