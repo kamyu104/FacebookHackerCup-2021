@@ -163,7 +163,7 @@ class HLD(object):  # Heavy-Light Decomposition
             j = self.__chain[i]
             cnt = self.bit.query(self.L[i])-self.bit.query(self.L[j]-1)
             if cnt:  # Time: O(log(R * C))
-                return self.inv[self.bit.kth_element(self.bit.query(self.L[j]-1)+cnt)]
+                return self.inv[self.bit.kth_element(self.bit.query(self.L[i]))]
             i = self.P[j][0] if self.P[j] else -1  # O(log(R * C)) times
         return -1
 
