@@ -79,13 +79,11 @@ class HLD(object):  # Heavy-Light Decomposition
         self.__children = adj
         self.__size = [-1]*len(adj)  # Space: O(N)
         self.__chain = [-1]*len(adj)
-
-        # belows are added
         self.L = [-1]*len(adj)
         self.R = [-1]*len(adj)
         self.P = [[] for _ in xrange(len(adj))]
         self.inv = [-1]*len(adj)
-        self.bit = BIT(len(adj))
+        self.bit = BIT(len(adj))  # added
 
         self.__find_heavy_light(root)
         self.__decompose(root)
