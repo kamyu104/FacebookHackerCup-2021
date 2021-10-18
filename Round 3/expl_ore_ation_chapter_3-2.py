@@ -88,7 +88,7 @@ class HLD(object):  # Heavy-Light Decomposition
         self.__find_heavy_light(root)
         self.__decompose(root)
 
-    def __find_heavy_light(self, i):  # Time: O(N)
+    def __find_heavy_light(self, root):  # Time: O(N)
         def divide(curr):
             size[curr] = 1
             stk.append(partial(postprocess, curr))
@@ -102,11 +102,11 @@ class HLD(object):  # Heavy-Light Decomposition
                     children[curr][0], children[curr][i] = children[curr][i], children[curr][0]  # make the first child heavy
 
         stk, children, size = [], self.__children, self.__size
-        stk.append(partial(divide, i))
+        stk.append(partial(divide, root))
         while stk:
             stk.pop()()
 
-    def __decompose(self, i):  # Time: O(N)
+    def __decompose(self, root):  # Time: O(N)
         def divide(curr, parent):
             # ancestors of the node i
             if parent != -1:
@@ -115,7 +115,7 @@ class HLD(object):  # Heavy-Light Decomposition
             while i < len(P[curr]) and i < len(P[P[curr][i]]):
                 P[curr].append(P[P[curr][i]][i])
                 i += 1
-            # the subtree of the node i is represented by traversal index L[i]..R[i]
+            # the subtree of the node curr is represented by preorder traversal index L[curr]..R[curr]
             C[0] += 1
             L[curr] = C[0]
             inv[C[0]] = curr
@@ -128,7 +128,7 @@ class HLD(object):  # Heavy-Light Decomposition
             R[curr] = C[0]
 
         stk, children, chain, L, R, P, inv, C = [], self.__children, self.__chain, self.L, self.R, self.P, self.inv, [-1]
-        stk.append(partial(divide, i, -1))
+        stk.append(partial(divide, root, -1))
         while stk:
             stk.pop()()
 
