@@ -290,14 +290,12 @@ class HLD(object):  # Heavy-Light Decomposition
         self.L = [-1]*len(adj)
         self.R = [-1]*len(adj)
         self.P = [[] for _ in xrange(len(adj))]
-        self.pos = [-1]*len(adj)
         self.inv = [-1]*len(adj)
         self.S = SortedList([-1])
         self.S2 = SortedList()
 
         self.__find_heavy_light(root)
         self.__decompose(root)
-        self.__find_pos()
 
     def __find_heavy_light(self, i):  # Time: O(N)
         def divide(i):
@@ -340,6 +338,7 @@ class HLD(object):  # Heavy-Light Decomposition
             # the subtree of the node i is represented by traversal index L[i]..R[i]
             C[0] += 1
             L[curr] = C[0]
+            inv[C[0]] = curr
 
         def preprocess(i, j, c):
             chain[c] = c if j > 0 else chain[i]  # create a new chain if not heavy
@@ -347,23 +346,10 @@ class HLD(object):  # Heavy-Light Decomposition
         def postprocess(curr):
             R[curr] = C[0]
 
-        stk, children, chain, L, R, P, C = [], self.__children, self.__chain, self.L, self.R, self.P, [-1]
+        stk, children, chain, L, R, P, inv, C = [], self.__children, self.__chain, self.L, self.R, self.P, self.inv, [-1]
         stk.append(partial(divide, i, -1))
         while stk:
             stk.pop()()
-
-    def __find_pos(self):
-        idx = 0
-        for i in xrange(len(self.__children)):
-            if self.__chain[i] != i:
-                continue
-            while True:  # dispatch consecutive idxs to nodes in the same chain
-                self.pos[i] = idx
-                self.inv[idx] = i
-                idx += 1
-                if not self.__children[i]:
-                    break
-                i = self.__children[i][0]
 
     def highest_valid_ancestor(self, S, uf, i):  # added, Time: O(log(R * C))
         s = S[i]
@@ -374,10 +360,10 @@ class HLD(object):  # Heavy-Light Decomposition
 
     def update(self, i, d):  # added, Time: O(log(R * C))
         if d == 1:
-            self.S.add(self.pos[i])
+            self.S.add(self.L[i])
             self.S2.add(self.L[i])
         else:
-            self.S.remove(self.pos[i])
+            self.S.remove(self.L[i])
             self.S2.remove(self.L[i])
 
     def subtree_has_robot(self, i, exclude_root):  # added, Time: O(log(R * C))
@@ -387,8 +373,8 @@ class HLD(object):  # Heavy-Light Decomposition
     def find_closest_ancestor_has_robot(self, i):  # added, Time: O(log(R * C)^2)
         while i >= 0:
             j = self.__chain[i]
-            k = self.S[self.S.bisect_left(self.pos[i]+1)-1]  # Time: O(log(R * C))
-            if k >= self.pos[j]:
+            k = self.S[self.S.bisect_left(self.L[i]+1)-1]  # Time: O(log(R * C))
+            if k >= self.L[j]:
                 return self.inv[k]
             i = self.P[j][0] if self.P[j] else -1  # O(log(R * C)) times
         return -1
