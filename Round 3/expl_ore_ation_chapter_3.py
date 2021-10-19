@@ -288,7 +288,7 @@ class HLD(object):  # Heavy-Light Decomposition
         self.R = [-1]*len(adj)
         self.P = [[] for _ in xrange(len(adj))]
         self.inv = [-1]*len(adj)
-        self.sl = SortedList([-1, len(adj)])  # added
+        self.sl = SortedList([-1, len(adj)])  # added, with sentinels
 
         self.__find_heavy_light(root)
         self.__decompose(root)
