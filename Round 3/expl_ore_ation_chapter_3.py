@@ -288,7 +288,7 @@ class HLD(object):  # Heavy-Light Decomposition
         self.R = [-1]*len(adj)
         self.P = [[] for _ in xrange(len(adj))]
         self.inv = [-1]*len(adj)
-        self.S = SortedList([-1])  # added
+        self.sl = SortedList([-1])  # added
 
         self.__find_heavy_light(root)
         self.__decompose(root)
@@ -346,18 +346,18 @@ class HLD(object):  # Heavy-Light Decomposition
 
     def update(self, i, d):  # added, Time: O(log(R * C))
         if d == 1:
-            self.S.add(self.L[i])  # use preorder traversal idx which is consecutive in heavy chain since we make the first child heavy
+            self.sl.add(self.L[i])  # use preorder traversal idx which is consecutive in heavy chain since we make the first child heavy
         else:
-            self.S.remove(self.L[i])
+            self.sl.remove(self.L[i])
 
     def subtree_has_robot(self, i, exclude_root):  # added, Time: O(log(R * C))
-        i, r = self.S.bisect_left(self.L[i]+exclude_root), self.R[i]
-        return i != len(self.S) and self.S[i] <= r
+        i, r = self.sl.bisect_left(self.L[i]+exclude_root), self.R[i]
+        return i != len(self.sl) and self.sl[i] <= r
 
     def find_closest_ancestor_has_robot(self, i):  # added, Time: O(log(R * C)^2)
         while i >= 0:
             j = self.__chain[i]
-            k = self.S[self.S.bisect_left(self.L[i]+1)-1]  # Time: O(log(R * C))
+            k = self.sl[self.sl.bisect_left(self.L[i]+1)-1]  # Time: O(log(R * C))
             if k >= self.L[j]:
                 return self.inv[k]
             i = self.P[j][0] if self.P[j] else -1  # O(log(R * C)) times
