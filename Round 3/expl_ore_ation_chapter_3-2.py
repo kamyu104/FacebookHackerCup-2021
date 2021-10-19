@@ -185,7 +185,7 @@ def expl_ore_ation_chapter_3():
             events.append((min(H[i], H[i-C]), i, i-C))
         if i%C-1 >= 0:  # left
             events.append((min(H[i], H[i-1]), i, i-1))
-    events.sort(reverse=True)
+    events.sort(reverse=True)  # Time: O((R * C) * log(R * C)), Space: O(R * C)
     uf = UnionFind(R*C)
     for h, a, b in events:
         uf.union_set(a, b, h)

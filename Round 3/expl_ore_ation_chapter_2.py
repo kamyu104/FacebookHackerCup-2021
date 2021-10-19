@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Round 3 - Problem D. Expl-ore-ation Chapter 2
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D2
 #
-# Time:  O((R * C + S + K) * log(R * C + S + K) + R * C * alpha(R * C) + (R * C + S + K) * log(R * C + S + K) * logK) = O((R * C + S + K) * log(R * C + S + K) * logK)
+# Time:  O((R * C + S + K) * log(R * C + S + K) + (R * C + S + K) * alpha(R * C) + ((R * C) * log(R * C) + S + K) * logK) = O((R * C + S + K) * log(R * C + S + K) + ((R * C) * log(R * C) + S + K) * logK)
 # Space: O(R * C + S + K)
 #
 
@@ -274,11 +274,11 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
         for a, b in self.intervals[x]:  # merge smaller self.intervals[x] into larger self.intervals[y]
             if a in (-INF, INF):
                 continue
-            self.__add_interval(a, b, self.intervals[y])
+            self.__add_interval(a, b, self.intervals[y])  # O(R * C * log(R * C)) times in total
         self.intervals[x] = SortedList()  # clear
         return True
 
-    def __add_interval(self, a, b, interval):  # Total Time: O((R * C + K) * log(R * C) * logK)
+    def __add_interval(self, a, b, interval):  # Total Time: O(((R * C) * log(R * C) + (S + K)) * logK)
         i = interval.bisect_left((a+1,))-1
         c, d = interval[i]
         if d < a-1:
@@ -289,8 +289,8 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
             a, b = min(a, c), max(b, d)
             del interval[i]
             overlapped += d-c+1
-            c, d = interval[i]
-        interval.add((a, b))  # O((R * C + K) * log(R * C)) times, each costs Time: O(logK)
+            c, d = interval[i]  # at most O(K) times in total, since each time at least increases 1 unit
+        interval.add((a, b))  # O((R * C) * log(R * C) + (S + K)) times in total, each costs Time: O(logK)
         return (b-a+1)-overlapped
 
     def add_robot(self, x, a, b):  # added
@@ -327,7 +327,7 @@ def expl_ore_ation_chapter_2():
         for j, (a, u) in enumerate(interval):
             b = interval[j+1][0]-1 if j+1 < len(interval) else K-1
             events.append((u, i, a, b))
-    events.sort(reverse=True)
+    events.sort(reverse=True)  # Time: O((R * C + S + K) * log(R * C + S + K)), Space: O(R * C + S + K)
 
     uf = UnionFind(R*C)
     result = total = 0

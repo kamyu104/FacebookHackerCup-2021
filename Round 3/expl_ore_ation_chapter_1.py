@@ -58,7 +58,7 @@ def expl_ore_ation_chapter_1():
             events.append((min(H[i], H[i-1]), i, i-1))
     for i, s in enumerate(S):
         events.append((s, len(H), i))
-    events.sort(reverse=True)
+    events.sort(reverse=True)  # Time: O((R * C + S) * log(R * C + S)), Space: O(R * C + S)
 
     uf = UnionFind(R*C)
     result = total = 0
