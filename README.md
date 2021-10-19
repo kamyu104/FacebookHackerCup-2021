@@ -38,7 +38,7 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 ## Round 3
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
-|A| [Rep-ore-ting](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/A)| [Python](./Round%203/rep_ore_ting.py) | _O(O(M + N)_ | _O(N)_ | Easy | | Intervals, Union Find, Counting |
+|A| [Rep-ore-ting](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/A)| [Python](./Round%203/rep_ore_ting.py) | _O(M + N)_ | _O(N)_ | Easy | | Intervals, Union Find, Counting |
 |B| [Auth-ore-ization](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/B)| [PyPy](./Round%203/auth_ore_ization.py) | _O((M + N) * log(M + N))_ | _O(M + N)_ | Medium | | Sorted List, Segment Tree |
 |C| [Perf-ore-mance](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/C)| [Python](./Round%203/perf_ore_mance.py) | _O(N * K^2)_ | _O(N * K)_ | Hard | | Tree, DP |
 |D1| [Expl-ore-ation - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D1)| [Python](./Round%203/expl_ore_ation_chapter_1.py) | _O((R * C) * log(R * C))_ | _O(R * C)_ | Easy | | Union Find |
