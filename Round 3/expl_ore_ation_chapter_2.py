@@ -3,8 +3,8 @@
 # Facebook Hacker Cup 2021 Round 3 - Problem D. Expl-ore-ation Chapter 2
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D2
 #
-# Time:  O((R * C + S + K) * log(R * C + S + K) + (R * C + S + K) * alpha(R * C) + ((R * C) * log(R * C) + S + K) * logK) = O((R * C + S + K) * log(R * C + S + K) + ((R * C) * log(R * C) + S + K) * logK)
-# Space: O(R * C + S + K)
+# Time:  O((R * C + S + K) * log(R * C + S + K) + (R * C + S + K) * alpha(R * C) + ((R * C) * log(R * C) + S + K) * logK) = O((R * C + S + K) * log(R * C + S + K) + ((R * C) * log(R * C) + S + K) * logK) = O((R * C + K) * log(R * C + K) + ((R * C) * log(R * C) + K) * logK), since O(S) <= O(R * C)
+# Space: O(R * C + K)
 #
 
 # Template:
