@@ -4,7 +4,7 @@
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D2
 #
 # Time:  O((R * C + S + K) * log(R * C + S + K) + R * C * alpha(R * C) + (R * C + S + K) * log(R * C + S + K) * logK) = O((R * C + K) * log(R * C) * logK)
-# Space: O(R * C + K)
+# Space: O(R * C + S + K)
 #
 
 # Template:

@@ -4,7 +4,7 @@
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D1
 #
 # Time:  O((R * C + S) * log(R * C + S) + R * C * alpha(R * C)) = O((R * C + S) * log(R * C + S))
-# Space: O(R * C)
+# Space: O(R * C + S)
 #
 
 class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
