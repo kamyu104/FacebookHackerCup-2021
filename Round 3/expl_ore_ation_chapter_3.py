@@ -351,8 +351,8 @@ class HLD(object):  # Heavy-Light Decomposition
             self.sl.remove(self.L[i])
 
     def subtree_has_robot(self, i, exclude_root):  # added, Time: O(log(R * C))
-        i, r = self.sl.bisect_left(self.L[i]+exclude_root), self.R[i]
-        return i != len(self.sl) and self.sl[i] <= r
+        j = self.sl.bisect_left(self.L[i]+exclude_root)
+        return j != len(self.sl) and self.sl[j] <= self.R[i]
 
     def find_closest_ancestor_has_robot(self, i):  # added, Time: O(log(R * C)^2)
         while i >= 0:
