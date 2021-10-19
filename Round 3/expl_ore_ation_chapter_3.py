@@ -346,7 +346,7 @@ class HLD(object):  # Heavy-Light Decomposition
 
     def update(self, i, d):  # added, Time: O(log(R * C))
         if d == 1:
-            self.sl.add(self.L[i])  # use preorder traversal idx which is consecutive in heavy chain since we make the first child heavy
+            self.sl.add(self.L[i])  # use preorder traversal index which is consecutive in heavy chain since we make the first child heavy
         else:
             self.sl.remove(self.L[i])
 

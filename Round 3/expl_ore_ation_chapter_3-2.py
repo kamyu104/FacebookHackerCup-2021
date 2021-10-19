@@ -140,7 +140,7 @@ class HLD(object):  # Heavy-Light Decomposition
         return i
 
     def update(self, i, d):  # added, Time: O(log(R * C))
-        self.bit.add(self.L[i], d)  # use preorder traversal idx which is consecutive in heavy chain since we make the first child heavy
+        self.bit.add(self.L[i], d)  # use preorder traversal index which is consecutive in heavy chain since we make the first child heavy
 
     def subtree_has_robot(self, i, exclude_root):  # added, Time: O(log(R * C))
         return self.bit.query(self.R[i])-self.bit.query((self.L[i]+exclude_root)-1) > 0
