@@ -45,7 +45,7 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
 
 # Template:
 # https://github.com/kamyu104/GoogleCodeJam-2020/blob/master/Round%202/emacs++2_concise.py
-class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of nodes
+class TreeInfos(object):  # Time: O(N), Space: O(N), N is the number of nodes
     def __init__(self, children):
         def preprocess(curr, parent):
             # visited order of the nodes
