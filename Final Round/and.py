@@ -27,7 +27,7 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
             self.set[stk.pop()] = x
         return x
 
-    def union_set(self, x, y, d):
+    def union_set(self, x, y, d):  # modified
         i, j = x, y  # added
         x, y = self.find_set(x), self.find_set(y)
         d ^= self.diff_to_root[i] ^ self.diff_to_root[j]  # added
