@@ -13,9 +13,9 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
     def __init__(self, n):
         self.set = range(n)
         self.rank = [0]*n
-        self.size = [1]*n
+        self.count = [1]*n
         self.diff_to_root = [0]*n  # added
-        self.diff_total = [0]*n  # added
+        self.diff_count = [0]*n  # added
 
     def find_set(self, x):
         stk = []
@@ -38,9 +38,9 @@ class UnionFind(object):  # Time: O(n * alpha(n)), Space: O(n)
         self.set[x] = self.set[y]
         if self.rank[x] == self.rank[y]:
             self.rank[y] += 1
-        self.size[y] += self.size[x]
+        self.count[y] += self.count[x]
         self.diff_to_root[x] = d  # added
-        self.diff_total[y] += self.size[x]-self.diff_total[x] if d else self.diff_total[x]  # added
+        self.diff_count[y] += self.count[x]-self.diff_count[x] if d else self.diff_count[x]  # added
         return True
 
 def and_():
@@ -76,7 +76,7 @@ def and_():
         if idx[0] != -1 and idx[1] != -1:
             if not new_uf.union_set(idx[0], idx[1], 1):
                 continue
-        if sum(min(new_uf.diff_total[i], new_uf.size[i]-new_uf.diff_total[i]) for i in xrange(N) if new_uf.find_set(i) == i) > K:
+        if sum(min(new_uf.diff_count[i], new_uf.count[i]-new_uf.diff_count[i]) for i in xrange(N) if new_uf.find_set(i) == i) > K:
             continue
         uf = new_uf
         result[bit] = 1
