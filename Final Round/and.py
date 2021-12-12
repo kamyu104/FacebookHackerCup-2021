@@ -58,24 +58,18 @@ def and_():
             continue
         possible = True
         new_uf = deepcopy(uf)
-        idx = [-1]*2
-        for j in xrange(2):
-            for i, x in enumerate(A_B):
-                if x[0][bit] == x[1][bit] == '1' or x[j][bit] != '1':
-                    continue
-                if idx[j] == -1:
-                    idx[j] = i
-                    continue
-                possible = new_uf.union_set(i, idx[j], 0)
-                if not possible:
-                    break
+        j = -1
+        for i, (a, b) in enumerate(A_B):
+            if a[bit] == b[bit]:
+                continue
+            if j == -1:
+                j = i
+                continue
+            possible = new_uf.union_set(i, j, A_B[i][0][bit] != A_B[j][0][bit])
             if not possible:
                 break
         if not possible:
             continue
-        if idx[0] != -1 and idx[1] != -1:
-            if not new_uf.union_set(idx[0], idx[1], 1):
-                continue
         if sum(min(new_uf.diff_count[i], new_uf.count[i]-new_uf.diff_count[i]) for i in xrange(N) if new_uf.find_set(i) == i) > K:
             continue
         uf = new_uf
