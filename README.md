@@ -49,7 +49,7 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [And](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/A)| [Python](./Final%20Round/and.py) | _O(L * N)_ | _O(L * N)_ | Medium | | Union Find |
-|B| [SSSSSS](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/B)| [Python](./Round%203/ssssss.py) | _O(NlogN)_ | _O(N)_ | Hard | | Line Sweep |
+|B| [SSSSSS](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/B)| [Python](./Final%20Round/ssssss.py) | _O(NlogN)_ | _O(N)_ | Hard | | Line Sweep |
 |C| [Hire Flyers](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/C)| | | | Hard | | |
 |D| [Vacation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/D)| | | | Medium | | |
 |E| [Antisocial](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/E)| | | | Hard | | |
