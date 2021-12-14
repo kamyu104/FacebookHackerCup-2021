@@ -275,7 +275,7 @@ class MainWindow:
     
     def __init__(self, master):
         self.master = master
-        self.master.title("Voronoi")
+        self.master.title("Voronoi Diagram by Fortune's Algorithm O(NlogN)")
         self.frmMain = tk.Frame(self.master, relief=tk.RAISED, borderwidth=1)
         self.frmMain.pack(fill=tk.BOTH, expand=1)
 
