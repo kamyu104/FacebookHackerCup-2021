@@ -46,15 +46,15 @@ def ssssss():
             a, b = b, a
         elif i != a:  # (not lookup[i]) and (i != a) and (i != b)
             continue
+        assert(a == i)
         while min_heap and not lookup[min_heap[0][1]]:
             heappop(min_heap)
         if min_heap:  # a must go to another lowest ladder
-            same = (a == b)
             a = heappop(min_heap)[1]
             lookup[a] = False
             result[0] += 1
             result[1] += 1
-            if not same:
+            if b != i:
                 continue
             while min_heap and not lookup[min_heap[0][1]]:
                 heappop(min_heap)
