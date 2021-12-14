@@ -273,7 +273,7 @@ class MainWindow:
     def onClick(self, event):
         if (event.x, event.y) in self.points:
             return
-        self.points.add((event.x, event.y))
+        self.points.add((float(event.x), float(event.y)))
         self.paint()
 
     def paint(self):
