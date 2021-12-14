@@ -14,18 +14,18 @@ def ssssss():
     A_B = [map(int, raw_input().strip().split()) for _ in xrange(N)]
     intervals = []
     result = [0]*2
-    max_idx = max_b = -1
+    max_idx = -1
     for i, (A, B) in enumerate(A_B):
         if not A:
-            if max_b == -1 or max_b < B:
-                max_b, max_idx = B, i
+            if max_idx == -1 or A_B[max_idx][1] < B:
+                max_idx = i
             result[0] += 1
         else:
             intervals.append((A, 0, i))
             intervals.append((B, 1, i))
     if max_idx == -1:
         return " ".join(map(str, result))
-    intervals.append((max_b, 1, max_idx))
+    intervals.append((A_B[max_idx][1], 1, max_idx))
     intervals.sort()
     a = b = max_idx
     lookup = [False]*N
