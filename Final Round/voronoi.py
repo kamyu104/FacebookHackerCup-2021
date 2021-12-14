@@ -298,7 +298,7 @@ class MainWindow:
             return (points[p1][0], points[p1][1], points[p2][0], points[p2][1])
 
         def check(points, p1, p2):
-            if -1 in (p1, p2):
+            if p1 == -1 or p2 == -1:
                 return False
             p1, p2 = points[p1], points[p2]
             if p1[0] == p2[0] == XR or p1[1] == p2[1] == YR:  # ignore border line
