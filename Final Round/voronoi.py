@@ -304,6 +304,9 @@ class MainWindow:
             return (-EPS <= min(p1[0], p2[0]) and max(p1[0], p2[0]) <= XR+EPS and
                     -EPS <= min(p1[1], p2[1]) and max(p1[1], p2[1]) <= YR+EPS)
 
+        def check2(p):
+            return p[0] != 0 and p[0] != XR and p[1] != 0 and p[1] != YR
+
         if self.LOCK_FLAG:
             return
         self.LOCK_FLAG = True        
@@ -320,9 +323,10 @@ class MainWindow:
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
         lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
         self.drawLinesOnCanvas(lines, color='blue')
-        print points
         # dash_lines = [get(points, p1, p2) for p1, p2 in area if check(points, p1, p2)]
         # self.drawLinesOnCanvas(dash_lines, color='red', dash=(5,2), width=0.5)
+        self.drawPointsOnCanvas([v for v in vertex if check2(v)])
+        print points
 
     def onClickClear(self):
         self.LOCK_FLAG = False
@@ -331,6 +335,10 @@ class MainWindow:
     def onClick(self, event):
         if not self.LOCK_FLAG:
             self.w.create_oval(event.x-self.RADIUS, event.y-self.RADIUS, event.x+self.RADIUS, event.y+self.RADIUS, fill="black")
+
+    def drawPointsOnCanvas(self, vertex):
+        for x, y in vertex:
+            self.w.create_oval(x-self.RADIUS, y-self.RADIUS, x+self.RADIUS, y+self.RADIUS, fill="green", outline="green")
 
     def drawLinesOnCanvas(self, lines, color='black', dash=None, width=1.5):
         for l in lines:
