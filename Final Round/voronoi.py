@@ -280,17 +280,23 @@ class MainWindow:
         def get(points, p1, p2):
             return (points[p1][0], points[p1][1], points[p2][0], points[p2][1])
 
-        def check(points, p1, p2):
+        def inside_rect_incl(points, p1, p2):
             if p1 == -1 or p2 == -1:
                 return False
             p1, p2 = points[p1], points[p2]
-            if not check2(p1) and not check2(p2):  # ignore border line
-                return False
             return (-EPS <= min(p1[0], p2[0]) and max(p1[0], p2[0]) <= XR+EPS and
                     -EPS <= min(p1[1], p2[1]) and max(p1[1], p2[1]) <= YR+EPS)
 
-        def check2(p):
-            return abs(p[0]-0) > EPS and abs(p[0]-XR) > EPS and abs(p[1]-0) > EPS and abs(p[1]-YR) > EPS
+        def on_border(p):
+            return abs(p[0]-0) <= EPS or abs(p[0]-XR) <= EPS or abs(p[1]-0) <= EPS or abs(p[1]-YR) <= EPS
+
+        def is_border_segment(a, b):
+            segments = [(0, 0), (XR, 0), (XR, YR), (0, YR)]
+            for i in xrange(len(segments)):
+                c, d = segments[i], segments[(i+1)%len(segments)]
+                if abs(ccw(a, c, d)) < EPS and abs(ccw(b, c, d)) < EPS:
+                    return True
+            return False
 
         self.w.delete(tk.ALL)
         points = []
@@ -302,21 +308,21 @@ class MainWindow:
             points.append((X, 2*YR - Y))
         points = list(set(points))
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
-        edge_lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
-        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if -1 not in edge[i] and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
+        edge_lines = [get(vertex, e1, e2) for e1, e2 in edge if inside_rect_incl(vertex, e1, e2) and not is_border_segment(vertex[e1], vertex[e2])]
+        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if inside_rect_incl(vertex, edge[i][0], edge[i][1]) and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
         triangular_lines = []
         for (p1, p2), (e1, e2) in izip(area, edge):
-            if e1 == -1 or e2 == -1 or (not check2(vertex[e1]) and not check2(vertex[e2])):
+            if not inside_rect_incl(vertex, e1, e2):
                 continue
             for x in p1, p2:
                 for y in e1, e2:
                     a, b = points[x]
                     c, d = vertex[y]
                     triangular_lines.append((a, b, c, d))
-        # self.drawLinesOnCanvas(triangular_lines, color='red', dash=(5,2), width=0.5)
-        # self.drawLinesOnCanvas(perpendicular_lines, color='black', dash=(5,2), width=0.5)
+        #self.drawLinesOnCanvas(triangular_lines, color='red', dash=(5,2), width=0.5)
+        #self.drawLinesOnCanvas(perpendicular_lines, color='black', dash=(5,2), width=0.5)
         self.drawLinesOnCanvas(edge_lines, color='blue')
-        self.drawPointsOnCanvas([v for v in vertex if check2(v)], color="green")
+        self.drawPointsOnCanvas([v for v in vertex if not on_border(v)], color="green")
         self.drawPointsOnCanvas(points, color="black")
         print points
 
