@@ -299,6 +299,7 @@ class MainWindow:
             return False
 
         self.w.delete(tk.ALL)
+        print self.points
         points = []
         for X, Y in self.points:
             points.append((X, Y))
@@ -324,7 +325,6 @@ class MainWindow:
         self.drawLinesOnCanvas(edge_lines, color='blue')
         self.drawPointsOnCanvas([v for v in vertex if not on_border(v)], color="green")
         self.drawPointsOnCanvas(points, color="black")
-        print points
 
     def drawPointsOnCanvas(self, vertex, color):
         for x, y in vertex:
