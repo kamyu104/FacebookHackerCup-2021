@@ -246,6 +246,8 @@ class MainWindow:
 
     # flag to lock the canvas when drawn
     LOCK_FLAG = False
+
+    points = set()
     
     def __init__(self, master):
         self.master = master
@@ -261,13 +263,20 @@ class MainWindow:
         self.frmButton = tk.Frame(self.master)
         self.frmButton.pack()
         
-        self.btnCalculate = tk.Button(self.frmButton, text='Calculate', width=25, command=self.onClickCalculate)
-        self.btnCalculate.pack(side=tk.LEFT)
-        
-        self.btnClear = tk.Button(self.frmButton, text='Clear', width=25, command=self.onClickClear)
+        self.btnClear = tk.Button(self.frmButton, text='Clear', width=50, command=self.onClickClear)
         self.btnClear.pack(side=tk.LEFT)
-        
-    def onClickCalculate(self):
+                
+    def onClickClear(self):
+        self.points = set()
+        self.w.delete(tk.ALL)
+
+    def onClick(self, event):
+        if (event.x, event.y) in self.points:
+            return
+        self.points.add((event.x, event.y))
+        self.paint()
+
+    def paint(self):
         def get(points, p1, p2):
             return (points[p1][0], points[p1][1], points[p2][0], points[p2][1])
 
@@ -283,13 +292,9 @@ class MainWindow:
         def check2(p):
             return abs(p[0]-0) > EPS and abs(p[0]-XR) > EPS and abs(p[1]-0) > EPS and abs(p[1]-YR) > EPS
 
-        if self.LOCK_FLAG:
-            return
-        self.LOCK_FLAG = True        
+        self.w.delete(tk.ALL)
         points = []
-        for p in self.w.find_all():
-            coord = self.w.coords(p)
-            X, Y = coord[0]+self.RADIUS, coord[1]+self.RADIUS
+        for X, Y in self.points:
             points.append((X, Y))
             points.append((-X, Y))
             points.append((X, -Y))
@@ -314,14 +319,6 @@ class MainWindow:
         self.drawPointsOnCanvas([v for v in vertex if check2(v)], color="green")
         self.drawPointsOnCanvas(points, color="black")
         print points
-
-    def onClickClear(self):
-        self.LOCK_FLAG = False
-        self.w.delete(tk.ALL)
-
-    def onClick(self, event):
-        if not self.LOCK_FLAG:
-            self.w.create_oval(event.x-self.RADIUS, event.y-self.RADIUS, event.x+self.RADIUS, event.y+self.RADIUS, fill="black")
 
     def drawPointsOnCanvas(self, vertex, color):
         for x, y in vertex:
