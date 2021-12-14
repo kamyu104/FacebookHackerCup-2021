@@ -273,13 +273,13 @@ void process_voronoi_diagrams(
             continue;  // edge outside rectangle
         }
         const auto& [pi1, pi2] = area[i];
-        vector<pdd> center_points = {P[pi1], P[pi2]};
-        const auto& d = size(center_points[0] - project_point_segment(v1, v2, center_points[1]));
+        vector<pdd> sites = {P[pi1], P[pi2]};
+        const auto& d = size(sites[0] - project_point_segment(v1, v2, sites[1]));
         (*adj)[e1].emplace_back(e2, d);
         (*adj)[e2].emplace_back(e1, d);
-        const auto& mid = 0.5 * (center_points[0] + center_points[1]);
+        const auto& mid = 0.5 * (sites[0] + sites[1]);
         for (int j : {0, 1}) {
-            for (const auto& p : center_points) {
+            for (const auto& p : sites) {
                 const auto& kp = key_points[j];
                 *result = min(*result, size(kp - p));
                 if (is_inside_triangle_incl(kp, p, v1, mid)) {

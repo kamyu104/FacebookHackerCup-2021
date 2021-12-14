@@ -257,13 +257,13 @@ def process_voronoi_diagrams(XR, YR, key_points, P):
             min(v1[1], v2[1]) < -EPS or max(v1[1], v2[1]) > YR + EPS):
             continue  # edge outside rectangle
         pi1, pi2 = area[i]
-        center_points = [P[pi1], P[pi2]]
-        d = size(sub(center_points[0], project_point_segment(v1, v2, center_points[0])))
+        sites = [P[pi1], P[pi2]]
+        d = size(sub(sites[0], project_point_segment(v1, v2, sites[0])))
         adj[e1].append((e2, d))
         adj[e2].append((e1, d))
-        mid = mul(0.5, add(center_points[0], center_points[1]))
+        mid = mul(0.5, add(sites[0], sites[1]))
         for j, kp in enumerate(key_points):
-            for p in center_points:
+            for p in sites:
                 result = min(result, size(sub(kp, p)))
                 if is_inside_triangle_incl(kp, p, v1, mid):
                     key_nodes[j] = e1
