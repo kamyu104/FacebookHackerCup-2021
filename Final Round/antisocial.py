@@ -265,6 +265,12 @@ def process_voronoi_diagrams(XR, YR, key_points, P):
         for j, kp in enumerate(key_points):
             for p in sites:
                 result = min(result, size(sub(kp, p)))
+                # if kp is inside in both right triangles:
+                # - kp is on (p, mid) perpendicular segment
+                # - kp and mid are both outside of (p, v1, v2) triangle
+                # => it is safe to choose either of v1, v2 since min(|p-v1|, |p-v2|) >= d
+                # if kp is inside only one right triangle:
+                # => it is safe to choose corresponding v since |p-v| >= d
                 if is_inside_triangle_incl(kp, p, v1, mid):
                     key_nodes[j] = e1
                 elif is_inside_triangle_incl(kp, p, mid, v2):
