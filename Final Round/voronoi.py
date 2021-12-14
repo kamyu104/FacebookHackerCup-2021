@@ -1,4 +1,5 @@
 import Tkinter as tk
+from itertools import izip
 
 from heapq import heappush, heappop
 
@@ -274,13 +275,13 @@ class MainWindow:
             if p1 == -1 or p2 == -1:
                 return False
             p1, p2 = points[p1], points[p2]
-            if p1[0] == p2[0] == XR or p1[1] == p2[1] == YR:  # ignore border line
+            if not check2(p1) and not check2(p2):  # ignore border line
                 return False
             return (-EPS <= min(p1[0], p2[0]) and max(p1[0], p2[0]) <= XR+EPS and
                     -EPS <= min(p1[1], p2[1]) and max(p1[1], p2[1]) <= YR+EPS)
 
         def check2(p):
-            return p[0] != 0 and p[0] != XR and p[1] != 0 and p[1] != YR
+            return abs(p[0]-0) > EPS and abs(p[0]-XR) > EPS and abs(p[1]-0) > EPS and abs(p[1]-YR) > EPS
 
         if self.LOCK_FLAG:
             return
@@ -298,8 +299,18 @@ class MainWindow:
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
         lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
         self.drawLinesOnCanvas(lines, color='blue')
-        dash_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if check(points, p1, p2) and -1 not in edge[i] and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
-        self.drawLinesOnCanvas(dash_lines, color='red', dash=(5,2), width=0.5)
+        # dash_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if -1 not in edge[i] and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
+        # self.drawLinesOnCanvas(dash_lines, color='black', dash=(5,2), width=0.5)
+        # triangle_lines = []
+        # for (p1, p2), (e1, e2) in izip(area, edge):
+        #     if e1 == -1 or e2 == -1 or (not check2(vertex[e1]) and not check2(vertex[e2])):
+        #         continue
+        #     for x in p1, p2:
+        #         for y in e1, e2:
+        #             a, b = points[x]
+        #             c, d = vertex[y]
+        #             triangle_lines.append((a, b, c, d))
+        # self.drawLinesOnCanvas(triangle_lines, color='red', dash=(5,2), width=0.5)
         self.drawPointsOnCanvas([v for v in vertex if check2(v)])
         print points
 
