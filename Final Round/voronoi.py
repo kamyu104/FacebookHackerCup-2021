@@ -236,33 +236,8 @@ def is_inside_triangle_incl(t, a, b, c):
     d1, d2, d3 = ccw(t, a, b), ccw(t, b, c), ccw(t, c, a)
     return (d1 > EPS and d2 > EPS and d3 > EPS) or (d1 < -EPS and d2 < -EPS and d3 < -EPS)
 
-def process_voronoi_diagrams(XR, YR, key_points, P):
-    vertex, edge, area = VoronoiDiagram(P)
-    key_nodes = [-1]*2
-    adj = [[] for _ in xrange(len(vertex))]
-    result = INF
-    for i in xrange(len(area)):
-        e1, e2 = edge[i]
-        if e1 == -1 or e2 == -1:
-            continue  # infinite edge
-        vertex[e1], vertex[e2] = vertex[e1], vertex[e2]
-        if (min(vertex[e1][0], vertex[e2][0]) < -EPS or max(vertex[e1][0], vertex[e2][0]) > XR + EPS or
-            min(vertex[e1][1], vertex[e2][1]) < -EPS or max(vertex[e1][1], vertex[e2][1]) > YR + EPS):
-            continue  # edge outside rectangle
-        pi1, pi2 = area[i]
-        sites = [P[pi1], P[pi2]]
-        d = size(sub(sites[0], project_point_segment(vertex[e1], vertex[e2], sites[0])))
-        adj[e1].append((e2, d))
-        adj[e2].append((e1, d))
-        mid = mul(0.5, add(sites[0], sites[1]))
-        for j, kp in enumerate(key_points):
-            for p in sites:
-                result = min(result, size(sub(kp, p)))
-                if is_inside_triangle_incl(kp, p, vertex[e1], mid):
-                    key_nodes[j] = e1
-                elif is_inside_triangle_incl(kp, p, mid, vertex[e2]):
-                    key_nodes[j] = e2
-    return key_nodes, adj, result
+def cross(A, B, C, D):
+    return ccw(A,C,D) * ccw(B,C,D) < 0 and ccw(A,B,C) * ccw(A,B,D) < 0
 
 class MainWindow:
     # radius of drawn points on canvas
@@ -323,8 +298,8 @@ class MainWindow:
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
         lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
         self.drawLinesOnCanvas(lines, color='blue')
-        # dash_lines = [get(points, p1, p2) for p1, p2 in area if check(points, p1, p2)]
-        # self.drawLinesOnCanvas(dash_lines, color='red', dash=(5,2), width=0.5)
+        dash_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if check(points, p1, p2) and -1 not in edge[i] and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
+        self.drawLinesOnCanvas(dash_lines, color='red', dash=(5,2), width=0.5)
         self.drawPointsOnCanvas([v for v in vertex if check2(v)])
         print points
 
