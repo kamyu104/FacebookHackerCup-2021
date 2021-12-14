@@ -263,7 +263,7 @@ void process_voronoi_diagrams(
     (*adj).resize(size(vertex));
     for (int i = 0; i < size(area); ++i) {
         const auto& [e1, e2] = edge[i];
-        if (e1 < 0 || e2 < 0) {
+        if (e1 == -1 || e2 == -1) {
             continue;  // infinite edge
         }
         const auto& v1 = vertex[e1];
