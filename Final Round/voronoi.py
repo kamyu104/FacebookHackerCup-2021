@@ -297,21 +297,22 @@ class MainWindow:
             points.append((X, 2*YR - Y))
         points = list(set(points))
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
-        lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
-        self.drawLinesOnCanvas(lines, color='blue')
-        # perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if -1 not in edge[i] and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
+        edge_lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
+        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if -1 not in edge[i] and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
+        triangular_lines = []
+        for (p1, p2), (e1, e2) in izip(area, edge):
+            if e1 == -1 or e2 == -1 or (not check2(vertex[e1]) and not check2(vertex[e2])):
+                continue
+            for x in p1, p2:
+                for y in e1, e2:
+                    a, b = points[x]
+                    c, d = vertex[y]
+                    triangular_lines.append((a, b, c, d))
+        # self.drawLinesOnCanvas(triangular_lines, color='red', dash=(5,2), width=0.5)
         # self.drawLinesOnCanvas(perpendicular_lines, color='black', dash=(5,2), width=0.5)
-        # triangle_lines = []
-        # for (p1, p2), (e1, e2) in izip(area, edge):
-        #     if e1 == -1 or e2 == -1 or (not check2(vertex[e1]) and not check2(vertex[e2])):
-        #         continue
-        #     for x in p1, p2:
-        #         for y in e1, e2:
-        #             a, b = points[x]
-        #             c, d = vertex[y]
-        #             triangle_lines.append((a, b, c, d))
-        # self.drawLinesOnCanvas(triangle_lines, color='red', dash=(5,2), width=0.5)
-        self.drawPointsOnCanvas([v for v in vertex if check2(v)])
+        self.drawLinesOnCanvas(edge_lines, color='blue')
+        self.drawPointsOnCanvas([v for v in vertex if check2(v)], color="green")
+        self.drawPointsOnCanvas(points, color="black")
         print points
 
     def onClickClear(self):
@@ -322,9 +323,9 @@ class MainWindow:
         if not self.LOCK_FLAG:
             self.w.create_oval(event.x-self.RADIUS, event.y-self.RADIUS, event.x+self.RADIUS, event.y+self.RADIUS, fill="black")
 
-    def drawPointsOnCanvas(self, vertex):
+    def drawPointsOnCanvas(self, vertex, color):
         for x, y in vertex:
-            self.w.create_oval(x-self.RADIUS, y-self.RADIUS, x+self.RADIUS, y+self.RADIUS, fill="green", outline="green")
+            self.w.create_oval(x-self.RADIUS, y-self.RADIUS, x+self.RADIUS, y+self.RADIUS, fill=color, outline=color)
 
     def drawLinesOnCanvas(self, lines, color='black', dash=None, width=1.5):
         for l in lines:
