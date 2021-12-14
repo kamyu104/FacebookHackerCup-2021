@@ -4,8 +4,6 @@ from heapq import heappush, heappop
 
 # Template translated from:
 # https://github.com/zigui-ps/VoronoiDiagram/blob/master/VoronoiDiagram.cpp
-INF = float("inf")
-EPS = 1e-9
 def add(a, b):
     return (a[0] + b[0], a[1] + b[1])
 
@@ -345,6 +343,8 @@ def main():
     root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
     root.mainloop()
 
+INF = float("inf")
+EPS = 1e-9
 XR = YR = 500
 if __name__ == '__main__':
     main()
