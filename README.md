@@ -1,4 +1,4 @@
-# [FacebookHackerCup-2021](https://www.facebook.com/hackercup/past_rounds/) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-CC%203.0-blue.svg)](https://creativecommons.org/licenses/by-nc/3.0/) ![Progress](https://img.shields.io/badge/progress-21%20%2F%2021-ff69b4.svg) ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=kamyu104.facebookhackercup.2021)
+# [FacebookHackerCup-2021](https://www.facebook.com/hackercup/past_rounds/) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-CC%203.0-blue.svg)](https://creativecommons.org/licenses/by-nc/3.0/) ![Progress](https://img.shields.io/badge/progress-23%20%2F%2027-ff69b4.svg) ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=kamyu104.facebookhackercup.2021)
 
 Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds). A `6-minute` timer is set for uploading the result this year.
 
@@ -44,3 +44,13 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 |D1| [Expl-ore-ation - Chapter 1](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D1)| [Python](./Round%203/expl_ore_ation_chapter_1.py) | _O((R * C) * log(R * C))_ | _O(R * C)_ | Easy | | Union Find |
 |D2| [Expl-ore-ation - Chapter 2](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D2)| [Python](./Round%203/expl_ore_ation_chapter_2.py) | _O((R * C + K) * log(R * C + K) + ((R * C) * log(R * C) + K) * logK)_ | _O(R * C + K)_ | Medium | | Union Find, Intervals, Sorted List |
 |D3| [Expl-ore-ation - Chapter 3](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D3)| [Python](./Round%203/expl_ore_ation_chapter_3.py) [Python](./Round%203/expl_ore_ation_chapter_3-2.py) | _O((R * C + K) * log(R * C)^2)_ | _O(R * C)_ | Hard | | Union Find, Tree Traversal, Tree Ancestors (Binary Lifting), Heavy-Light Decomposition, Sorted List, BIT, Fenwick Tree |
+
+## Final Round
+| # | Title | Solution | Time | Space | Difficulty | Tag | Note |
+|---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
+|A| [And](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/A)| [Python](./Final%20Round/and.py) | _O(L * N)_ | _O(L * N)_ | Medium | | Union Find |
+|B| [SSSSSS](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/B)| [Python](./Round%203/ssssss.py) | _O(NlogN)_ | _O(N)_ | Hard | | Line Sweep |
+|C| [Hire Flyers](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/C)| | | | Hard | | |
+|D| [Vacation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/D)| | | | Medium | | |
+|E| [Antisocial](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/E)| | | | Hard | | |
+|F| [Table Flipping](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/F)| | | | Hard | | |
