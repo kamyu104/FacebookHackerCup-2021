@@ -299,8 +299,8 @@ class MainWindow:
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
         lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
         self.drawLinesOnCanvas(lines, color='blue')
-        # dash_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if -1 not in edge[i] and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
-        # self.drawLinesOnCanvas(dash_lines, color='black', dash=(5,2), width=0.5)
+        # perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if -1 not in edge[i] and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
+        # self.drawLinesOnCanvas(perpendicular_lines, color='black', dash=(5,2), width=0.5)
         # triangle_lines = []
         # for (p1, p2), (e1, e2) in izip(area, edge):
         #     if e1 == -1 or e2 == -1 or (not check2(vertex[e1]) and not check2(vertex[e2])):
