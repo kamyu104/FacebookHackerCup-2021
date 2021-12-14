@@ -52,5 +52,5 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 |B| [SSSSSS](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/B)| [Python](./Final%20Round/ssssss.py) | _O(NlogN)_ | _O(N)_ | Hard | | Line Sweep |
 |C| [Hire Flyers](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/C)| | | | Hard | | |
 |D| [Vacation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/D)| | | | Medium | | |
-|E| [Antisocial](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/E)| [*PyPy](./Final%20Round/antisocial.py) [C++](./Final%20Round/antisocial.cpp) | _O(NlogN)_ | _O(N)_ | Hard | | Geometry, [Voronoi Diagram](./Final%20Round/voronoi.py), Fortune's Algorithm, Maximum Spanning Tree, Graph, Kruskal's Algorithm |
+|E| [Antisocial](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/E)| [*PyPy](./Final%20Round/antisocial.py) [C++](./Final%20Round/antisocial.cpp) | _O(NlogN)_ | _O(N)_ | Hard | | Geometry, [Voronoi Diagram (Fortune's Algorithm)](./Final%20Round/voronoi.py), Maximum Spanning Tree, Graph, Kruskal's Algorithm |
 |F| [Table Flipping](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/F)| | | | Hard | | |
