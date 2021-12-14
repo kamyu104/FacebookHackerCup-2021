@@ -320,10 +320,10 @@ class MainWindow:
             points = list(set(points))
             vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
             lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
-            self.drawLinesOnCanvas(lines, 'blue')
+            self.drawLinesOnCanvas(lines, color='blue')
             print points
-            # lines = [get(points, p1, p2) for p1, p2 in area if check(points, p1, p2)]
-            # self.drawLinesOnCanvas(lines, 'red')
+            # dash_lines = [get(points, p1, p2) for p1, p2 in area if check(points, p1, p2)]
+            # self.drawLinesOnCanvas(dash_lines, color='red', dash=(5,2), width=0.5)
 
     def onClickClear(self):
         self.LOCK_FLAG = False
@@ -333,9 +333,9 @@ class MainWindow:
         if not self.LOCK_FLAG:
             self.w.create_oval(event.x-self.RADIUS, event.y-self.RADIUS, event.x+self.RADIUS, event.y+self.RADIUS, fill="black")
 
-    def drawLinesOnCanvas(self, lines, color):
+    def drawLinesOnCanvas(self, lines, color='black', dash=None, width=1.5):
         for l in lines:
-            self.w.create_line(l[0], l[1], l[2], l[3], fill=color, width=1.5)
+            self.w.create_line(l[0], l[1], l[2], l[3], fill=color, width=width, dash=dash)
 
 def main(): 
     root = tk.Tk()
