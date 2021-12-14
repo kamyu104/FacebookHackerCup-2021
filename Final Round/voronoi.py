@@ -299,7 +299,7 @@ class MainWindow:
 
         def check(points, p1, p2):
             p1, p2 = points[p1], points[p2]
-            if p1[0] == p2[0] == XR or p1[1] == p2[1] == YR:
+            if p1[0] == p2[0] == XR or p1[1] == p2[1] == YR:  # ignore border line
                 return False
             return (-EPS <= min(p1[0], p2[0]) and max(p1[0], p2[0]) <= XR+EPS and
                     -EPS <= min(p1[1], p2[1]) and max(p1[1], p2[1]) <= YR+EPS)
