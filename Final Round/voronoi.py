@@ -301,8 +301,8 @@ class MainWindow:
             p1, p2 = points[p1], points[p2]
             if p1[0] == p2[0] == XR or p1[1] == p2[1] == YR:
                 return False
-            return (0 <= min(p1[0], p2[0]) and max(p1[0], p2[0]) <= XR and
-                    0 <= min(p1[1], p2[1]) and max(p1[1], p2[1]) <= YR)
+            return (-EPS <= min(p1[0], p2[0]) and max(p1[0], p2[0]) <= XR+EPS and
+                    -EPS <= min(p1[1], p2[1]) and max(p1[1], p2[1]) <= YR+EPS)
 
         if not self.LOCK_FLAG:
             self.LOCK_FLAG = True
@@ -321,6 +321,7 @@ class MainWindow:
             vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
             lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
             self.drawLinesOnCanvas(lines, 'blue')
+            print points
             # lines = [get(points, p1, p2) for p1, p2 in area if check(points, p1, p2)]
             # self.drawLinesOnCanvas(lines, 'red')
 
