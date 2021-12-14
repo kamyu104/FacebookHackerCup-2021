@@ -304,26 +304,25 @@ class MainWindow:
             return (-EPS <= min(p1[0], p2[0]) and max(p1[0], p2[0]) <= XR+EPS and
                     -EPS <= min(p1[1], p2[1]) and max(p1[1], p2[1]) <= YR+EPS)
 
-        if not self.LOCK_FLAG:
-            self.LOCK_FLAG = True
-        
-            pObj = self.w.find_all()
-            points = []
-            for p in pObj:
-                coord = self.w.coords(p)
-                X, Y = coord[0]+self.RADIUS, coord[1]+self.RADIUS
-                points.append((X, Y))
-                points.append((-X, Y))
-                points.append((X, -Y))
-                points.append((2*XR - X, Y))
-                points.append((X, 2*YR - Y))
-            points = list(set(points))
-            vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
-            lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
-            self.drawLinesOnCanvas(lines, color='blue')
-            print points
-            # dash_lines = [get(points, p1, p2) for p1, p2 in area if check(points, p1, p2)]
-            # self.drawLinesOnCanvas(dash_lines, color='red', dash=(5,2), width=0.5)
+        if self.LOCK_FLAG:
+            return
+        self.LOCK_FLAG = True        
+        points = []
+        for p in self.w.find_all():
+            coord = self.w.coords(p)
+            X, Y = coord[0]+self.RADIUS, coord[1]+self.RADIUS
+            points.append((X, Y))
+            points.append((-X, Y))
+            points.append((X, -Y))
+            points.append((2*XR - X, Y))
+            points.append((X, 2*YR - Y))
+        points = list(set(points))
+        vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
+        lines = [get(vertex, e1, e2) for e1, e2 in edge if check(vertex, e1, e2)]
+        self.drawLinesOnCanvas(lines, color='blue')
+        print points
+        # dash_lines = [get(points, p1, p2) for p1, p2 in area if check(points, p1, p2)]
+        # self.drawLinesOnCanvas(dash_lines, color='red', dash=(5,2), width=0.5)
 
     def onClickClear(self):
         self.LOCK_FLAG = False
