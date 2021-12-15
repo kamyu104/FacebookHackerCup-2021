@@ -307,7 +307,7 @@ class MainWindow:
         points = list(set(points))
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
         edge_lines = [get(vertex, e1, e2) for e1, e2 in edge if inside_rect_incl(vertex, e1, e2) and not is_border_segment(vertex[e1], vertex[e2])]
-        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if inside_rect_incl(vertex, edge[i][0], edge[i][1]) and cross(vertex[edge[i][0]], vertex[edge[i][1]], points[p1], points[p2])]
+        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if inside_rect_incl(vertex, edge[i][0], edge[i][1])]
         triangular_lines = []
         for (p1, p2), (e1, e2) in izip(area, edge):
             if not inside_rect_incl(vertex, e1, e2):
@@ -319,11 +319,11 @@ class MainWindow:
                     a, b = points[x]
                     c, d = vertex[y]
                     triangular_lines.append((a, b, c, d))
-        #self.drawLinesOnCanvas(triangular_lines, color='red', dash=(5,2), width=0.5)
-        #self.drawLinesOnCanvas(perpendicular_lines, color='black', dash=(5,2), width=0.5)
-        self.drawLinesOnCanvas(edge_lines, color='blue')
-        self.drawPointsOnCanvas([v for v in vertex if not on_border(v)], color="green")
-        self.drawPointsOnCanvas(points, color="black")
+        #self.drawLinesOnCanvas(triangular_lines, color='blue', dash=(5,2), width=0.5)
+        self.drawLinesOnCanvas(perpendicular_lines, color='purple', dash=(5,2), width=0.5)
+        self.drawLinesOnCanvas(edge_lines, color='purple')
+        #self.drawPointsOnCanvas([v for v in vertex if not on_border(v)], color='blue')
+        self.drawPointsOnCanvas(points, color="purple")
 
     def drawPointsOnCanvas(self, vertex, color):
         for x, y in vertex:
