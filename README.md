@@ -51,6 +51,6 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 |A| [And](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/A)| [Python](./Final%20Round/and.py) | _O(L * N)_ | _O(L * N)_ | Medium | | Greedy, Union Find |
 |B| [SSSSSS](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/B)| [Python](./Final%20Round/ssssss.py) | _O(NlogN)_ | _O(N)_ | Hard | | Line Sweep |
 |C| [Hire Flyers](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/C)| | | | Hard | | |
-|D| [Vacation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/D)| [Python](./Final%20Round/vacation.py)  | _O(NlogN)_ | _O(N)_ | Medium | | Tree, DFS, Greedy |
+|D| [Vacation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/D)| [Python](./Final%20Round/vacation.py)  | _O(NlogN)_ | _O(N)_ | Medium | | Tree, DFS, DP, Greedy |
 |E| [Antisocial](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/E)| [*PyPy](./Final%20Round/antisocial.py) [C++](./Final%20Round/antisocial.cpp) | _O(NlogN)_ | _O(N)_ | Hard | | Geometry, [Voronoi Diagram (Fortune's Algorithm)](./Final%20Round/voronoi.py), Graph, Maximum Spanning Tree (Kruskal's Algorithm) |
 |F| [Table Flipping](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/F)| | | | Hard | | |
