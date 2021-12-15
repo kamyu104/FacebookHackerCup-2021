@@ -307,7 +307,7 @@ class MainWindow:
         points = list(set(points))
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
         edge_lines = [get(vertex, e1, e2) for e1, e2 in edge if inside_rect_incl(vertex, e1, e2) and not is_border_segment(vertex[e1], vertex[e2])]
-        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if inside_rect_incl(vertex, edge[i][0], edge[i][1])]
+        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if inside_rect_incl(vertex, edge[i][0], edge[i][1]) and inside_rect_incl(points, p1, p2)]
         triangular_lines = []
         for (p1, p2), (e1, e2) in izip(area, edge):
             if not inside_rect_incl(vertex, e1, e2):
