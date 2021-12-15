@@ -313,6 +313,8 @@ class MainWindow:
             if not inside_rect_incl(vertex, e1, e2):
                 continue
             for x in p1, p2:
+                if not inside_rect_incl(points, x, x):
+                    continue
                 for y in e1, e2:
                     a, b = points[x]
                     c, d = vertex[y]
