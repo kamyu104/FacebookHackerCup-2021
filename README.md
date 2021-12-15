@@ -1,4 +1,4 @@
-# [FacebookHackerCup-2021](https://www.facebook.com/hackercup/past_rounds/) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-CC%203.0-blue.svg)](https://creativecommons.org/licenses/by-nc/3.0/) ![Progress](https://img.shields.io/badge/progress-24%20%2F%2027-ff69b4.svg) ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=kamyu104.facebookhackercup.2021)
+# [FacebookHackerCup-2021](https://www.facebook.com/hackercup/past_rounds/) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-CC%203.0-blue.svg)](https://creativecommons.org/licenses/by-nc/3.0/) ![Progress](https://img.shields.io/badge/progress-25%20%2F%2027-ff69b4.svg) ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=kamyu104.facebookhackercup.2021)
 
 Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds). A `6-minute` timer is set for uploading the result this year.
 
@@ -51,6 +51,6 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 |A| [And](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/A)| [Python](./Final%20Round/and.py) | _O(L * N)_ | _O(L * N)_ | Medium | | Greedy, Union Find |
 |B| [SSSSSS](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/B)| [Python](./Final%20Round/ssssss.py) | _O(NlogN)_ | _O(N)_ | Hard | | Line Sweep |
 |C| [Hire Flyers](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/C)| | | | Hard | | |
-|D| [Vacation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/D)| | | | Medium | | |
+|D| [Vacation](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/D)| [Python](./Final%20Round/vacation.py)  | _O(NlogN)_ | _O(N)_ | Medium | | DFS, DP, Greedy |
 |E| [Antisocial](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/E)| [*PyPy](./Final%20Round/antisocial.py) [C++](./Final%20Round/antisocial.cpp) | _O(NlogN)_ | _O(N)_ | Hard | | Geometry, [Voronoi Diagram (Fortune's Algorithm)](./Final%20Round/voronoi.py), Graph, Maximum Spanning Tree (Kruskal's Algorithm) |
 |F| [Table Flipping](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/F)| | | | Hard | | |
