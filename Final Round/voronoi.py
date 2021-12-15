@@ -281,19 +281,10 @@ class MainWindow:
             if p1 == -1 or p2 == -1:
                 return False
             p1, p2 = points[p1], points[p2]
-            return (-EPS <= min(p1[0], p2[0]) and max(p1[0], p2[0]) <= XR+EPS and
-                    -EPS <= min(p1[1], p2[1]) and max(p1[1], p2[1]) <= YR+EPS)
+            return valid_point(p1) and valid_point(p2)
 
-        def on_border(p):
-            return abs(p[0]-0) <= EPS or abs(p[0]-XR) <= EPS or abs(p[1]-0) <= EPS or abs(p[1]-YR) <= EPS
-
-        def is_border_segment(a, b):
-            segments = [(0, 0), (XR, 0), (XR, YR), (0, YR)]
-            for i in xrange(len(segments)):
-                c, d = segments[i], segments[(i+1)%len(segments)]
-                if abs(ccw(a, c, d)) <= EPS and abs(ccw(b, c, d)) <= EPS:
-                    return True
-            return False
+        def valid_point(p):
+            return (-EPS <= p[0] <= XR+EPS and -EPS <= p[1] <= YR+EPS)
 
         self.w.delete(tk.ALL)
         print self.points
@@ -306,23 +297,21 @@ class MainWindow:
             points.append((X, 2*YR - Y))
         points = list(set(points))
         vertex, edge, area = VoronoiDiagram(points)  # points should be distinct
-        edge_lines = [get(vertex, e1, e2) for e1, e2 in edge if inside_rect_incl(vertex, e1, e2) and not is_border_segment(vertex[e1], vertex[e2])]
-        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if inside_rect_incl(vertex, edge[i][0], edge[i][1]) and inside_rect_incl(points, p1, p2)]
+        edge_lines = [get(vertex, e1, e2) for (p1, p2), (e1, e2) in izip(area, edge) if inside_rect_incl(points, p1, p2)]
+        perpendicular_lines = [get(points, p1, p2) for i, (p1, p2) in enumerate(area) if inside_rect_incl(points, p1, p2)]
         triangular_lines = []
         for (p1, p2), (e1, e2) in izip(area, edge):
-            if not inside_rect_incl(vertex, e1, e2):
+            if not inside_rect_incl(points, p1, p2):
                 continue
             for x in p1, p2:
-                if not inside_rect_incl(points, x, x):
-                    continue
                 for y in e1, e2:
                     a, b = points[x]
                     c, d = vertex[y]
                     triangular_lines.append((a, b, c, d))
-        #self.drawLinesOnCanvas(triangular_lines, color='blue', dash=(5,2), width=0.5)
+        self.drawLinesOnCanvas(triangular_lines, color='blue', dash=(5,2), width=0.5)
         self.drawLinesOnCanvas(perpendicular_lines, color='purple', dash=(5,2), width=0.5)
         self.drawLinesOnCanvas(edge_lines, color='purple')
-        #self.drawPointsOnCanvas([v for v in vertex if not on_border(v)], color='blue')
+        # self.drawPointsOnCanvas([v for v in vertex if valid_point(v)], color='purple')
         self.drawPointsOnCanvas(points, color="purple")
 
     def drawPointsOnCanvas(self, vertex, color):
