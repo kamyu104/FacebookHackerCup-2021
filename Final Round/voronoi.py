@@ -244,9 +244,6 @@ class MainWindow:
     # radius of drawn points on canvas
     RADIUS = 3
 
-    # flag to lock the canvas when drawn
-    LOCK_FLAG = False
-
     points = set()
     
     def __init__(self, master):
@@ -294,7 +291,7 @@ class MainWindow:
             segments = [(0, 0), (XR, 0), (XR, YR), (0, YR)]
             for i in xrange(len(segments)):
                 c, d = segments[i], segments[(i+1)%len(segments)]
-                if abs(ccw(a, c, d)) < EPS and abs(ccw(b, c, d)) < EPS:
+                if abs(ccw(a, c, d)) <= EPS and abs(ccw(b, c, d)) <= EPS:
                     return True
             return False
 
