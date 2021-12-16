@@ -120,7 +120,7 @@ def process_linear_segments(segments, horizon, trimmed_segments):
     # collect and sort forward / backward segments
     d1, d2 = (R, L) if horizon else (D, U)
     P1 = [(s.r + s.c, -s.i, s) for s in segments if s.d == d1]
-    P2 = [(-(s.r + s.c), -s.i, s) for s in segments if s.d != d1]
+    P2 = [(-(s.r + s.c), -s.i, s) for s in segments if s.d == d2]
     P1.sort(), P2.sort()
     # reduce forward / backward segments independently
     S1, S2 = [], []
