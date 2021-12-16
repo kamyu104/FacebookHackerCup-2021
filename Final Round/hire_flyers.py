@@ -198,20 +198,20 @@ def hire_flyers():
         bit.add(bisect_left(keys, v), d)
 
     N = input()
-    rowS, colS = defaultdict(list), defaultdict(list)
+    row_segments, col_segments = defaultdict(list), defaultdict(list)
     for i in xrange(1, N+1):
         r, c, p, d =  raw_input().strip().split()
         r, c, p, d = int(r), int(c), int(p), DIRS[d]
         s = Segment(i, r, c, p, d)
         if s.d == R or s.d == L:
-            rowS[s.r].append(s)
+            row_segments[s.r].append(s)
         else:
-            colS[s.c].append(s)
+            col_segments[s.c].append(s)
     # reduce each relevant row / column to disjoint segments
     trimmed_segments = []
-    for segments in rowS.itervalues():
+    for segments in row_segments.itervalues():
         process_linear_segments(segments, True, trimmed_segments)
-    for segments in colS.itervalues():
+    for segments in col_segments.itervalues():
         process_linear_segments(segments, False, trimmed_segments)
     # compute base answer
     result = 0
@@ -235,28 +235,28 @@ def hire_flyers():
                 elif s.d == D:
                     s.d = U
             # assemble list of line sweep events and distinct D segment columns
-            events, cols = [], []
+            events, col_segments = [], []
             for s in trimmed_segments:
                 if s.d == R:
                     events.append((s.r, R, s))
                 elif s.d == D:
                     events.append((s.r, U, s))
                     events.append((s.r+s.p-1, D, s))
-                    cols.append(s.c)
+                    col_segments.append(s.c)
             events.sort()
-            cols = sorted(set(cols))
+            col_segments = sorted(set(col_segments))
             # initialize 2D segment tree
-            keys = [[] for _ in xrange(len(cols))]
+            keys = [[] for _ in xrange(len(col_segments))]
             for s in trimmed_segments:
                 if s.d == D:
-                    keys[bisect_left(cols, s.c)].append(s.get_time_val(N))
-            st = SegmentTree(len(cols), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
+                    keys[bisect_left(col_segments, s.c)].append(s.get_time_val(N))
+            st = SegmentTree(len(col_segments), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
             # line sweep to subtract R segments covered by D ones
             for _, e, s in events:
-                a = bisect_left(cols, s.c)
+                a = bisect_left(col_segments, s.c)
                 v = s.get_time_val(N)
                 if e == R:
-                    b = bisect_left(cols, s.c+s.p)-1
+                    b = bisect_left(col_segments, s.c+s.p)-1
                     result = (result - s.i*st.query(a, b, v)) % MOD
                 else:
                     st.update(a, v, 1 if e == U else -1)
