@@ -150,11 +150,7 @@ def process_linear_segments(segments, horizon, trimmed_segments):
     inds = [-1]*2
     for i, (v, e, s) in enumerate(events):
         # update set of ongoing segments
-        j = e//2
-        if e in (R, L):
-            inds[j] = s
-        else:
-            inds[j] = -1
+        inds[e//2] = s if e in (R, L) else -1
         # process ongoing segments?
         if i+1 < len(events) and v < events[i+1][0]:
             segments = []
@@ -239,28 +235,28 @@ def hire_flyers():
                 elif s.d == D:
                     s.d = U
             # assemble list of line sweep events and distinct D segment columns
-            events, cc = [], []
+            events, cols = [], []
             for s in trimmed_segments:
                 if s.d == R:
                     events.append((s.r, R, s))
                 elif s.d == D:
                     events.append((s.r, U, s))
                     events.append((s.r+s.p-1, D, s))
-                    cc.append(s.c)
+                    cols.append(s.c)
             events.sort()
-            cc = sorted(set(cc))
+            cols = sorted(set(cols))
             # initialize 2D segment tree
-            keys = [[] for _ in xrange(len(cc))]
+            keys = [[] for _ in xrange(len(cols))]
             for s in trimmed_segments:
                 if s.d == D:
-                    keys[bisect_left(cc, s.c)].append(s.get_time_val(N))
-            st = SegmentTree(len(cc), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
+                    keys[bisect_left(cols, s.c)].append(s.get_time_val(N))
+            st = SegmentTree(len(cols), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
             # line sweep to subtract R segments covered by D ones
             for _, e, s in events:
-                a = bisect_left(cc, s.c)
+                a = bisect_left(cols, s.c)
                 v = s.get_time_val(N)
                 if e == R:
-                    b = bisect_left(cc, s.c+s.p)-1
+                    b = bisect_left(cols, s.c+s.p)-1
                     result = (result - s.i*st.query(a, b, v)) % MOD
                 else:
                     st.update(a, v, 1 if e == U else -1)
