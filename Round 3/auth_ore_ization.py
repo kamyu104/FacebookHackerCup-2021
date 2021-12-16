@@ -213,7 +213,7 @@ class SegmentTree(object):  # 0-based index
         for i in reversed(xrange(1, self.base)):  # modified, non-leaf nodes
             self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
 
-    def update(self, i, h):  # Time: O(logN), Space: O(N)
+    def update(self, i, h):  # modified, Time: O(logN), Space: O(N)
         x = self.base+i
         self.tree[x] = self.update_fn(self.tree[x], h)
         while x > 1:
