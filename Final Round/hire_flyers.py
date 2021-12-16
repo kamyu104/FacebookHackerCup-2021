@@ -166,10 +166,10 @@ def process_linear_segments(segments, horizon, trimmed_segments):
                     trimmed_segments.append(s)
 
 def hire_flyers():
-    def build_leaf(i):
+    def build_leaf(i):  # Total Time: O(NlogN), Total Space: O(N)
         return (sorted(keys[i]), BIT(len(keys[i])))
 
-    def build_parent(x, y):
+    def build_parent(x, y):  # Total Time: O(NlogN), Total Space: O(NlogN)
         keys1, keys2 = (x[0] if x else []), (y[0] if y else [])
         i = j = 0
         keys = []
