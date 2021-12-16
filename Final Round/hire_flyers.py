@@ -35,8 +35,8 @@ class BIT(object):  # 0-indexed.
 # https://github.com/kamyu104/FacebookHackerCup-2021/blob/main/Round%203/auth_ore_ization.py
 class SegmentTree(object):  # 0-based index
     def __init__(self, N, build_leaf_fn, build_parent_fn, query_fn, update_fn, get_fn):  # modified
-        self.tree = [None]*(2*2**((N-1).bit_length()))
-        self.base = len(self.tree)//2
+        self.tree = [None]*(2*N)
+        self.base = N
         self.query_fn = query_fn
         self.update_fn = update_fn
         self.get_fn = get_fn  # modified
@@ -56,17 +56,17 @@ class SegmentTree(object):  # 0-based index
             return 0  # modified
         L += self.base
         R += self.base 
-        left = right = None
+        result  = None
         while L <= R:
             if L & 1:  # is right child
-                left = self.query_fn(left, self.get_fn(self.tree[L], v))  # modified
+                result = self.query_fn(result, self.get_fn(self.tree[L], v))  # modified
                 L += 1
             if R & 1 == 0:  # is left child
-                right = self.query_fn(self.get_fn(self.tree[R], v), right)  # modified
+                result = self.query_fn(result, self.get_fn(self.tree[R], v))  # modified
                 R -= 1
             L //= 2
             R //= 2
-        return self.query_fn(left, right)
+        return result
 
 class Segment(object):
     def __init__(self, i, r, c, p, d, t=0):
@@ -191,7 +191,7 @@ def hire_flyers():
         return bit.query(len(keys)-1) - bit.query(bisect_left(keys, v)-1)
 
     def query(x, y):
-        return y if x is None else x if y is None else x+y
+        return y if x is None else x+y
 
     def update(x, v, d):
         keys, bit = x
