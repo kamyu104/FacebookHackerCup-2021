@@ -209,7 +209,7 @@ def iter_dfs(A, B, A_x0_y0, i, lookup, st_x, st_y):
 
 def table_flipping():
     def build_leaf(keys, i):  # Total Time: O(NlogN), Total Space: O(N)
-        return (sorted(keys), SegmentTreeMax(len(keys)))
+        return (sorted(keys[i]), SegmentTreeMax(len(keys[i])))
 
     def build_parent(x, y):  # Total Time: O(NlogN), Total Space: O(NlogN)
         keys1, keys2 = (x[0] if x else []), (y[0] if y else [])
