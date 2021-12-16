@@ -182,9 +182,9 @@ def hire_flyers():
                 j += 1
         return (keys, BIT(len(keys)))
 
-    def get(x, v):  # sum(val[x] for x in keys if x >= v), Time: O(logN)
+    def get(x, v):  # sum(val[x] for x in keys if x > v), Time: O(logN)
         keys, bit = x
-        return bit.query(len(keys)-1) - bit.query(bisect_left(keys, v)-1)
+        return bit.query(len(keys)-1) - bit.query(bisect_left(keys, v+1)-1)
 
     def query(x, y):
         return y if x is None else x+y
