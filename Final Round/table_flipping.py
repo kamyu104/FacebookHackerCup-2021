@@ -18,7 +18,7 @@ class SegmentTreeMaxRange(object):  # 0-based index
                  build_fn=lambda x, y: [y]*(2*x),
                  query_fn=lambda x, y: y if x is None else max(x, y),
                  update_fn=lambda x, y: y if x is None else x+y,
-                 default_val=0):
+                 default_val=None):
         self.base = N
         self.H = (N-1).bit_length()
         self.query_fn = query_fn
@@ -94,8 +94,8 @@ class SegmentTreeMax(object):  # 0-based index
     def __init__(self, N,
                  build_fn=lambda x, y: [y]*(2*x),
                  query_fn=lambda x, y: y if x is None else max(x, y),
-                 update_fn=lambda x, y: y,
-                 default_val=0):
+                 update_fn=lambda _, y: y,
+                 default_val=None):
         self.base = N
         self.query_fn = query_fn
         self.update_fn = update_fn
