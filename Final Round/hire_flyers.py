@@ -55,7 +55,7 @@ class SegmentTree2D(object):  # 0-based index
         if L > R:
             return 0  # modified
         L += self.base
-        R += self.base 
+        R += self.base
         result  = None
         while L <= R:
             if L & 1:  # is right child

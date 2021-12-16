@@ -282,7 +282,7 @@ def mst(key_nodes, adj, result):
     max_heap = [(-result, key_nodes[0])]
     while max_heap:
         dist, u = heappop(max_heap)
-        result = min(result, -dist)        
+        result = min(result, -dist)
         if u == key_nodes[1]:
             break
         if lookup[u]:

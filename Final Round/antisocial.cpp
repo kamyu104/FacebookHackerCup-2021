@@ -63,7 +63,7 @@ class Beachline{
     public:
         struct node{
             node(){}
-            node(pdd point, int idx):point(point), idx(idx), end(0), 
+            node(pdd point, int idx):point(point), idx(idx), end(0),
                 link{0, 0}, par(0), prv(0), nxt(0) {}
             pdd point; int idx; int end;
             node *link[2], *par, *prv, *nxt;
