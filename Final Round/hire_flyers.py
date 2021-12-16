@@ -53,7 +53,7 @@ class SegmentTree(object):  # 0-based index
 
     def query(self, L, R, v):  # modified, Time: O(logN), Space: O(N)
         if L > R:
-            return 0
+            return 0  # modified
         L += self.base
         R += self.base 
         left = right = None
