@@ -13,11 +13,11 @@ from functools import partial
 
 # Template:
 # https://github.com/kamyu104/FacebookHackerCup-2021/blob/main/Round%202/valet_parking_chapter_2.py
-class SegmentTree(object):  # 0-based index
+class SegmentTreeMaxRange(object):  # 0-based index
     def __init__(self, N,
                  build_fn=lambda x, y: [y]*(2*x),
                  query_fn=lambda x, y: y if x is None else max(x, y),
-                 update_fn=lambda _, y: y,
+                 update_fn=lambda x, y: y if x is None else x+y,
                  default_val=0):
         self.base = N
         self.H = (N-1).bit_length()
@@ -77,6 +77,51 @@ class SegmentTree(object):  # 0-based index
         R += self.base
         push(L)
         push(R)
+        while L <= R:
+            if L & 1:  # is right child
+                result = self.query_fn(result, self.tree[L])
+                L += 1
+            if R & 1 == 0:  # is left child
+                result = self.query_fn(result, self.tree[R])
+                R -= 1
+            L //= 2
+            R //= 2
+        return result
+
+# Template:
+# https://github.com/kamyu104/FacebookHackerCup-2021/blob/main/Round%202/valet_parking_chapter_2.py
+class SegmentTreeMax(object):  # 0-based index
+    def __init__(self, N,
+                 build_fn=lambda x, y: [y]*(2*x),
+                 query_fn=lambda x, y: y if x is None else max(x, y),
+                 update_fn=lambda x, y: y,
+                 default_val=0):
+        self.base = N
+        self.query_fn = query_fn
+        self.update_fn = update_fn
+        self.tree = build_fn(N, default_val)
+        for i in reversed(xrange(1, N)):
+            self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
+
+    def update(self, i, h):  # Time: O(logN), Space: O(N)
+        def apply(x, h):
+            self.tree[x] = self.update_fn(self.tree[x], h)
+
+        def pull(x):
+            while x > 1:
+                x //= 2
+                self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
+
+        apply(i+self.base, h)
+        pull(i+self.base)
+
+    def query(self, L, R):  # Time: O(logN), Space: O(N)
+        result = None
+        if L > R:
+            return result
+
+        L += self.base
+        R += self.base
         while L <= R:
             if L & 1:  # is right child
                 result = self.query_fn(result, self.tree[L])
@@ -165,7 +210,7 @@ def iter_dfs(A, B, A_x0_y0, i, lookup, st_x, st_y):
 def table_flipping():
     def build_leaf(keys, i):  # Total Time: O(NlogN), Total Space: O(N)
         keys = set(keys[i])
-        return (sorted(keys), SegmentTree(len(keys)))
+        return (sorted(keys), SegmentTreeMax(len(keys)))
 
     def build_parent(x, y):  # Total Time: O(NlogN), Total Space: O(NlogN)
         keys1, keys2 = (x[0] if x else []), (y[0] if y else [])
@@ -178,7 +223,7 @@ def table_flipping():
             else:
                 keys.append(keys2[j])
                 j += 1
-        return (keys, SegmentTree(len(keys)))
+        return (keys, SegmentTreeMax(len(keys)))
 
     def get(x, v):  # sum(cnt[x] for x in keys if x <= v), Time: O(logN)
         keys, st = x
@@ -190,7 +235,7 @@ def table_flipping():
     def update(x, v, d):  # Time: O(logN)
         keys, st = x
         i = bisect_left(keys, v)
-        st.update(i, i, d)
+        st.update(i, d)
 
     N = input()
     A, B = [[None]*N for _ in xrange(2)]
@@ -234,7 +279,7 @@ def table_flipping():
         events.append((y0, 1, x0, x1))
         events.append((y1+1, -1, x0, x1))
     events.sort()
-    st = SegmentTree(len(sorted_x), update_fn=lambda x, y: y if x is None else x+y)
+    st = SegmentTreeMaxRange(len(sorted_x))
     for _, v, l, r in events:
         st.update(l, r, v)
         if st.query(0, len(sorted_x)-1) > 1:
