@@ -33,7 +33,7 @@ class BIT(object):  # 0-indexed.
 
 # Template:
 # https://github.com/kamyu104/FacebookHackerCup-2021/blob/main/Round%203/auth_ore_ization.py
-class SegmentTree(object):  # 0-based index
+class SegmentTree2D(object):  # 0-based index
     def __init__(self, N, build_leaf_fn, build_parent_fn, query_fn, update_fn, get_fn):  # modified
         self.tree = [None]*(2*N)
         self.base = N
@@ -246,7 +246,7 @@ def hire_flyers():
             for s in trimmed_segments:
                 if s.d == D:
                     keys[bisect_left(col_segments, s.c)].append(s.get_time_val(N))
-            st = SegmentTree(len(col_segments), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
+            st = SegmentTree2D(len(col_segments), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
             # line sweep to subtract R segments covered by D ones
             for _, e, s in events:
                 a = bisect_left(col_segments, s.c)
