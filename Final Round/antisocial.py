@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Final Round - Problem E. Antisocial
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/E
 #
-# Time:  O(NlogN), both Python2 and PyPy2 TLE
+# Time:  O(NlogN), TLE in both PyPy2 and Python2
 # Space: O(N)
 #
 

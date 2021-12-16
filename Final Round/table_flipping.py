@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Final Round - Problem F. Table Flipping
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/F
 #
-# Time:  O(N * (logN)^2), both Python2 and PyPy2 TLE
+# Time:  O(N * (logN)^2), TLE in both PyPy2 and Python2
 # Space: O(NlogN)
 #
 
