@@ -285,11 +285,11 @@ def table_flipping():
         if st.query(0, len(sorted_x)-1) > 1:
             return "NO"
     keys_x, keys_y = [[] for _ in xrange(len(sorted_x))], [[] for _ in xrange(len(sorted_y))]
-    for i, ((x0, y0, x1, y1), (A_x0, A_y0)) in enumerate(izip(A, A_x0_y0)):
-        keys_x[x0].append(A_y0)
-        keys_x[x1].append(A_y0)
-        keys_y[y0].append(A_x0)
-        keys_y[y1].append(A_x0)
+    for i, ((x0, y0, x1, y1), (a_x0, a_y0)) in enumerate(izip(A, A_x0_y0)):
+        keys_x[x0].append(a_y0)
+        keys_x[x1].append(a_y0)
+        keys_y[y0].append(a_x0)
+        keys_y[y1].append(a_x0)
     st_x = SegmentTree2D(len(sorted_x), build_leaf_fn=partial(build_leaf, keys_x), build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
     st_y = SegmentTree2D(len(sorted_y), build_leaf_fn=partial(build_leaf, keys_y), build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
     for i in xrange(N):
