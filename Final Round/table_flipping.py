@@ -104,16 +104,11 @@ class SegmentTreeMax(object):  # 0-based index
             self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
 
     def update(self, i, h):  # Time: O(logN), Space: O(N)
-        def apply(x, h):
-            self.tree[x] = self.update_fn(self.tree[x], h)
-
-        def pull(x):
-            while x > 1:
-                x //= 2
-                self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
-
-        apply(i+self.base, h)
-        pull(i+self.base)
+        x = self.base+i
+        self.tree[x] = self.update_fn(self.tree[x], h)
+        while x > 1:
+            x //= 2
+            self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
 
     def query(self, L, R):  # Time: O(logN), Space: O(N)
         result = None
@@ -157,7 +152,7 @@ class SegmentTree2D(object):  # 0-based index
         if L > R:
             return None
         L += self.base
-        R += self.base 
+        R += self.base
         result  = None
         while L <= R:
             if L & 1:  # is right child
