@@ -209,7 +209,7 @@ class SegmentTree(object):  # 0-based index
         self.query_fn = query_fn
         self.update_fn = update_fn
         for i in xrange(self.base, self.base+N):  # modified, leaf nodes
-            self.tree[i] = build_fn(i)
+            self.tree[i] = build_fn(i-self.base)
         for i in reversed(xrange(1, self.base)):  # modified, non-leaf nodes
             self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
 
