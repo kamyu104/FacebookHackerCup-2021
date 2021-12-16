@@ -3,7 +3,7 @@
 # Facebook Hacker Cup 2021 Final Round - Problem C. Hire Flyers
 # https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/C
 #
-# Time:  O(N * (logN)^2)
+# Time:  O(N * (logN)^2), pass in PyPy2 but Python2
 # Space: O(NlogN)
 #
 
