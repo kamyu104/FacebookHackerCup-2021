@@ -7,6 +7,7 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 * [Round 1](https://github.com/kamyu104/FacebookHackerCup-2021#round-1)
 * [Round 2](https://github.com/kamyu104/FacebookHackerCup-2021#round-2)
 * [Round 3](https://github.com/kamyu104/FacebookHackerCup-2021#round-3)
+* [Final Round](https://github.com/kamyu104/FacebookHackerCup-2021#final-round)
 
 ## Qualification Round
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
