@@ -170,8 +170,6 @@ def hire_flyers():
         return (sorted(keys[i]), BIT(len(keys[i])))
 
     def build_parent(x, y):
-        if x is None and y is None:
-            return None
         keys1, keys2 = (x[0] if x else []), (y[0] if y else [])
         i = j = 0
         keys = []
