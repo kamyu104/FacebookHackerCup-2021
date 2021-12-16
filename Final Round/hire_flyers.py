@@ -223,7 +223,7 @@ def hire_flyers():
             s.d = (d+1) % 4
         # consider 2 different vertical flips of the grid
         for _ in xrange(2):
-            # Flip everything vertically
+            # flip everything vertically
             for s in trimmed_segments:
                 s.r = -s.r
                 if s.d == U:
