@@ -45,13 +45,13 @@ class SegmentTree(object):  # 0-based index
         for i in reversed(xrange(1, self.base)):
             self.tree[i] = build_parent_fn(self.tree[2*i], self.tree[2*i+1])  # modified
 
-    def update(self, i, v, h):  # modified, Time: O(logN), Space: O(N)
+    def update(self, i, v, h):  # modified, Time: O((logN)^2), Space: O(NlogN)
         x = self.base+i
         while x >= 1:
             self.update_fn(self.tree[x], v, h)
             x //= 2
 
-    def query(self, L, R, v):  # modified, Time: O(logN), Space: O(N)
+    def query(self, L, R, v):  # modified, Time: O((logN)^2), Space: O(NlogN)
         if L > R:
             return 0  # modified
         L += self.base
