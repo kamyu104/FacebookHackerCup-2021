@@ -91,24 +91,24 @@ class SegmentTree(object):  # 0-based index
 # Template:
 # https://github.com/kamyu104/FacebookHackerCup-2021/blob/main/Final%20Round/hire_flyers.py
 class SegmentTree2D(object):  # 0-based index
-    def __init__(self, N, build_leaf_fn, build_parent_fn, query_fn, update_fn, get_fn):  # modified
+    def __init__(self, N, build_leaf_fn, build_parent_fn, query_fn, update_fn, get_fn):
         self.tree = [None]*(2*N)
         self.base = N
         self.query_fn = query_fn
         self.update_fn = update_fn
-        self.get_fn = get_fn  # modified
+        self.get_fn = get_fn
         for i in xrange(self.base, self.base+N):
-            self.tree[i] = build_leaf_fn(i-self.base)  # modified
+            self.tree[i] = build_leaf_fn(i-self.base)
         for i in reversed(xrange(1, self.base)):
-            self.tree[i] = build_parent_fn(self.tree[2*i], self.tree[2*i+1])  # modified
+            self.tree[i] = build_parent_fn(self.tree[2*i], self.tree[2*i+1])
 
-    def update(self, i, v, h):  # modified, Time: O((logN)^2), Space: O(NlogN)
+    def update(self, i, v, h):  # Time: O((logN)^2), Space: O(NlogN)
         x = self.base+i
         while x >= 1:
             self.update_fn(self.tree[x], v, h)
             x //= 2
 
-    def query(self, L, R, v):  # modified, Time: O((logN)^2), Space: O(NlogN)
+    def query(self, L, R, v):  # Time: O((logN)^2), Space: O(NlogN)
         if L > R:
             return None
         L += self.base
@@ -116,10 +116,10 @@ class SegmentTree2D(object):  # 0-based index
         result  = None
         while L <= R:
             if L & 1:  # is right child
-                result = self.query_fn(result, self.get_fn(self.tree[L], v))  # modified
+                result = self.query_fn(result, self.get_fn(self.tree[L], v))
                 L += 1
             if R & 1 == 0:  # is left child
-                result = self.query_fn(result, self.get_fn(self.tree[R], v))  # modified
+                result = self.query_fn(result, self.get_fn(self.tree[R], v))
                 R -= 1
             L //= 2
             R //= 2
