@@ -242,10 +242,10 @@ def hire_flyers():
             events.sort()
             col_segments = sorted(set(col_segments))
             # initialize 2D segment tree
-            keys = [[] for _ in xrange(len(col_segments))]
+            keys = [set() for _ in xrange(len(col_segments))]
             for s in trimmed_segments:
                 if s.d == D:
-                    keys[bisect_left(col_segments, s.c)].append(s.get_time_val(N))
+                    keys[bisect_left(col_segments, s.c)].add(s.get_time_val(N))
             st = SegmentTree2D(len(col_segments), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
             # line sweep to subtract R segments covered by D ones
             for _, e, s in events:
