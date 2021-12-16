@@ -214,16 +214,11 @@ class SegmentTree(object):  # 0-based index
             self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
 
     def update(self, i, h):  # Time: O(logN), Space: O(N)
-        def apply(x, h):
-            self.tree[x] = self.update_fn(self.tree[x], h)
-
-        def pull(x):
-            while x > 1:
-                x //= 2
-                self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
-
-        apply(i+self.base, h)  # modified
-        pull(i+self.base)  # modified
+        x = self.base+i
+        self.tree[x] = self.update_fn(self.tree[x], h)
+        while x > 1:
+            x //= 2
+            self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
 
     def query(self, L, R):  # Time: O(logN), Space: O(N)
         if L > R:

@@ -89,7 +89,7 @@ class SegmentTreeMaxRange(object):  # 0-based index
         return result
 
 # Template:
-# https://github.com/kamyu104/FacebookHackerCup-2021/blob/main/Round%202/valet_parking_chapter_2.py
+# https://github.com/kamyu104/FacebookHackerCup-2021/blob/main/Round%202/auth_ore_ization.py
 class SegmentTreeMax(object):  # 0-based index
     def __init__(self, N,
                  build_fn=lambda x, y: [y]*(2*x),
