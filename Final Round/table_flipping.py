@@ -125,22 +125,22 @@ class SegmentTree2D(object):  # 0-based index
             R //= 2
         return result
 
-def update_A_rect(a, a_x0_y0, i, insert, stx, sty):
-    stx.update(a[X0], a_x0_y0[1], (a[Y1], i) if insert else None)
-    stx.update(a[X1], a_x0_y0[1], (a[Y1], i) if insert else None)
-    sty.update(a[Y0], a_x0_y0[0], (a[X1], i) if insert else None)
-    sty.update(a[Y1], a_x0_y0[0], (a[X1], i) if insert else None)
+def update_A_rect(a, a_x0_y0, i, insert, st_x, st_y):
+    st_x.update(a[X0], a_x0_y0[1], (a[Y1], i) if insert else None)
+    st_x.update(a[X1], a_x0_y0[1], (a[Y1], i) if insert else None)
+    st_y.update(a[Y0], a_x0_y0[0], (a[X1], i) if insert else None)
+    st_y.update(a[Y1], a_x0_y0[0], (a[X1], i) if insert else None)
 
-def get_A_rect_for_B_rect(b, stx, sty):
-    p = stx.query(b[X0], b[X1], b[Y1])
+def get_A_rect_for_B_rect(b, st_x, st_y):
+    p = st_x.query(b[X0], b[X1], b[Y1])
     if p and p[0] >= b[Y0]:
         return p[1]
-    p = sty.query(b[Y0], b[Y1], b[X1])
+    p = st_y.query(b[Y0], b[Y1], b[X1])
     if p and p[0] >= b[X0]:
         return p[1]
     return -1
 
-def iter_dfs(A, B, A_x0_y0, i, lookup, stx, sty):
+def iter_dfs(A, B, A_x0_y0, i, lookup, st_x, st_y):
     if lookup[i]:
         return True
     stk = [[1, i]]
@@ -151,7 +151,7 @@ def iter_dfs(A, B, A_x0_y0, i, lookup, stx, sty):
             stk.append((3, u))
             stk.append((2, u))
         elif step == 2:
-            v = get_A_rect_for_B_rect(B[u], stx, sty)
+            v = get_A_rect_for_B_rect(B[u], st_x, st_y)
             if v == -1:
                 continue
             if lookup[v]:
@@ -159,7 +159,7 @@ def iter_dfs(A, B, A_x0_y0, i, lookup, stx, sty):
             stk.append((2, u))
             stk.append((1, v))
         elif step == 3:
-            update_A_rect(A[u], A_x0_y0[u], u, False, stx, sty)
+            update_A_rect(A[u], A_x0_y0[u], u, False, st_x, st_y)
     return True
 
 def table_flipping():
@@ -245,13 +245,13 @@ def table_flipping():
         keys_x[x1].append(A_y0)
         keys_y[y0].append(A_x0)
         keys_y[y1].append(A_x0)
-    stx = SegmentTree2D(len(sorted_x), build_leaf_fn=partial(build_leaf, keys_x), build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
-    sty = SegmentTree2D(len(sorted_y), build_leaf_fn=partial(build_leaf, keys_y), build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
+    st_x = SegmentTree2D(len(sorted_x), build_leaf_fn=partial(build_leaf, keys_x), build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
+    st_y = SegmentTree2D(len(sorted_y), build_leaf_fn=partial(build_leaf, keys_y), build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
     for i in xrange(N):
-        update_A_rect(A[i], A_x0_y0[i], i, True, stx, sty)
+        update_A_rect(A[i], A_x0_y0[i], i, True, st_x, st_y)
     lookup = [False]*N
     for i in xrange(N):
-        if not iter_dfs(A, B, A_x0_y0, i, lookup, stx, sty):
+        if not iter_dfs(A, B, A_x0_y0, i, lookup, st_x, st_y):
             return "NO"  # cycle found
     return "YES"
 
