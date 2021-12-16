@@ -228,8 +228,7 @@ def table_flipping():
 
     def update(x, v, d):  # Time: O(logN)
         keys, st = x
-        i = bisect_left(keys, v)
-        st.update(i, d)
+        st.update(bisect_left(keys, v), d)
 
     N = input()
     A, B = [[None]*N for _ in xrange(2)]
