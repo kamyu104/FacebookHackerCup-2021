@@ -219,7 +219,7 @@ def table_flipping():
                 j += 1
         return (keys, SegmentTreeMax(len(keys)))
 
-    def get(x, v):  # max(cnt[x] for x in keys if x <= v), Time: O(logN)
+    def get(x, v):  # max(val[x] for x in keys if x <= v), Time: O(logN)
         keys, st = x
         return st.query(0, bisect_left(keys, v+1)-1)
 
