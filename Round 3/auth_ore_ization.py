@@ -198,7 +198,7 @@ class SortedList(object):
         return 'SortedList({0})'.format(list(self))
 
 # Template:
-# https://github.com/kamyu104/FacebookHackerCup-2021/blob/c53116f2be2ddbafb6d04362a09a03c3659a17dd/Round%202/valet_parking_chapter_2.py
+# https://github.com/kamyu104/FacebookHackerCup-2021/blob/main/Round%202/valet_parking_chapter_2.py
 class SegmentTree(object):  # 0-based index
     def __init__(self, N,
                  build_fn=lambda _: float("inf"),
