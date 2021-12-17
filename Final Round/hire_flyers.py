@@ -196,7 +196,7 @@ def hire_flyers():
         bit.add(bisect_left(keys, v), d)
 
     N = input()
-    row_segments, col_segments = defaultdict(list), defaultdict(list)
+    row_segments, col_set = defaultdict(list), defaultdict(list)
     for i in xrange(1, N+1):
         r, c, p, d =  raw_input().strip().split()
         r, c, p, d = int(r), int(c), int(p), DIRS[d]
@@ -204,12 +204,12 @@ def hire_flyers():
         if s.d == R or s.d == L:
             row_segments[s.r].append(s)
         else:
-            col_segments[s.c].append(s)
+            col_set[s.c].append(s)
     # reduce each relevant row / column to disjoint segments
     trimmed_segments = []
     for segments in row_segments.itervalues():
         process_linear_segments(segments, True, trimmed_segments)
-    for segments in col_segments.itervalues():
+    for segments in col_set.itervalues():
         process_linear_segments(segments, False, trimmed_segments)
     # compute base answer
     result = 0
@@ -233,31 +233,31 @@ def hire_flyers():
                 elif s.d == D:
                     s.d = U
             # assemble list of line sweep events and distinct D segment columns
-            events, col_segments = [], []
+            events, col_set = [], set()
             for s in trimmed_segments:
                 if s.d == R:
-                    events.append((s.r, 0, s))
-                elif s.d == D:
                     events.append((s.r, 1, s))
-                    events.append((s.r+(s.p-1), -1, s))
-                    col_segments.append(s.c)
+                elif s.d == D:
+                    events.append((s.r, 0, s))
+                    events.append((s.r+(s.p-1), 2, s))
+                    col_set.add(s.c)
             events.sort()
-            col_segments = sorted(set(col_segments))
+            sorted_col = sorted(col_set)
             # initialize 2D segment tree
-            keys = [set() for _ in xrange(len(col_segments))]
+            keys = [set() for _ in xrange(len(col_set))]
             for s in trimmed_segments:
                 if s.d == D:
-                    keys[bisect_left(col_segments, s.c)].add(s.get_time_val(N))
-            st = SegmentTree2D(len(col_segments), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
+                    keys[bisect_left(sorted_col, s.c)].add(s.get_time_val(N))
+            st = SegmentTree2D(len(col_set), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
             # line sweep to subtract R segments covered by D ones
             for _, t, s in events:
-                a = bisect_left(col_segments, s.c)
+                a = bisect_left(sorted_col, s.c)
                 v = s.get_time_val(N)
-                if t == 0:
-                    b = bisect_left(col_segments, s.c+s.p)-1
+                if t == 1:
+                    b = bisect_left(sorted_col, s.c+s.p)-1
                     result = (result - s.i*st.query(a, b, v)) % MOD
                 else:
-                    st.update(a, v, t)
+                    st.update(a, v, 1 if t == 0 else -1)
     return result
 
 MOD = 10**9+7
