@@ -112,15 +112,15 @@ def trim_segment(s, a, b, horizon):
 def merge_opposite_segements(s1, s2, horizon):
     nc = s2.c-s1.c+1 if horizon else s2.r-s1.r+1
     t1 = s1.t                                       # time for s1 to reach start
-    t2 = s2.t+nc-1- int(s2.i < s1.i)                # time for s2 to reach start
+    t2 = s2.t+nc-1-int(s2.i < s1.i)                 # time for s2 to reach start
     m = (s1.c if horizon else s1.r)+(t2-t1+2)//2-1  # last value painted over by s2
     return [trim_segment(s2, -INF, m, horizon), trim_segment(s1, m+1, INF, horizon)]
 
 def process_linear_segments(segments, horizon, trimmed_segments):
     # collect and sort forward / backward segments
     d1, d2 = (R, L) if horizon else (D, U)
-    P1 = [(s.r + s.c, -s.i, s) for s in segments if s.d == d1]
-    P2 = [(-(s.r + s.c), -s.i, s) for s in segments if s.d == d2]
+    P1 = [(s.r+s.c, -s.i, s) for s in segments if s.d == d1]
+    P2 = [(-(s.r+s.c), -s.i, s) for s in segments if s.d == d2]
     P1.sort(), P2.sort()
     # reduce forward / backward segments independently
     S1, S2 = [], []
@@ -140,30 +140,31 @@ def process_linear_segments(segments, horizon, trimmed_segments):
     events = []
     for i, s in enumerate(S1):
         sv = s.c if horizon else s.r
-        events.append((sv, R, i))
-        events.append((sv+s.p, U, i))
+        events.append((sv, 1, i))
+        events.append((sv+s.p, 0, i))
     for i, s in enumerate(S2):
         sv = s.c if horizon else s.r
-        events.append((sv-(s.p-1), L, i))
-        events.append((sv+1, D, i))
+        events.append((sv-(s.p-1), 3, i))
+        events.append((sv+1, 2, i))
     events.sort()
-    inds = [-1]*2
-    for i, (v, e, s) in enumerate(events):
+    idxs = [-1]*2
+    for i, (v, e, idx) in enumerate(events):
         # update set of ongoing segments
-        inds[e//2] = s if e in (R, L) else -1
+        idxs[e//2] = idx if e%2 else -1
         # process ongoing segments?
-        if i+1 < len(events) and v < events[i+1][0]:
-            segments = []
-            if inds[0] >= 0 and inds[1] >= 0:
-                segments = merge_opposite_segements(S1[inds[0]], S2[inds[1]], horizon)
-            elif inds[0] >= 0:
-                segments = [S1[inds[0]]]
-            elif inds[1] >= 0:
-                segments = [S2[inds[1]]]
-            for s in segments:
-                s = trim_segment(s, v, events[i+1][0]-1, horizon)
-                if s.p > 0:
-                    trimmed_segments.append(s)
+        if i+1 == len(events) or v == events[i+1][0]:
+            continue
+        segments = []
+        if idxs[0] >= 0 and idxs[1] >= 0:
+            segments = merge_opposite_segements(S1[idxs[0]], S2[idxs[1]], horizon)
+        elif idxs[0] >= 0:
+            segments = [S1[idxs[0]]]
+        elif idxs[1] >= 0:
+            segments = [S2[idxs[1]]]
+        for s in segments:
+            s = trim_segment(s, v, events[i+1][0]-1, horizon)
+            if s.p > 0:
+                trimmed_segments.append(s)
 
 def hire_flyers():
     def build_leaf(i):  # Total Time: O(NlogN), Total Space: O(N)
