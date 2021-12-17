@@ -87,7 +87,7 @@ def trim_segment(s, a, b, horizon):
     s = deepcopy(s)
     if s.d == R or s.d == D:           # forward segment
         sv1 = s.c if horizon else s.r  # first value
-        sv2 = sv1+s.p-1                # last value
+        sv2 = sv1+(s.p-1)              # last value
         t1 = max(a-sv1, 0)             # truncation at start
         t2 = max(sv2-b, 0)             # truncation at end
         if horizon:
