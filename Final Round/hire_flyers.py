@@ -106,7 +106,7 @@ def trim_segment(s, a, b, horizon):
         else:
             s.r -= t2
         s.t += t2
-        s.p -= t1 + t2
+        s.p -= t1+t2
     return s
 
 def merge_opposite_segements(s1, s2, horizon):
