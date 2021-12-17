@@ -109,58 +109,59 @@ def trim_segment(s, a, b, horizon):
         s.p -= t1+t2
     return s
 
-def merge_opposite_segements(s1, s2, horizon):
-    nc = s2.c-s1.c+1 if horizon else s2.r-s1.r+1
-    t1 = s1.t                                       # time for s1 to reach start
-    t2 = s2.t+nc-1-int(s2.i < s1.i)                 # time for s2 to reach start
-    m = (s1.c if horizon else s1.r)+(t2-t1+2)//2-1  # last value painted over by s2
-    return [trim_segment(s2, -INF, m, horizon), trim_segment(s1, m+1, INF, horizon)]
+def merge_opposite_segements(forward_segment, backward_segment, horizon):
+    nc = backward_segment.c-forward_segment.c+1 if horizon else backward_segment.r-forward_segment.r+1
+    t1 = forward_segment.t                                                    # time for forward_segment to reach start
+    t2 = backward_segment.t+nc-1-int(backward_segment.i < forward_segment.i)  # time for backward_segment to reach start
+    mid = (forward_segment.c if horizon else forward_segment.r)+(t2-t1)//2    # last value painted over by backward_segment
+    return [trim_segment(backward_segment, -INF, mid, horizon), trim_segment(forward_segment, mid+1, INF, horizon)]
 
 def process_linear_segments(segments, horizon, trimmed_segments):
     # collect and sort forward / backward segments
     d1, d2 = (R, L) if horizon else (D, U)
-    P1 = [(s.r+s.c, -s.i, s) for s in segments if s.d == d1]
-    P2 = [(-(s.r+s.c), -s.i, s) for s in segments if s.d == d2]
-    P1.sort(), P2.sort()
+    forward_segments = [(s.r+s.c, -s.i, s) for s in segments if s.d == d1]
+    backward_segments = [(-(s.r+s.c), -s.i, s) for s in segments if s.d == d2]
+    forward_segments.sort(), backward_segments.sort()
     # reduce forward / backward segments independently
-    S1, S2 = [], []
+    trimmed_forward_segments = []
     last = -INF
-    for _, _, s in P1:
+    for _, _, s in forward_segments:
         s = trim_segment(s, last+1, INF, horizon)  # trim to after last
         if s.p > 0:  # include if not obsolete
-            S1.append(s)
+            trimmed_forward_segments.append(s)
         last = max(last, (s.c if horizon else s.r) + (s.p-1))
+    trimmed_backward_segments = []
     last = INF
-    for _, _, s in P2:
+    for _, _, s in backward_segments:
         s = trim_segment(s, -INF, last-1, horizon)  # trim to before last
         if s.p > 0:  # include if not obsolete
-            S2.append(s)
+            trimmed_backward_segments.append(s)
         last = min(last, (s.c if horizon else s.r) - (s.p-1))
     # merge forward / backward segments
     events = []
-    for i, s in enumerate(S1):
+    for i, s in enumerate(trimmed_forward_segments):
         sv = s.c if horizon else s.r
         events.append((sv, 1, i))
         events.append((sv+s.p, 0, i))
-    for i, s in enumerate(S2):
+    for i, s in enumerate(trimmed_backward_segments):
         sv = s.c if horizon else s.r
         events.append((sv-(s.p-1), 3, i))
         events.append((sv+1, 2, i))
     events.sort()
     idxs = [-1]*2
-    for i, (v, e, idx) in enumerate(events):
+    for i, (v, t, idx) in enumerate(events):
         # update set of ongoing segments
-        idxs[e//2] = idx if e%2 else -1
+        idxs[t//2] = idx if t%2 else -1
         # process ongoing segments?
         if i+1 == len(events) or v == events[i+1][0]:
             continue
         segments = []
         if idxs[0] >= 0 and idxs[1] >= 0:
-            segments = merge_opposite_segements(S1[idxs[0]], S2[idxs[1]], horizon)
+            segments = merge_opposite_segements(trimmed_forward_segments[idxs[0]], trimmed_backward_segments[idxs[1]], horizon)
         elif idxs[0] >= 0:
-            segments = [S1[idxs[0]]]
+            segments = [trimmed_forward_segments[idxs[0]]]
         elif idxs[1] >= 0:
-            segments = [S2[idxs[1]]]
+            segments = [trimmed_backward_segments[idxs[1]]]
         for s in segments:
             s = trim_segment(s, v, events[i+1][0]-1, horizon)
             if s.p > 0:
@@ -221,7 +222,7 @@ def hire_flyers():
             r, c, d = s.r, s.c, s.d
             s.r = c
             s.c = -r
-            s.d = (d+1) % 4
+            s.d = (d+1)%4
         # consider 2 different vertical flips of the grid
         for _ in xrange(2):
             # flip everything vertically
@@ -249,14 +250,14 @@ def hire_flyers():
                     keys[bisect_left(col_segments, s.c)].add(s.get_time_val(N))
             st = SegmentTree2D(len(col_segments), build_leaf_fn=build_leaf, build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
             # line sweep to subtract R segments covered by D ones
-            for _, e, s in events:
+            for _, t, s in events:
                 a = bisect_left(col_segments, s.c)
                 v = s.get_time_val(N)
-                if e == R:
+                if t == R:
                     b = bisect_left(col_segments, s.c+s.p)-1
                     result = (result - s.i*st.query(a, b, v)) % MOD
                 else:
-                    st.update(a, v, 1 if e == U else -1)
+                    st.update(a, v, 1 if t == U else -1)
     return result
 
 MOD = 10**9+7
