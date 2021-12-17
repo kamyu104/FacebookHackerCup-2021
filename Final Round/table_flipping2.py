@@ -120,21 +120,20 @@ def table_flipping():
             events.append((y0, t, x0, x1, i))
             events.append((y1, -t, x0, x1, i))
     events.sort()
-    sz = 1 << (max(len(sorted_x), 2)).bit_length()
     tree, adj = [None]*N, [[] for _ in xrange(N)]
     result = [True]
     r0 = r1 = -1
     for _, t, l, r, i in events:
         if t == 2:
-            add_edges(0, r0, l, r, 0, sz, i)
-            r1 = update(1, r1, l, r, 0, sz, i)
+            add_edges(0, r0, l, r, 0, len(x_set)-1, i)
+            r1 = update(1, r1, l, r, 0, len(x_set)-1, i)
         elif t == 1:
-            add_edges(1, r1, l, r, 0, sz, i)
-            r0 = update(0, r0, l, r, 0, sz, i)
+            add_edges(1, r1, l, r, 0, len(x_set)-1, i)
+            r0 = update(0, r0, l, r, 0, len(x_set)-1, i)
         elif t == -1:
-            r0 = update(0, r0, l, r, 0, sz, -1)
+            r0 = update(0, r0, l, r, 0, len(x_set)-1, -1)
         elif t == -2:
-            r1 = update(1, r1, l, r, 0, sz, -1)
+            r1 = update(1, r1, l, r, 0, len(x_set)-1, -1)
         if not result[0]:
             return "NO"
     lookup = [False]*len(tree)
