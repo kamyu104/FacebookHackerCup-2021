@@ -112,7 +112,7 @@ def trim_segment(s, a, b, horizon):
 def merge_opposite_segements(forward_segment, backward_segment, horizon):
     nc = backward_segment.c-forward_segment.c+1 if horizon else backward_segment.r-forward_segment.r+1
     t1 = forward_segment.t                                                    # time for forward_segment to reach start
-    t2 = backward_segment.t+nc-1-int(backward_segment.i < forward_segment.i)  # time for backward_segment to reach start
+    t2 = backward_segment.t+(nc-1)-int(backward_segment.i < forward_segment.i)  # time for backward_segment to reach start
     mid = (forward_segment.c if horizon else forward_segment.r)+(t2-t1)//2    # last value painted over by backward_segment
     return [trim_segment(backward_segment, -INF, mid, horizon), trim_segment(forward_segment, mid+1, INF, horizon)]
 
@@ -129,14 +129,14 @@ def process_linear_segments(segments, horizon, trimmed_segments):
         s = trim_segment(s, last+1, INF, horizon)  # trim to after last
         if s.p > 0:  # include if not obsolete
             trimmed_forward_segments.append(s)
-        last = max(last, (s.c if horizon else s.r) + (s.p-1))
+        last = max(last, (s.c if horizon else s.r)+(s.p-1))
     trimmed_backward_segments = []
     last = INF
     for _, _, s in backward_segments:
         s = trim_segment(s, -INF, last-1, horizon)  # trim to before last
         if s.p > 0:  # include if not obsolete
             trimmed_backward_segments.append(s)
-        last = min(last, (s.c if horizon else s.r) - (s.p-1))
+        last = min(last, (s.c if horizon else s.r)-(s.p-1))
     # merge forward / backward segments
     events = []
     for i, s in enumerate(trimmed_forward_segments):
@@ -236,10 +236,10 @@ def hire_flyers():
             events, col_segments = [], []
             for s in trimmed_segments:
                 if s.d == R:
-                    events.append((s.r, R, s))
+                    events.append((s.r, 0, s))
                 elif s.d == D:
-                    events.append((s.r, U, s))
-                    events.append((s.r+s.p-1, D, s))
+                    events.append((s.r, 1, s))
+                    events.append((s.r+(s.p-1), -1, s))
                     col_segments.append(s.c)
             events.sort()
             col_segments = sorted(set(col_segments))
@@ -253,11 +253,11 @@ def hire_flyers():
             for _, t, s in events:
                 a = bisect_left(col_segments, s.c)
                 v = s.get_time_val(N)
-                if t == R:
+                if t == 0:
                     b = bisect_left(col_segments, s.c+s.p)-1
                     result = (result - s.i*st.query(a, b, v)) % MOD
                 else:
-                    st.update(a, v, 1 if t == U else -1)
+                    st.update(a, v, t)
     return result
 
 MOD = 10**9+7
