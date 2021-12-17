@@ -117,8 +117,8 @@ def table_flipping():
     events = []
     for t, X in enumerate([A, B], 1):
         for i, (x0, y0, x1, y1) in enumerate(X):
-            events.append((x0, t, y0, y1, i))
-            events.append((x1, -t, y0, y1, i))
+            events.append((y0, t, x0, x1, i))
+            events.append((y1, -t, x0, x1, i))
     events.sort()
     sz = 1 << (max(len(sorted_y), 2)).bit_length()
     tree, adj = [None]*N, [[] for _ in xrange(N)]
