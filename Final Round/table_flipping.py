@@ -180,26 +180,33 @@ def get_A_rect_for_B_rect(b, st_x, st_y):
         return p[1]
     return -1
 
-def iter_dfs(A, B, A_x0_y0, i, lookup, st_x, st_y):
-    if lookup[i]:
+def has_no_cycle(A, B, A_x0_y0, st_x, st_y):
+    def iter_dfs(i):
+        if lookup[i]:
+            return True
+        stk = [(1, i)]
+        while stk:
+            step, u = stk.pop()
+            if step == 1:
+                lookup[u] = True
+                stk.append((3, u))
+                stk.append((2, u))
+            elif step == 2:
+                v = get_A_rect_for_B_rect(B[u], st_x, st_y)
+                if v == -1:
+                    continue
+                if lookup[v]:
+                    return False
+                stk.append((2, u))
+                stk.append((1, v))
+            elif step == 3:
+                update_A_rect(A[u], A_x0_y0[u], u, False, st_x, st_y)
         return True
-    stk = [[1, i]]
-    while stk:
-        step, u = stk.pop()
-        if step == 1:
-            lookup[u] = True
-            stk.append((3, u))
-            stk.append((2, u))
-        elif step == 2:
-            v = get_A_rect_for_B_rect(B[u], st_x, st_y)
-            if v == -1:
-                continue
-            if lookup[v]:
-                return False
-            stk.append((2, u))
-            stk.append((1, v))
-        elif step == 3:
-            update_A_rect(A[u], A_x0_y0[u], u, False, st_x, st_y)
+
+    lookup = [False]*len(A)
+    for i in xrange(len(A)):
+        if not iter_dfs(i):
+            return False
     return True
 
 def table_flipping():
@@ -288,11 +295,7 @@ def table_flipping():
     st_y = SegmentTree2D(len(sorted_y), build_leaf_fn=partial(build_leaf, keys_y), build_parent_fn=build_parent, query_fn=query, update_fn=update, get_fn=get)
     for i in xrange(N):
         update_A_rect(A[i], A_x0_y0[i], i, True, st_x, st_y)
-    lookup = [False]*N
-    for i in xrange(N):
-        if not iter_dfs(A, B, A_x0_y0, i, lookup, st_x, st_y):
-            return "NO"  # cycle found
-    return "YES"
+    return "YES" if has_no_cycle(A, B, A_x0_y0, st_x, st_y) else "NO"
 
 X0, Y0, X1, Y1 = range(4)
 for case in xrange(input()):

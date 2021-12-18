@@ -15,31 +15,20 @@ class Node(object):
         self.r = r
 
 def has_no_cycle(adj):
-    WHITE, GRAY, BLACK = range(3)
-    def iter_dfs(i, lookup):
-        if lookup[i] == BLACK:
-            return True
-        stk = [(1, i)]
-        while stk:
-            step, u = stk.pop()
-            if step == 1:
-                lookup[u] = GRAY
-                stk.append((2, u))
-                for v in adj[u]:
-                    if lookup[v] == BLACK:
-                        continue
-                    if lookup[v] == GRAY:
-                        return False
-                    stk.append((1, v))
-            elif step == 2:
-                lookup[u] = BLACK
-        return True
-
-    lookup = [WHITE]*len(adj)
-    for i in xrange(len(adj)):
-        if not iter_dfs(i, lookup):
-            return False
-    return True
+    in_degree = [0]*len(adj)
+    for u in xrange(len(adj)):
+        for v in adj[u]:
+            in_degree[v] += 1
+    q = [u for u, x in enumerate(in_degree) if not x]
+    while q:
+        new_q = []
+        for u in q:
+            for v in adj[u]:
+                in_degree[v] -= 1
+                if not in_degree[v]:
+                    new_q.append(v)
+        q = new_q
+    return all(x == 0 for x in in_degree)
 
 def table_flipping():
     def add_edge(u, v):
