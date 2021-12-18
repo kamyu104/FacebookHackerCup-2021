@@ -47,14 +47,14 @@ def table_flipping():
             if x == -1:
                 return -1
             if v != -1:
-                has_no_overlapped[0] = False
+                has_no_overlap[0] = False
             if k == 0:
                 add_edge(u, x)
             else:
                 add_edge(x, u)
             return u
         if v != -1 and tree[v].l == tree[v].r == -1 and x != -1:
-            has_no_overlapped[0] = False
+            has_no_overlap[0] = False
         mid = l+(r-l)//2
         node.l = update(k, tree[v].l if v != -1 else -1, L, R, l, mid, x)
         node.r = update(k, tree[v].r if v != -1 else -1, L, R, mid, r, x)
@@ -118,7 +118,7 @@ def table_flipping():
             events.append((y1, -t, x0, x1, i))
     events.sort()
     tree, adj = [None]*N, [[] for _ in xrange(N)]
-    has_no_overlapped = [True]
+    has_no_overlap = [True]
     r0 = r1 = -1
     for _, t, l, r, i in events:
         if t == 2:
@@ -131,7 +131,7 @@ def table_flipping():
             r0 = update(0, r0, l, r, 0, len(x_set)-1, -1)
         elif t == -2:
             r1 = update(1, r1, l, r, 0, len(x_set)-1, -1)
-        if not has_no_overlapped[0]:
+        if not has_no_overlap[0]:
             return "NO"
     return "YES" if has_no_cycle(adj) else "NO"
 
