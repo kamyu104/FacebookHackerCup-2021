@@ -286,6 +286,7 @@ def table_flipping():
         # round coordinates up to value boundaries (with exclusive upper coordinates)
         A[i] = (lower_x[A[i][X0]], lower_y[A[i][Y0]], lower_x[A[i][X1]]-1, lower_y[A[i][Y1]]-1)
         B[i] = (lower_x[B[i][X0]], lower_y[B[i][Y0]], lower_x[B[i][X1]]-1, lower_y[B[i][Y1]]-1)
+
     # check for any overlap between final tables via line sweep
     if not has_no_overlap(B, sorted_x):
         return "NO"

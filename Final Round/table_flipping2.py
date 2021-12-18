@@ -122,6 +122,7 @@ def table_flipping():
     for i, ((a_x0, a_y0, a_x1, a_y1), (b_x0, b_y0, b_x1, b_y1)) in enumerate(izip(A, B)):
         A[i] = (x_to_idx[a_x0], y_to_idx[a_y0], x_to_idx[a_x1], y_to_idx[a_y1])
         B[i] = (x_to_idx[b_x0], y_to_idx[b_y0], x_to_idx[b_x1], y_to_idx[b_y1])
+
     events = []
     for t, X in enumerate([A, B], 1):
         for i, (x0, y0, x1, y1) in enumerate(X):
