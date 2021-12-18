@@ -180,6 +180,19 @@ def get_A_rect_for_B_rect(b, st_x, st_y):
         return p[1]
     return -1
 
+def has_no_overlap(B, sorted_x):
+    events = []
+    for x0, y0, x1, y1 in B:
+        events.append((y0, 1, x0, x1))
+        events.append((y1+1, -1, x0, x1))
+    events.sort()
+    st = SegmentTreeMaxRange(len(sorted_x))
+    for _, v, l, r in events:
+        st.update(l, r, v)
+        if st.query(0, len(sorted_x)-1) > 1:
+            return False
+    return True
+
 def has_no_cycle(A, B, A_x0_y0, st_x, st_y):
     def iter_dfs(i):
         if lookup[i]:
@@ -274,16 +287,8 @@ def table_flipping():
         A[i] = (lower_x[A[i][X0]], lower_y[A[i][Y0]], lower_x[A[i][X1]]-1, lower_y[A[i][Y1]]-1)
         B[i] = (lower_x[B[i][X0]], lower_y[B[i][Y0]], lower_x[B[i][X1]]-1, lower_y[B[i][Y1]]-1)
     # check for any overlap between final tables via line sweep
-    events = []
-    for x0, y0, x1, y1 in B:
-        events.append((y0, 1, x0, x1))
-        events.append((y1+1, -1, x0, x1))
-    events.sort()
-    st = SegmentTreeMaxRange(len(sorted_x))
-    for _, v, l, r in events:
-        st.update(l, r, v)
-        if st.query(0, len(sorted_x)-1) > 1:
-            return "NO"
+    if not has_no_overlap(B, sorted_x):
+        return "NO"
     # initialize 2D segment tree
     keys_x, keys_y = [set() for _ in xrange(len(sorted_x))], [set() for _ in xrange(len(sorted_y))]
     for i, ((x0, y0, x1, y1), (a_x0, a_y0)) in enumerate(izip(A, A_x0_y0)):
