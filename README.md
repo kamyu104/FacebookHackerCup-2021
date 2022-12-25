@@ -48,6 +48,8 @@ Python solutions of Facebook Hacker Cup 2021. Solution begins with `*` means it 
 |D3| [Expl-ore-ation - Chapter 3](https://www.facebook.com/codingcompetitions/hacker-cup/2021/round-3/problems/D3)| [Python](./Round%203/expl_ore_ation_chapter_3.py) [Python](./Round%203/expl_ore_ation_chapter_3-2.py) | _O((R * C + K) * log(R * C)^2)_ | _O(R * C)_ | Hard | | Union Find, Tree Traversal, Tree Ancestors (Binary Lifting), Heavy-Light Decomposition, Sorted List, BIT, Fenwick Tree |
 
 ## Final Round
+You can relive the magic of the 2021 Hacker Cup World Finals by watching the [Live Stream Recording](https://www.facebook.com/hackercup/videos/627360278409896) of the announcement of winners.
+
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [And](https://www.facebook.com/codingcompetitions/hacker-cup/2021/final-round/problems/A)| [Python](./Final%20Round/and.py) | _O(L * N)_ | _O(L * N)_ | Medium | | Greedy, Union Find |
